@@ -1,0 +1,4 @@
+C:/Users/maire_s/Desktop/Tricible/Tricible/bin/GUI/CMakeFiles/TricibleGUI.dir
+C:/Users/maire_s/Desktop/Tricible/Tricible/bin/GUI/CMakeFiles/ALL_BUILD.dir
+C:/Users/maire_s/Desktop/Tricible/Tricible/bin/CMakeFiles/ZERO_CHECK.dir
+C:/Users/maire_s/Desktop/Tricible/Tricible/bin/Engine/CMakeFiles/TricibleEngine.dir

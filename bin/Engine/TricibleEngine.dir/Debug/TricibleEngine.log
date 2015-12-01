@@ -1,0 +1,16 @@
+﻿Build started 11/28/2015 4:44:07 PM.
+     1>Project "C:\Users\maire_s\Desktop\Tricible\Tricible\bin\Engine\TricibleEngine.vcxproj" on node 2 (Rebuild target(s)).
+     1>CustomBuild:
+         Building Custom Rule C:/Users/maire_s/Desktop/Tricible/Tricible/Engine/CMakeLists.txt
+         CMake does not need to re-run because C:\Users\maire_s\Desktop\Tricible\Tricible\bin\Engine\CMakeFiles\generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D TricibleEngine_EXPORTS /D _WINDLL /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"TricibleEngine.dir\Debug\\" /Fd"TricibleEngine.dir\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt C:\Users\maire_s\Desktop\Tricible\Tricible\Engine\Scene\Sphere.cpp
+         Sphere.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\maire_s\Desktop\Tricible\Tricible\bin\Engine\Debug\TricibleEngine.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/maire_s/Desktop/Tricible/Tricible/bin/Engine/Debug/TricibleEngine.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/maire_s/Desktop/Tricible/Tricible/bin/Engine/Debug/TricibleEngine.lib" /MACHINE:X86 /SAFESEH  /machine:X86 /debug /DLL TricibleEngine.dir\Debug\Sphere.obj
+         TricibleEngine.vcxproj -> C:\Users\maire_s\Desktop\Tricible\Tricible\bin\Engine\Debug\TricibleEngine.dll
+     1>Done Building Project "C:\Users\maire_s\Desktop\Tricible\Tricible\bin\Engine\TricibleEngine.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.54
