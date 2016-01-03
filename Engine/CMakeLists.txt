@@ -34,7 +34,7 @@ set(
 )
 
 add_library(
-    "TricibleEngine"
+    TricibleEngine
     SHARED
     ${EngineFiles}
 )

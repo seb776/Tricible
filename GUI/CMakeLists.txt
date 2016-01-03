@@ -18,12 +18,12 @@ set(
 
 
 add_executable(
-    "TricibleGUI"
+    TricibleGUI
     "${${CMAKE_PROJECT_NAME}RootSources}"
 )
 
 target_link_libraries(
-    "TricibleGUI"
+    TricibleGUI
     TricibleEngine
 )
 

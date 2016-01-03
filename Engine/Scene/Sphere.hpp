@@ -10,6 +10,6 @@ namespace Scene
 	class Sphere
 	{
 	public:
-		Sphere();
+		__declspec(dllexport) Sphere();
 	};
 }
