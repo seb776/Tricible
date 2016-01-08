@@ -31,7 +31,7 @@ endif(MINGW)
   endif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 
 set (DIR_LIB_SFML ${DIR_LIB_SFML_ROOT}/${DIR_COMPILER}/${DIR_ARCH}/lib)
-set (DIR_DLL_SFML ${DIR_LIB_SFML_ROOT}/${DIR_COMPILER}/${DIR_ARCH}/bin)
+set (DIR_DLL_SFML ${DIR_LIB_SFML_ROOT}/${DIR_COMPILER}/${DIR_ARCH}/dll)
 
 add_subdirectory(Engine)
 add_subdirectory(GUI)
