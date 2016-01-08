@@ -15,7 +15,7 @@ set(STATIC_LIB_EXT lib)
 set(STATIC_LIB_PREFIX "")
 
 if (MINGW)
-    set(DIR_COMPILER GCC_DW2)
+    set(DIR_COMPILER GCC_SJLJ_4_8_1)
     set(STATIC_LIB_EXT a)
     set(STATIC_LIB_PREFIX lib)
 elseif (MSVC14)
