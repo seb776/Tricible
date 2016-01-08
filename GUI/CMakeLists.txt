@@ -32,10 +32,10 @@ include_directories(${DIR_LIB_SFML_ROOT}/include)
 
 
 
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-graphics.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-graphics-d.${STATIC_LIB_EXT})
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-window.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-window-d.${STATIC_LIB_EXT})
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-system.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-system-d.${STATIC_LIB_EXT})
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-network.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-network-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-graphics.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-graphics-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-window.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-window-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-system.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-system-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-network.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-network-d.${STATIC_LIB_EXT})
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DIR_DLL_SFML}/sfml-graphics$<$<CONFIG:debug>:-d>-2.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
