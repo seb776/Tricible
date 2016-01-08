@@ -30,13 +30,15 @@ target_link_libraries(
 
 include_directories(${DIR_LIB_SFML_ROOT}/include)
 
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-graphics.lib debug ${DIR_LIB_SFML}/sfml-graphics-d.lib)
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-window.lib debug ${DIR_LIB_SFML}/sfml-window-d.lib)
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-system.lib debug ${DIR_LIB_SFML}/sfml-system-d.lib)
-TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-network.lib debug ${DIR_LIB_SFML}/sfml-network-d.lib)
+
+
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-graphics.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-graphics-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-window.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-window-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-system.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-system-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/sfml-network.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/sfml-network-d.${STATIC_LIB_EXT})
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DIR_DLL_SFML}//sfml-graphics$<$<CONFIG:debug>:-d>-2.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DIR_DLL_SFML}/sfml-graphics$<$<CONFIG:debug>:-d>-2.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DIR_DLL_SFML}/sfml-system$<$<CONFIG:debug>:-d>-2.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -44,6 +46,3 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${DIR_DLL_SFML}/sfml-network$<$<CONFIG:debug>:-d>-2.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
-
-##set(
-  ##  "${CMAKE_PROJECT_NAME}_")
