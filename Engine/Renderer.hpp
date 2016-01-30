@@ -6,18 +6,9 @@
 #include "Scene/Plan.hpp"
 #include "Scene/Triangle.hpp"
 #include "Scene/ALight.hpp"
+#include "../Engine/Tools.hpp"
 #include "Camera.hpp"
 
-template<typename T>
-T	max(const T a, const T b)
-{
-	return (a > b ? a : b);
-}
-template<typename T>
-T	min(const T a, const T b)
-{
-	return (a < b ? a : b);
-}
 namespace Tricible
 {
 	class Renderer
