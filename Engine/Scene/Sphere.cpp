@@ -8,7 +8,7 @@
 
 namespace Scene
 {
-	Sphere::Sphere()
+	Sphere::Sphere(int a)
 	{
 
 	}
