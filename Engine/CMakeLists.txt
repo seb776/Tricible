@@ -31,6 +31,7 @@ set(
     "./3x3Matrix.hpp"
     "./Renderer.hpp"
     "./Camera.hpp"
+    "./Tools.hpp"
 )
 
 source_group(
