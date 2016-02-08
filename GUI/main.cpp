@@ -14,6 +14,47 @@
 #include <ctime>
 #include <string>
 
+// courte_p : J'ai découpé la partie du "main" qui s'occupe de gérer la translation de la caméra via les événements de la SFML
+void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecOrigin, const sf::Keyboard::Key key)
+{
+	if (key == sf::Keyboard::Up)
+	{
+		renderer->_camera.MoveForward();
+		// TODO courte : anciennement code ->
+		// renderer->_camera.position += (renderer->_camera.yawMat * (renderer->_camera.pitchMat * vecOrigin)) * 1.f;
+	}
+	if (key == sf::Keyboard::Down)
+	{
+		renderer->_camera.MoveBackward();
+		// TODO courte : anciennement code ->
+		// renderer->_camera.position -= (renderer->_camera.yawMat * (renderer->_camera.pitchMat * vecOrigin)) * 1.f;
+	}
+	if (key == sf::Keyboard::Left)
+	{
+		renderer->_camera.SetYaw(renderer->_camera.yaw - 0.01f);
+	}
+	if (key == sf::Keyboard::Right)
+	{
+		renderer->_camera.SetYaw(renderer->_camera.yaw + 0.01f);
+	}
+	if (key == sf::Keyboard::Add)
+	{
+		renderer->_camera.SetPitch(renderer->_camera.pitch - 0.01f);
+	}
+	if (key == sf::Keyboard::Subtract)
+	{
+		renderer->_camera.SetPitch(renderer->_camera.pitch + 0.01f);
+	}
+	if (key == sf::Keyboard::Space)
+	{
+		renderer->_camera.position._z += 1.f;
+	}
+	if (key == sf::Keyboard::LControl)
+	{
+		renderer->_camera.position._z -= 1.f;
+	}
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
@@ -47,44 +88,16 @@ int main()
 		{
 			switch (event.type)
 			{
-			case sf::Event::KeyPressed:
-			{
-				curDir = (renderer._camera.yawMat * (renderer._camera.pitchMat * vecOrigin)) * 1.f;
-				std::cout << renderer._camera.position._x << "/" << renderer._camera.position._y << "/" << renderer._camera.position._z << std::endl;
-				if (event.key.code == sf::Keyboard::Up)
+				case sf::Event::KeyPressed:
 				{
-					renderer._camera.position += curDir;
+					std::cout << renderer._camera.position._x << "/" << renderer._camera.position._y << "/" << renderer._camera.position._z << std::endl;
+					// TODO courte_p : question sur le ligne de code curDir... 
+					// c'est l'équivalent de vec3 forwardVector = lookAtPosition - cameraPosition ???
+					// curDir = (renderer._camera.yawMat * (renderer._camera.pitchMat * vecOrigin)) * 1.f;
+					// NOTE : curDir a été bougée dans la fonction "void translateCamera(...)" -> fichier main.cpp
+					translateCamera(&renderer, vecOrigin, event.key.code);
+					break;
 				}
-				if (event.key.code == sf::Keyboard::Down)
-				{
-					renderer._camera.position = renderer._camera.position - curDir;
-				}
-				if (event.key.code == sf::Keyboard::Left)
-				{
-					renderer._camera.SetYaw(renderer._camera.yaw - 0.01f);
-				}
-				if (event.key.code == sf::Keyboard::Right)
-				{
-					renderer._camera.SetYaw(renderer._camera.yaw + 0.01f);
-				}
-				if (event.key.code == sf::Keyboard::Add)
-				{
-					renderer._camera.SetPitch(renderer._camera.pitch - 0.01f);
-				}
-				if (event.key.code == sf::Keyboard::Subtract)
-				{
-					renderer._camera.SetPitch(renderer._camera.pitch + 0.01f);
-				}
-				if (event.key.code == sf::Keyboard::Space)
-				{
-					renderer._camera.position._z += 1.f;
-				}
-				if (event.key.code == sf::Keyboard::LControl)
-				{
-					renderer._camera.position._z -= 1.f;
-				}
-				break;
-			}
 			}
 			if (event.type == sf::Event::Closed)
 				window.close();
@@ -106,3 +119,5 @@ int main()
 	}
 	return 0;
 }
+
+
