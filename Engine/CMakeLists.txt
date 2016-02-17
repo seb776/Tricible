@@ -17,7 +17,7 @@ set(
     "./Scene/Sphere.hpp"
     "./Scene/ALight.hpp"
     "./Scene/AObject.hpp"
-    "./Scene/Plan.hpp"
+    "./Scene/Plane.hpp"
     "./Scene/Triangle.hpp"
 )
 
@@ -32,6 +32,7 @@ set(
     "./Renderer.hpp"
     "./Camera.hpp"
     "./Tools.hpp"
+    "./Macros.hpp"
 )
 
 source_group(

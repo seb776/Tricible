@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "Scene/Sphere.hpp"
-#include "Scene/Plan.hpp"
+#include "Scene/Plane.hpp"
 #include "Scene/Triangle.hpp"
 #include "Scene/ALight.hpp"
 #include "../Engine/Tools.hpp"
@@ -35,14 +35,13 @@ namespace Tricible
 
 		void Render()
 		{
-			//_camera.position._x -= 5.f;
 			for (int y = 0; y < _resY; ++y)
 			{
 				for (int x = 0; x < _resX; ++x)
 				{
 					Point3 vec;
-					_camera.GetRay(x - (_resX / 2.f), y - (_resY / 2.f), vec);
-					vec = vec / vec.Length();
+					_camera.GetRay(x - (_resX * .5f), y - (_resY * .5f), vec);
+					vec.Normalize();
 					int retainedColor = 0xFF000000;
 					float dist = -1.f;
 					AObject *prim = nullptr;
@@ -84,9 +83,9 @@ namespace Tricible
 							for (AObject *o : _objects) if (false)
 							{
 								Point3 ray = (l->_position - inter);
-								ray = ray / ray.Length();
-								float dist;
-								int col;
+								//ray = ray / ray.Length();
+								float dist = 0;
+								int col = 0;
 								if (o != prim && o->IntersectsRay(inter, ray, dist, col))
 								{
 									r = (unsigned char)((float)r / 2.f);

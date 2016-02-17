@@ -27,13 +27,13 @@ namespace Scene
 		float radius;
 		bool IntersectsRay(const Tricible::Point3& origin, const Tricible::Point3& vec, float& dist, int& color) override
 		{
-			Tricible::Point3 oc = (origin - position);
-			float b = oc.Dot(vec);
-			float c = oc.Dot(oc) - radiusSqr;
+			const Tricible::Point3 oc = (origin - position);
+			const float b = oc.Dot(vec);
+			const float c = oc.Dot(oc) - radiusSqr;
 
 			if (c > 0.f && b > 0.f)
 				return false;
-			float discr = b * b - c;
+			const float discr = b * b - c;
 			if (discr < 0.f)
 				return false;
 
