@@ -10,7 +10,7 @@
 
 namespace Scene
 {
-	class Sphere : public Tricible::AObject
+	class Sphere : public Tricible::AObject, public Tricible::AIntersectable
 	{
 		float radiusSqr;
 	public:

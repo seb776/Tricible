@@ -17,7 +17,7 @@ namespace Tricible
 		int *image;
 		int _resX;
 		int _resY;
-		std::vector<AObject *>	_objects;
+		std::vector<AIntersectable *>	_objects;
 		std::vector<ALight *>	_lights;
 		Camera _camera;
 	public:
@@ -26,9 +26,9 @@ namespace Tricible
 			_resX = resX;
 			_resY = resY;
 			image = new int[resX * resY];
-			_objects.push_back((Tricible::AObject *)new Scene::Sphere());
-			_objects.push_back((Tricible::AObject *)new Plane());
-			_objects.push_back((Tricible::AObject *)new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 5.f,0.f), Point3(25.f, 2.5f, 2.5f)));
+			_objects.push_back((Tricible::AIntersectable *)new Scene::Sphere());
+			_objects.push_back((Tricible::AIntersectable *)new Plane());
+			_objects.push_back((Tricible::AIntersectable *)new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 5.f,0.f), Point3(25.f, 2.5f, 2.5f)));
 			_lights.push_back(new ALight(0xFF424242, Point3(0.f, 0.f, 25.f), 150.f));
 			//_lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, 0.f, 75.f), 150.f));
 		}
@@ -44,13 +44,13 @@ namespace Tricible
 					vec.Normalize();
 					int retainedColor = 0xFF000000;
 					float dist = -1.f;
-					AObject *prim = nullptr;
+					AIntersectable *prim = nullptr;
 
-					for (Tricible::AObject *o : _objects)
+					for (Tricible::AIntersectable *o : _objects)
 					{
 						float itDist = 0.f;
 						int color = 0;
-						if (o->IntersectsRay(_camera.position + vec, vec, itDist, color))
+						if (o->IntersectsRay(_camera.getPosition() + vec, vec, itDist, color))
 						{
 							if (dist < 0.f || itDist < dist)
 							{
@@ -62,7 +62,7 @@ namespace Tricible
 					}
 					if (prim)
 					{
-						Point3 inter = _camera.position + vec + (vec * dist);
+						Point3 inter = _camera.getPosition() + vec + (vec * dist);
 						Point3 normal;
 						prim->ComputeNormal(inter, vec, normal);
 						for (ALight *l : _lights)
@@ -80,7 +80,7 @@ namespace Tricible
 							r = (unsigned char)(min((float)r * mult * (float)l->colr.channels[1] / 255.f, 255.f));
 							g = (unsigned char)(min((float)g * mult * (float)l->colr.channels[2] / 255.f, 255.f));
 							b = (unsigned char)(min((float)b * mult * (float)l->colr.channels[3] / 255.f, 255.f));
-							for (AObject *o : _objects) if (false)
+							for (AIntersectable *o : _objects) if (false)
 							{
 								Point3 ray = (l->_position - inter);
 								//ray = ray / ray.Length();

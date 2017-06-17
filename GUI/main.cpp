@@ -47,11 +47,11 @@ void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecO
 	}
 	if (key == sf::Keyboard::Space)
 	{
-		renderer->_camera.position._z += 1.f;
+		renderer->_camera.AddPosition(Tricible::Point3::up);
 	}
 	if (key == sf::Keyboard::LControl)
 	{
-		renderer->_camera.position._z -= 1.f;
+		renderer->_camera.AddPosition(Tricible::Point3::down);
 	}
 }
 
@@ -66,9 +66,6 @@ int main()
 	std::clock_t start;
 	std::clock_t end;
 	double duration = 0.0;
-
-
-	/* Your algorithm here */
 
 	if (!texture.create(800, 600))
 	{
@@ -90,7 +87,7 @@ int main()
 			{
 				case sf::Event::KeyPressed:
 				{
-					std::cout << renderer._camera.position._x << "/" << renderer._camera.position._y << "/" << renderer._camera.position._z << std::endl;
+					std::cout << renderer._camera.getPosition()._x << "/" << renderer._camera.getPosition()._y << "/" << renderer._camera.getPosition()._z << std::endl;
 					// TODO courte_p : question sur le ligne de code curDir... 
 					// c'est l'équivalent de vec3 forwardVector = lookAtPosition - cameraPosition ???
 					// curDir = (renderer._camera.yawMat * (renderer._camera.pitchMat * vecOrigin)) * 1.f;

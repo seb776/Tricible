@@ -4,7 +4,7 @@
 
 namespace Tricible
 {
-	class Plane : public AObject
+	class Plane : public AObject, public AIntersectable
 	{
 	public:
 		Plane()

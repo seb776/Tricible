@@ -7,7 +7,7 @@
 
 namespace Tricible
 {
-	class Camera
+	class Camera : public AObject
 	{
 	public:
 		float pitch;
@@ -15,7 +15,10 @@ namespace Tricible
 		float roll;
 		Matrix3x3 pitchMat;
 		Matrix3x3 yawMat;
-		Point3 position;
+		TRICIBLE_FORCEINLINE const Point3& getPosition() const
+		{
+			return this->position;
+		}
 		Point3 lookAt; // TODO courte_p -> lookAt ne prends pas en compte les rotations yaw/pitch
 		float focale;
 	public:
@@ -54,13 +57,12 @@ namespace Tricible
 
 		void MoveForward()
 		{
-			Point3 vecForward(lookAt - position);
+			Point3 vecForward = yawMat * (pitchMat *  Point3::forward);
+			//Point3 vecForward(lookAt - position);
 
 			vecForward.Normalize();
 
 			position += vecForward * MOVEMENTS_SPEED;
-			lookAt += vecForward * MOVEMENTS_SPEED;
-			// TODO courte_p -> lookAt ne prends pas en compte les rotations yaw/pitch
 		}
 
 		void MoveBackward()

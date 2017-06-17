@@ -26,7 +26,7 @@ namespace Tricible
 		return value;
 	}
 	template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-	T Clamp01(T value, T min, T max)
+	T Clamp01(T value)
 	{
 		return Clamp(value, (T)0, (T)1);
 	}

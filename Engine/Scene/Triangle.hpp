@@ -4,7 +4,7 @@
 
 namespace Tricible
 {
-	class Triangle : public Plane
+	class Triangle : public Plane, public AIntersectable
 	{
 	public:
 		Point3 _a, _b, _c;
@@ -50,6 +50,10 @@ namespace Tricible
 				return Triangle::IsInside(_a, _b, _c, origin + (vec * dist));
 			}
 			return false;
+		}
+		void ComputeNormal(const Point3& inter, const Point3& incident, Point3& normal) override
+		{
+
 		}
 	};
 }
