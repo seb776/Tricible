@@ -28,8 +28,8 @@ namespace Tricible
 			image = new int[resX * resY];
 			_objects.push_back((Tricible::AIntersectable *)new Scene::Sphere());
 			_objects.push_back((Tricible::AIntersectable *)new Plane());
-			_objects.push_back((Tricible::AIntersectable *)new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 5.f,0.f), Point3(25.f, 2.5f, 2.5f)));
-			_lights.push_back(new ALight(0xFF424242, Point3(0.f, 0.f, 25.f), 150.f));
+			_objects.push_back((Tricible::AIntersectable *)new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f,5.f), Point3(25.f, 2.5f, 2.5f)));
+			_lights.push_back(new ALight(0xFF424242, Point3(0.f, 25.f, 0.f), 150.f));
 			//_lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, 0.f, 75.f), 150.f));
 		}
 
@@ -52,11 +52,14 @@ namespace Tricible
 						int color = 0;
 						if (o->IntersectsRay(_camera.getPosition() + vec, vec, itDist, color))
 						{
-							if (dist < 0.f || itDist < dist)
+							if (itDist > _camera.NearClip && itDist < _camera.FarClip)
 							{
-								retainedColor = color;
-								dist = itDist;
-								prim = o;
+								if (dist < 0.f || itDist < dist)
+								{
+									retainedColor = color;
+									dist = itDist;
+									prim = o;
+								}
 							}
 						}
 					}
@@ -67,7 +70,7 @@ namespace Tricible
 						prim->ComputeNormal(inter, vec, normal);
 						for (ALight *l : _lights)
 						{
-							Point3 tmp = (inter - l->_position);
+							Point3 tmp = (inter - l->getPosition());
 							tmp = tmp / tmp.Length();
 							float mult = tmp.Dot(normal);
 							if (mult < 0.f)
@@ -82,7 +85,7 @@ namespace Tricible
 							b = (unsigned char)(min((float)b * mult * (float)l->colr.channels[3] / 255.f, 255.f));
 							for (AIntersectable *o : _objects) if (false)
 							{
-								Point3 ray = (l->_position - inter);
+								Point3 ray = (l->getPosition() - inter);
 								//ray = ray / ray.Length();
 								float dist = 0;
 								int col = 0;

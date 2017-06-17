@@ -20,30 +20,26 @@ void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecO
 	if (key == sf::Keyboard::Up)
 	{
 		renderer->_camera.MoveForward();
-		// TODO courte : anciennement code ->
-		// renderer->_camera.position += (renderer->_camera.yawMat * (renderer->_camera.pitchMat * vecOrigin)) * 1.f;
 	}
 	if (key == sf::Keyboard::Down)
 	{
 		renderer->_camera.MoveBackward();
-		// TODO courte : anciennement code ->
-		// renderer->_camera.position -= (renderer->_camera.yawMat * (renderer->_camera.pitchMat * vecOrigin)) * 1.f;
 	}
 	if (key == sf::Keyboard::Left)
 	{
-		renderer->_camera.SetYaw(renderer->_camera.yaw - 0.01f);
+		renderer->_camera.SetPitch(renderer->_camera.pitch + 0.01f);
 	}
 	if (key == sf::Keyboard::Right)
 	{
-		renderer->_camera.SetYaw(renderer->_camera.yaw + 0.01f);
+		renderer->_camera.SetPitch(renderer->_camera.pitch - 0.01f);
 	}
 	if (key == sf::Keyboard::Add)
 	{
-		renderer->_camera.SetPitch(renderer->_camera.pitch - 0.01f);
+		renderer->_camera.SetYaw(renderer->_camera.yaw + 0.01f);
 	}
 	if (key == sf::Keyboard::Subtract)
 	{
-		renderer->_camera.SetPitch(renderer->_camera.pitch + 0.01f);
+		renderer->_camera.SetYaw(renderer->_camera.yaw - 0.01f);
 	}
 	if (key == sf::Keyboard::Space)
 	{
@@ -88,10 +84,6 @@ int main()
 				case sf::Event::KeyPressed:
 				{
 					std::cout << renderer._camera.getPosition()._x << "/" << renderer._camera.getPosition()._y << "/" << renderer._camera.getPosition()._z << std::endl;
-					// TODO courte_p : question sur le ligne de code curDir... 
-					// c'est l'équivalent de vec3 forwardVector = lookAtPosition - cameraPosition ???
-					// curDir = (renderer._camera.yawMat * (renderer._camera.pitchMat * vecOrigin)) * 1.f;
-					// NOTE : curDir a été bougée dans la fonction "void translateCamera(...)" -> fichier main.cpp
 					translateCamera(&renderer, vecOrigin, event.key.code);
 					break;
 				}

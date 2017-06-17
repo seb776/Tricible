@@ -17,7 +17,10 @@ namespace Tricible
 		{
 			position += pos;
 		}
-
+		TRICIBLE_FORCEINLINE const Point3& getPosition() const
+		{
+			return this->position;
+		}
 	};
 
 	class AIntersectable

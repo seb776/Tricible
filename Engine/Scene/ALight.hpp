@@ -4,17 +4,16 @@
 
 namespace Tricible
 {
-	class ALight
+	class ALight : public AObject
 	{
 	public:
 		ALight(int color, const Point3& pos, float maxDist)
 		{
-			_position = pos;
+			position = pos;
 			colr._color = color;
 			_maxDist = maxDist;
 			intensity = 2.f;
 		}
-		Point3 _position;
 		union col
 		{
 			int	_color;

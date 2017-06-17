@@ -15,11 +15,9 @@ namespace Tricible
 		float roll;
 		Matrix3x3 pitchMat;
 		Matrix3x3 yawMat;
-		TRICIBLE_FORCEINLINE const Point3& getPosition() const
-		{
-			return this->position;
-		}
-		Point3 lookAt; // TODO courte_p -> lookAt ne prends pas en compte les rotations yaw/pitch
+
+		float NearClip;
+		float FarClip;
 		float focale;
 	public:
 		void SetPitch(float pitch_)
@@ -41,14 +39,15 @@ namespace Tricible
 			SetYaw(0.f);
 			focale = 40.f / tanf(45.f / 2.f);
 			position._x = 0.f;
-			lookAt._x = 1.0f; // TODO courte_p -> lookAt ne prends pas en compte les rotations yaw/pitch
+			NearClip = 0.1f;
+			FarClip = 10000.f;
 		}
 
 		void GetRay(int x_, int y_, Point3& vec)
 		{
 			vec._x = focale;
-			vec._y = x_ / 80.f;
-			vec._z = -(y_ / 80.f);
+			vec._y = -(y_ / 80.f);
+			vec._z = x_ / 80.f;
 
 			// rotate
 			vec = yawMat * (pitchMat * vec);
@@ -67,13 +66,11 @@ namespace Tricible
 
 		void MoveBackward()
 		{
-			Point3 vecForward(lookAt - position);
+			Point3 vecBackward = yawMat * (pitchMat *  Point3::backward);
 
-			vecForward.Normalize();
+			vecBackward.Normalize();
 
-			position -= vecForward * MOVEMENTS_SPEED;
-			lookAt -= vecForward * MOVEMENTS_SPEED;
-			// TODO courte_p -> lookAt ne prends pas en compte les rotations yaw/pitch
+			position += vecBackward * MOVEMENTS_SPEED;
 		}
 	};
 }

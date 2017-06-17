@@ -11,7 +11,7 @@ namespace Tricible
 		{
 			position._z = -1.f;
 			_color = 0xFFFF0000;
-			_normal = Point3(0.f, 0.f, 1.f);
+			_normal = Point3(0.f, 1.f, 0.f);
 		}
 		Point3 _normal;
 		// https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection
