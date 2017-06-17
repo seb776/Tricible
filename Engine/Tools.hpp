@@ -32,9 +32,9 @@ namespace Tricible
 	}
 
 	template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-	T Saturate(T value)
+	T Saturate(T value, T min, T max)
 	{
-		return Clamp01(value);
+		return Clamp01(value, min, max);
 	}
 
 	template<typename T>
