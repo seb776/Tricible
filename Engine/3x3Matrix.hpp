@@ -11,9 +11,14 @@ namespace Tricible
 		Point3 matrix[3];
 		Matrix3x3()
 		{
-			InitToZero();
+			InitToIdentity();
 		}
-
+		void InitToIdentity()
+		{
+			matrix[0] = Point3::x;
+			matrix[1] = Point3::y;
+			matrix[2] = Point3::z;
+		}
 		void InitToZero()
 		{
 			for (int i = 0; i < 3; ++i)

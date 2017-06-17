@@ -53,7 +53,7 @@ namespace Tricible
 
 		TRICIBLE_FORCEINLINE Point3 Reverse() const
 		{
-			return Point3(-_x, -_y, -_z);
+			return -(*this);
 		}
 
 		TRICIBLE_FORCEINLINE Point3 operator+(const Point3& rhs) const
@@ -94,5 +94,29 @@ namespace Tricible
 			this->_y -= rhs._y;
 			this->_z -= rhs._z;
 		}
+		TRICIBLE_FORCEINLINE Point3 operator-() const
+		{
+			return Point3(-this->_x, -this->_y, -this->_z);
+		}
+
+		static const Point3 x;
+		static const Point3 y;
+		static const Point3 z;
+		static const Point3 forward;
+		static const Point3 backward;
+		static const Point3 up;
+		static const Point3 down;
+		static const Point3 left;
+		static const Point3 right;
 	};
 }
+
+const Tricible::Point3 Tricible::Point3::x = Point3(1.0f, 0.0f, 0.0f);
+const Tricible::Point3 Tricible::Point3::y = Point3(0.0f, 1.0f, 0.0f);
+const Tricible::Point3 Tricible::Point3::z = Point3(0.0f, 0.0f, 1.0f);
+const Tricible::Point3 Tricible::Point3::forward = Tricible::Point3::x;
+const Tricible::Point3 Tricible::Point3::backward = -Tricible::Point3::x;
+const Tricible::Point3 Tricible::Point3::up = Tricible::Point3::y;
+const Tricible::Point3 Tricible::Point3::down = -Tricible::Point3::y;
+const Tricible::Point3 Tricible::Point3::right = Tricible::Point3::z;
+const Tricible::Point3 Tricible::Point3::left = -Tricible::Point3::z;
