@@ -43,6 +43,7 @@ namespace Tricible
 		const float clampedVal = Clamp01(value);
 		return (a * value) + (b * (1.0f - value));
 	}
+
 	template<typename T>
 	const T& UnclampedLerp(const T& a, const T& b, float value)
 	{
