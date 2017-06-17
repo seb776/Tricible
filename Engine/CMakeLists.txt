@@ -19,10 +19,12 @@ set(
     "./Scene/AObject.hpp"
     "./Scene/Plane.hpp"
     "./Scene/Triangle.hpp"
+    "./Scene/Scene.hpp"
 )
 
 set(
     "${CMAKE_PROJECT_NAME}RootSources"
+        "./Scene/Scene.cpp"
 )
 
 set(
@@ -33,7 +35,7 @@ set(
     "./Camera.hpp"
     "./Tools.hpp"
     "./Macros.hpp"
-)
+    )
 
 source_group(
     "Scene\\"
