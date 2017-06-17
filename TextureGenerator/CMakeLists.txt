@@ -9,6 +9,7 @@ project(TricibleTextureGenerator)
 set(
     "${CMAKE_PROJECT_NAME}RootSources"
     "./Generator.cpp"
+    "./PerlinNoise2D.cpp"
 )
 
 source_group(

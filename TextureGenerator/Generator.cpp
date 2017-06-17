@@ -1,3 +1,6 @@
+#include "../Engine/Renderer.hpp"
+#include "../Engine/Tools.hpp"
+
 class Generator
 {
 public:
