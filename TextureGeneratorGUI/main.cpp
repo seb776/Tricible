@@ -12,63 +12,40 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <ctime>
 #include <string>
+#include <iomanip>
 
-#define		SIZE_WIDTH	900
+#define		SIZE_WIDTH	800
 #define		SIZE_HEIGHT	600
-
-void Trace_1D()
-{
-	sf::Color pixel = sf::Color(0, 0, 0);
-	sf::Image image;
-	int y_coord;
-	float result[SIZE_WIDTH];
-	
-	image.create(SIZE_WIDTH, SIZE_HEIGHT, sf::Color::White);
-//	PerlinNoise2D::PerlinNoise1D(result, SIZE_WIDTH, 6);
-	PerlinNoise2D::PerlinNoise1DStacked(result, SIZE_WIDTH, 16, 4, 0.3f, 2.0f);
-	for (int x = 0; x < SIZE_WIDTH; x++)
-	{
-		y_coord = result[x] * SIZE_HEIGHT;
-		image.setPixel(x, result[x] * SIZE_HEIGHT, pixel);
- 	}
-	image.saveToFile("resultPCO.png");
-}
-
-void Trace_2D()
-{
-	sf::Color pixel;
-	sf::Image image;
-	int result_color;
-	float * result = (float *) std::malloc(SIZE_HEIGHT * SIZE_WIDTH * sizeof(float));
-
-	image.create(SIZE_WIDTH, SIZE_HEIGHT, sf::Color::White);
-	PerlinNoise2D::PerlinNoise2D(result, SIZE_WIDTH, SIZE_HEIGHT, 20);
-	for (int y = 0; y < SIZE_HEIGHT; ++y)
-	{
-		for (int x = 0; x < SIZE_WIDTH; x++)
-		{
-			result_color = result[y * SIZE_WIDTH + x] * 256;
-			pixel = sf::Color(result_color, result_color, result_color);
-			image.setPixel(x, y, pixel);
-		}
-	}
-	image.saveToFile("resultPCO.png");
-}
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(SIZE_WIDTH, SIZE_HEIGHT), "My window");
-
-//	Trace_1D();
-	Trace_2D();
-
 	sf::Texture	texture;
-	texture.loadFromFile("resultPCO.png");
 	sf::Sprite sprite;
-	sprite.setTexture(texture);
-	window.draw(sprite);
-	window.display();
+	char imageRGBA [SIZE_WIDTH * SIZE_HEIGHT * 4]; // must be an unsigned integer 8 bit
+
+	if (!texture.create(SIZE_WIDTH, SIZE_HEIGHT))
+	{
+		std::cerr << "fail creating the texture" << std::endl;
+		return 1;
+	}
+
+	std::cout.precision(3);
+	for (int i = 0; i < 15; i++)
+	{
+		std::cout << "[  " << std::setw(5) << PerlinNoise2D::smooth_noise_1D_with_linear(i * 100);
+		std::cout << "  ;  ";
+		std::cout << std::setw(5) << PerlinNoise2D::smooth_noise_1D_with_linear(-i * 100);
+		std::cout << "  ]" << std::endl;
+	}
+
+
+	//texture.update((sf::Uint8 *)image);
+	//sprite.setTexture(texture);
+	//window.draw(sprite);
+	//window.display();
 
 	std::cout << "Press any key to exit..." << std::endl;
 	getchar();
