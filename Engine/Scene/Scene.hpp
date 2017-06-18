@@ -5,6 +5,11 @@
 
 namespace Tricible
 {
+	class IntersectionInfo
+	{
+		AObject *Object;
+		float Distance;
+	};
 	class Scene : public AObject, public AIntersectable
 	{
 		std::vector<AObject *> Objects;
