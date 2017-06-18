@@ -1,46 +1,27 @@
 #pragma once
 
 #include "../Engine/Tools.hpp"
-#include <math.h>
+#include <time.h>
 
 namespace PerlinNoise2D
 {
-	template<typename T>
-	const T& Cosinerp(const T& a, const T& b, float t)
-	{
-		const T c = (1.0f - cos(t * M_PI)) * 0.5f;
-		return c * b + a * (1.0f - c);
-	}
+	#define D_PERSISTANCE 0.5f
+	#define D_PAS 64
 
-	template<typename T>
-	const T& Cubicerp(const T& p1, const T& p2, const T& p3, const T& p4, float t)
-	{
-		//Calcul des coefficients de notre polynôme
-		const T a3 = -0.5f * p1 + 1.5f * p2 - 1.5f * p3 + 0.5f * p4;
-		const T a2 = p1 - 2.5f * p2 + 2.0f * p3 - 0.5f  *p4;
-		const T a1 = -0.5f * p1 + 0.5f * p3;
-
-		//Calcul de la valeur de ce polynôme en t
-		return (a3 * t * t * t) + (a2 * t * t) + (a1 * t) + p2; // a0 == p2;
-	}
-
-	//Fournit une valeur aléatoire entre -1 et 1
 	template<int bornLeft, int bornRight>
 	float GetRandomNoise1D(int x)
 	{
-		constexpr float Threshold = 2147483647 / (bornRight - bornLeft); // 2147483647 == 2 ^ 31 
+		// TODO : get another random ?
+		constexpr float Threshold = 2147483647 / (bornRight - bornLeft); // TODO auto -> 2147483647 == 2 ^ 31 ???
 
 		x = (x << 13) ^ x;
 		x = x * (x * x * 15731 + 789221) + 1376312589;
 
-		if constexpr (bornLeft == 0)
+		if (bornLeft == 0)
 			return (x & 0x7fffffff) / Threshold;
 		else
 			return (x & 0x7fffffff) / Threshold + bornLeft;
 	}
-
-	//On pourra obtenir une valeur entre 0 et 1 en utilisant
-	//la formule : (rand_noise(t) + 1.) / 2.
 
 	float GetRandomNoise2D(int x, int y)
 	{
@@ -50,29 +31,85 @@ namespace PerlinNoise2D
 		return GetRandomNoise1D<0, 1>(tmp + y);
 	}
 
-	float smooth_noise_1D_with_linear(float x)
+	float GenerateSmoothNoise1D(const float x)
 	{
-		//Extraire la partie entière : Ent(x)
-		int integer_x = (int)x;
+		const int integer_x = (int)x;
 
-		//Bruit du point précédent :
-		float a = GetRandomNoise1D<0, 1>(integer_x);
-		//Bruit du point suivant :
-		float b = GetRandomNoise1D<0, 1>(integer_x + 1);
+		const float a = GetRandomNoise1D<0, 1>(integer_x);
+		const float b = GetRandomNoise1D<0, 1>(integer_x + 1);
 
-		//Interpolation :
-		return Tricible::UnclampedLerp(a, b, x - integer_x); //Partie fractionnaire : x - Ent(x)
+		// TODO : add mode for smooth choice
+		// Tricible::Lerp
+		// Tricible::Cosinerp
+		// Tricible::Cubicerp ?
+		return Tricible::Cosinerp(a, b, x - integer_x);
 	}
 
-	//public:
-	// TODO add param : type of prcedurale texture ?
-	void Generate(char *img, int width, int height)
+	float GenerateSmoothNoise1DStacked(const float x, const int octaves, const float OverlapPercent, const float frequency)
 	{
-		int color;
+		float sum = 0.0f;
+		float amplitude = 1.0; // l'amplitude du bruit est l'écart entre la plus grande et la plus petite valeur du bruit.
+		float tmpFrequency = 1.0;
 
-		for (int x = 0; x < width; ++x)
+		for (int i = 0; i < octaves; i++)
 		{
-			color = smooth_noise_1D_with_linear(x) * 255;
+			sum += amplitude * PerlinNoise2D::GenerateSmoothNoise1D(x * tmpFrequency);
+			amplitude *= OverlapPercent;
+			tmpFrequency *= frequency; // à chaque octave, on va multiplier le nombre de point qui compose la courbe incarnant le "bruit" 
+		}
+		return sum * ((1 - OverlapPercent) / (1 - amplitude));
+	}
+
+	float GenerateSmoothNoise2D(float x, float y)
+	{
+		const int integer_x = (int)x;
+		const int integer_y = (int)y;
+
+		const float a = GetRandomNoise2D(integer_x, integer_y);
+		const float b = GetRandomNoise2D(integer_x + 1, integer_y);
+		const float c = GetRandomNoise2D(integer_x, integer_y + 1);
+		const float d = GetRandomNoise2D(integer_x + 1, integer_y + 1);
+
+		return Tricible::Cosinerp2D(a, b, c, d, x - integer_x, y - integer_y);
+	}
+
+	// TODO : Check NbrPoint is >= 2
+	// BufferNoise -> Elem between : [0 ; 1]
+	void PerlinNoise1D(float BufferNoise [], const int SizeBuffer, const int NbrPoint)
+	{
+		const float scale = 1.0f / SizeBuffer * (NbrPoint - 1); // TODO constexpr ?
+		for (int x = 0; x < SizeBuffer; x++)
+		{
+			BufferNoise[x] = PerlinNoise2D::GenerateSmoothNoise1D(x * scale);
+		}
+	}
+
+
+	// TODO : Check NbrPoint is >= 2
+	// BufferNoise -> Elem between : [0 ; 1]
+	// NbrPerlinNoiseStacked : [ 1 ; 1024 ]. nombre de perlin que l'on va superposer (reviens à dire le nombre de fois qu'on appelle la fonction "bruit 1D".
+	// OverlapPercent -> Pourcentage de superposition de chaque bruit de perlin que l'on rajoute. Si 1.0f, alors 100% de superposition, si 0.1f, alors 10% de superposition
+	void PerlinNoise1DStacked(float * BufferNoise, const int SizeBuffer, const int NbrPoint, const int NbrPerlinNoiseStacked, const float OverlapPercent, const float frequency)
+	{
+		const float scale = 1.0f / SizeBuffer * (NbrPoint - 1); // TODO constexpr ?
+		
+		for (int x = 0; x < SizeBuffer; x++)
+		{
+			BufferNoise[x] = PerlinNoise2D::GenerateSmoothNoise1DStacked(x * scale, NbrPerlinNoiseStacked, OverlapPercent, frequency);
+		}
+	}
+
+	void PerlinNoise2D(float * BufferNoise, const int SizeBufferX, const int SizeBufferY, const int NbrPoint)
+	{
+		const float scaleX = 1.0f / SizeBufferX * (NbrPoint - 1);
+		const float scaleY = 1.0f / SizeBufferY * (NbrPoint - 1);
+
+		for (int y = 0; y < SizeBufferY; y++)
+		{
+			for (int x = 0; x < SizeBufferX; x++)
+			{
+				BufferNoise[y * SizeBufferX + x] = PerlinNoise2D::GenerateSmoothNoise2D(x * scaleX, y * scaleY);
+			}
 		}
 	}
 };
