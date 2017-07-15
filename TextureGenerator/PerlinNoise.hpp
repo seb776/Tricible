@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../Engine/Tools.hpp"
+#include "../Engine/Random/RNG.hpp"
+#include "../Engine/Interpolation/Interpolation.hpp"
 
 #define	FREQUENCY	2.0f // Description : à chaque octave, on va multiplier le nombre de point qui compose la courbe incarnant le "bruit" 
 

@@ -14,11 +14,14 @@
 #include <string>
 
 #include "../Engine/Renderer.hpp"
+
 #include "../TextureGenerator/PerlinNoise.hpp"
-#include "../TextureGenerator/GradientCollection.hpp"
+#include "../TextureGenerator/GradientsLinear.hpp"
 
 #define		SIZE_WIDTH	1280
 #define		SIZE_HEIGHT	768
+
+using namespace Tricible;
 
 void Example_PerlinNoise_1D()
 {
@@ -125,17 +128,19 @@ void Example_PerlinNoise_2D_Stacked_WithGradient()
 	PerlinNoise::PerlinNoise2DStacked(result, SIZE_WIDTH, SIZE_HEIGHT, 30, 15, 8, 0.30f);
 
 	// gradient mapping
-	GradientCollection grad;
+	GradientsLinear grad;
 
-	grad.AddGradientPoint(GradientPoint(0.10f, ColorRGBA(0, 0, 255)));
-	grad.AddGradientPoint(GradientPoint(0.33f, ColorRGBA(0, 255, 0)));
-	grad.AddGradientPoint(GradientPoint(0.66f, ColorRGBA(255, 0, 0)));
-	grad.AddGradientPoint(GradientPoint(0.90f, ColorRGBA(255, 255, 255)));
+	grad.AddGradientPoint(GradientPoint(0.00f, Color::RGBA(0, 0, 255)));
+	grad.AddGradientPoint(GradientPoint(0.30f, Color::RGBA(0, 255, 0)));
+	grad.AddGradientPoint(GradientPoint(0.45f, Color::RGBA(255, 0, 0)));
+	grad.AddGradientPoint(GradientPoint(0.55f, Color::RGBA(255, 255, 0)));
+	grad.AddGradientPoint(GradientPoint(0.70f, Color::RGBA(255, 0, 255)));
+	grad.AddGradientPoint(GradientPoint(1.00f, Color::RGBA(0, 255, 255)));
 
 	// render perlin noise
 	sf::Color pixel;
 	sf::Image image;
-	ColorRGBA resultGrad;
+	Color::RGBA resultGrad;
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
@@ -145,8 +150,8 @@ void Example_PerlinNoise_2D_Stacked_WithGradient()
 	{
 		for (int x = 0; x < SIZE_WIDTH; x++)
 		{
-			grad.GetColorRGBA(result[y * SIZE_WIDTH + x], &resultGrad);
-			pixel = sf::Color(resultGrad.GetRed(), resultGrad.GetGreen(), resultGrad.GetBlue());
+			grad.GetColor(result[y * SIZE_WIDTH + x], &resultGrad);
+			pixel = sf::Color(resultGrad.Red(), resultGrad.Green(), resultGrad.Blue());
 			image.setPixel(x, y, pixel);
 		}
 	}
