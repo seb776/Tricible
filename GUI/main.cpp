@@ -14,41 +14,57 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <ctime>
 #include <string>
+#include "../Engine/Scene/Scene.hpp"
+#include "../Engine/Scene/Plane.hpp"
+#include "../Engine/Scene/Sphere.hpp"
+#include "../Engine/Scene/Triangle.hpp"
+#include "../Engine/Camera.hpp"
+
+using namespace Tricible;
+
+void SetupScene(Tricible::Renderer *renderer)
+{
+	//renderer->Scene->Objects.push_back((Tricible::AIntersectable *)new Scene::Sphere());
+	renderer->Scene->Objects.push_back(new Plane());
+	renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
+	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(0.f, 25.f, 0.f), 150.f));
+	renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 150.f));
+}
 
 // courte_p : J'ai découpé la partie du "main" qui s'occupe de gérer la translation de la caméra via les événements de la SFML
 void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecOrigin, const sf::Keyboard::Key key)
 {
 	if (key == sf::Keyboard::Up)
 	{
-		renderer->_camera.MoveForward();
+		renderer->Scene->CurrentCamera->MoveForward();
 	}
 	if (key == sf::Keyboard::Down)
 	{
-		renderer->_camera.MoveBackward();
+		renderer->Scene->CurrentCamera->MoveBackward();
 	}
 	if (key == sf::Keyboard::Left)
 	{
-		renderer->_camera.SetPitch(renderer->_camera.pitch + 0.01f);
+		renderer->Scene->CurrentCamera->SetPitch(renderer->Scene->CurrentCamera->pitch + 0.01f);
 	}
 	if (key == sf::Keyboard::Right)
 	{
-		renderer->_camera.SetPitch(renderer->_camera.pitch - 0.01f);
+		renderer->Scene->CurrentCamera->SetPitch(renderer->Scene->CurrentCamera->pitch - 0.01f);
 	}
 	if (key == sf::Keyboard::Add)
 	{
-		renderer->_camera.SetYaw(renderer->_camera.yaw + 0.01f);
+		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw + 0.01f);
 	}
 	if (key == sf::Keyboard::Subtract)
 	{
-		renderer->_camera.SetYaw(renderer->_camera.yaw - 0.01f);
+		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw - 0.01f);
 	}
 	if (key == sf::Keyboard::Space)
 	{
-		renderer->_camera.AddPosition(Tricible::Point3::up);
+		renderer->Scene->CurrentCamera->AddPosition(Tricible::Point3::up);
 	}
 	if (key == sf::Keyboard::LControl)
 	{
-		renderer->_camera.AddPosition(Tricible::Point3::down);
+		renderer->Scene->CurrentCamera->AddPosition(Tricible::Point3::down);
 	}
 }
 
@@ -57,9 +73,9 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 	sf::Texture	texture;
 	sf::Sprite sprite;
-	Tricible::Renderer renderer(800, 600, 0);
+	Tricible::Renderer renderer(800, 600, 0, new Scene::Scene());
 	sf::String fpsCount;
-
+	SetupScene(&renderer);
 	std::clock_t start;
 	std::clock_t end;
 	double duration = 0.0;
@@ -84,7 +100,7 @@ int main()
 			{
 				case sf::Event::KeyPressed:
 				{
-					std::cout << renderer._camera.getPosition()._x << "/" << renderer._camera.getPosition()._y << "/" << renderer._camera.getPosition()._z << std::endl;
+					std::cout << renderer.Scene->CurrentCamera->getPosition()._x << "/" << renderer.Scene->CurrentCamera->getPosition()._y << "/" << renderer.Scene->CurrentCamera->getPosition()._z << std::endl;
 					translateCamera(&renderer, vecOrigin, event.key.code);
 					break;
 				}

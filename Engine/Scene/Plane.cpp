@@ -11,7 +11,9 @@ namespace Tricible
 		if (distL > 0.f)
 		{
 			interInfo->Distance = distL;
-			//color = _color;
+			interInfo->Intersection = origin + vec * distL;
+			interInfo->Direction = vec;
+			interInfo->Origin = origin;
 			return true;
 		}
 		return false;

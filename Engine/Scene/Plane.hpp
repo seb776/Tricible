@@ -15,6 +15,7 @@ namespace Tricible
 			position._z = -1.f;
 			_color = 0xFFFF0000;
 			_normal = Point3(0.f, 1.f, 0.f);
+			Material = new Material::Material(Color::RGB(0xFF, 0, 0), Color::RGB());
 		}
 
 		// Inherited via AIntersectable

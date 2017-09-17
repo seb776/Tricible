@@ -3,15 +3,29 @@
 #include <vector>
 #include "AObject.hpp"
 #include "AIntersectable.hpp"
+#include "ALight.hpp"
+#include "../Camera.hpp"
 
 namespace Tricible
 {
-	class Scene : public AObject, public AIntersectable
+	namespace Scene
 	{
-		std::vector<AObject *> Objects;
+		class Scene : public AObject, public AIntersectable
+		{
+		public:
+			std::vector<AIntersectable *>	Objects;
+			std::vector<ALight *>	Lights;
+			Camera *CurrentCamera;
+			Camera DefaultCamera;
 
-		// Inherited via AIntersectable
-		virtual bool IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo) override;
-		virtual void ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal) override;
-	};
+			Scene()
+			{
+				CurrentCamera = &DefaultCamera;
+			}
+
+			// Inherited via AIntersectable
+			virtual bool IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo) override;
+			virtual void ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal) override;
+		};
+	}
 }

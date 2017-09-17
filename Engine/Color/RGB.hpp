@@ -2,6 +2,7 @@
 
 // Standard library header
 #include <stdint.h>
+#include "../Tools.hpp"
 
 namespace Tricible
 {
@@ -27,7 +28,7 @@ namespace Tricible
 			// TODO : rvalue ?
 
 			// Default constructor
-			RGB()
+			RGB() : _red(0U), _green(0U), _blue(0U)
 			{
 				// nothing
 			}
@@ -132,6 +133,29 @@ namespace Tricible
 			bool operator != (const RGB & rightValue) const
 			{
 				return !(*this == rightValue);
+			}
+
+			RGB operator*(float rightValue) const
+			{
+				RGB copy = *this;
+
+				copy._red = (uint32_t)(Clamp((float)copy._red * rightValue, 0.0f, 255.0f));
+				copy._green = (uint32_t)(Clamp((float)copy._green * rightValue, 0.0f, 255.0f));
+				copy._blue = (uint32_t)(Clamp((float)copy._blue * rightValue, 0.0f, 255.0f));
+				return copy;
+			}
+
+			const RGB& operator+=(const RGB& rightValue)
+			{
+				this->_red = Clamp((uint32_t)this->_red + (uint32_t)rightValue._red, 0U, 255U);
+				this->_green = Clamp((uint32_t)this->_green + (uint32_t)rightValue._green, 0U, 255U);
+				this->_blue = Clamp((uint32_t)this->_blue + (uint32_t)rightValue._blue, 0U, 255U);
+				return *this;
+			}
+
+			uint32_t ToInt()
+			{
+				return 0xFF000000 + _red + (_green << 8) + (_blue << 16);
 			}
 		};
 	}

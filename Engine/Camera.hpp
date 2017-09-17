@@ -50,7 +50,7 @@ namespace Tricible
 			vec._z = x_ / 80.f;
 
 			// rotate
-			vec = yawMat * (pitchMat * vec);
+			vec = pitchMat * (yawMat * vec);
 			//vec = vec + this->position;
 		}
 

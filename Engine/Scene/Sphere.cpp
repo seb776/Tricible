@@ -18,6 +18,8 @@ namespace Tricible
 			position = Tricible::Point3(55.f, 0.f, 0.f);
 			//_color = 0xFF000000; // Red
 			_color = 0xFF0000FF;
+			Material = new Material::Material(Color::RGB(0, 0xFF, 0), Color::RGB());
+
 		}
 		Sphere::Sphere(int a)
 		{
@@ -37,7 +39,9 @@ namespace Tricible
 				return false;
 
 			interInfo->Distance = -b - sqrtf(discr);
-			//color = _color;
+			interInfo->Direction = vec;
+			interInfo->Origin = origin;
+			interInfo->Intersection = origin + vec * interInfo->Distance;
 			return true;
 		}
 		void Sphere::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)

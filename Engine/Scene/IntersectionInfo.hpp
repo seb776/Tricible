@@ -14,5 +14,14 @@ namespace Tricible
 		Point3 Origin;
 		Point3 Direction;
 		Point3 Intersection;
+
+		IntersectionInfo() :
+			Object(nullptr),
+			Distance(0.0f),
+			Direction(),
+			Origin(),
+			Intersection()
+		{
+		}
 	};
 }

@@ -43,6 +43,8 @@ set(
     "./Color/RGBA.hpp"
 	"./Interpolation/Interpolation.hpp"
 	"./Random/RNG.hpp"
+	"./Material/Material.hpp"
+	"Texture/Texture.hpp"
     )
 
 source_group(
