@@ -8,6 +8,9 @@ project(TricibleTextureGenerator)
 
 set(
     "${CMAKE_PROJECT_NAME}RootSources"
+	"./PerlinNoise.hpp"
+	"./GradientPoint.hpp"
+	"./GradientsLinear.hpp"
     "./Generator.cpp"
 )
 

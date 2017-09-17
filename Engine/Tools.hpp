@@ -1,6 +1,7 @@
 #pragma once
 
 #include <type_traits>
+#include <time.h>
 
 namespace Tricible
 {
@@ -35,18 +36,5 @@ namespace Tricible
 	T Saturate(T value, T min, T max)
 	{
 		return Clamp01(value, min, max);
-	}
-
-	template<typename T>
-	const T& Lerp(const T& a, const T& b, float value)
-	{
-		const float clampedVal = Clamp01(value);
-		return (a * value) + (b * (1.0f - value));
-	}
-
-	template<typename T>
-	const T& UnclampedLerp(const T& a, const T& b, float value)
-	{
-		return (a * value) + (b * (1.0f - value));
 	}
 }

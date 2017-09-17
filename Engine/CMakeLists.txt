@@ -39,6 +39,10 @@ set(
     "./Camera.hpp"
     "./Tools.hpp"
     "./Macros.hpp"
+    "./Color/RGB.hpp"
+    "./Color/RGBA.hpp"
+	"./Interpolation/Interpolation.hpp"
+	"./Random/RNG.hpp"
     )
 
 source_group(
