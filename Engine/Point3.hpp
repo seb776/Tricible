@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Macros.hpp"
+#include <math.h>
 
 namespace Tricible
 {
@@ -111,12 +112,4 @@ namespace Tricible
 	};
 }
 
-const Tricible::Point3 Tricible::Point3::x = Point3(1.0f, 0.0f, 0.0f);
-const Tricible::Point3 Tricible::Point3::y = Point3(0.0f, 1.0f, 0.0f);
-const Tricible::Point3 Tricible::Point3::z = Point3(0.0f, 0.0f, 1.0f);
-const Tricible::Point3 Tricible::Point3::forward = Tricible::Point3::x;
-const Tricible::Point3 Tricible::Point3::backward = -Tricible::Point3::x;
-const Tricible::Point3 Tricible::Point3::up = Tricible::Point3::y;
-const Tricible::Point3 Tricible::Point3::down = -Tricible::Point3::y;
-const Tricible::Point3 Tricible::Point3::right = Tricible::Point3::z;
-const Tricible::Point3 Tricible::Point3::left = -Tricible::Point3::z;
+

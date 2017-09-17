@@ -33,7 +33,7 @@ namespace PerlinNoise2D
 		x = (x << 13) ^ x;
 		x = x * (x * x * 15731 + 789221) + 1376312589;
 
-		if constexpr (bornLeft == 0)
+		if (bornLeft == 0)
 			return (x & 0x7fffffff) / Threshold;
 		else
 			return (x & 0x7fffffff) / Threshold + bornLeft;

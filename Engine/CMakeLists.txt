@@ -9,7 +9,11 @@ project(TricibleEngine)
 set(
     "${CMAKE_PROJECT_NAME}SceneSources"
     "./Scene/Sphere.cpp"
-    
+    "./Scene/Scene.cpp"
+    "./Scene/Triangle.cpp"
+    "./Scene/Plane.cpp"
+	"./Scene/Scene.cpp"
+
 )
 
 set(
@@ -24,7 +28,7 @@ set(
 
 set(
     "${CMAKE_PROJECT_NAME}RootSources"
-        "./Scene/Scene.cpp"
+    "./Point3.cpp"
 )
 
 set(
@@ -70,6 +74,6 @@ set(
 
 add_library(
     TricibleEngine
-    SHARED
+    STATIC
     ${EngineFiles}
 )

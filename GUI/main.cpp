@@ -7,6 +7,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#define IN_EXE
 #include "../Engine/Renderer.hpp"
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>

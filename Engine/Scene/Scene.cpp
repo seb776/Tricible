@@ -1,10 +1,13 @@
 #include "Scene.hpp"
 
-bool Tricible::Scene::IntersectsRay(const Point3 & origin, const Point3 & vec, float & dist, int & color)
+namespace Tricible
 {
-	return false;
-}
+	bool Scene::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo)
+	{
+		return false;
+	}
 
-void Tricible::Scene::ComputeNormal(const Point3 & inter, const Point3 & incident, Point3 & normal)
-{
+	void Scene::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
+	{
+	}
 }

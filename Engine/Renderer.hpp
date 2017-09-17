@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include "Scene\IntersectionInfo.hpp"
 #include "Scene/Sphere.hpp"
 #include "Scene/Plane.hpp"
 #include "Scene/Triangle.hpp"
@@ -45,12 +46,14 @@ namespace Tricible
 					int retainedColor = 0xFF000000;
 					float dist = -1.f;
 					AIntersectable *prim = nullptr;
+					IntersectionInfo interInfo;
+
 
 					for (Tricible::AIntersectable *o : _objects)
 					{
 						float itDist = 0.f;
 						int color = 0;
-						if (o->IntersectsRay(_camera.getPosition() + vec, vec, itDist, color))
+						if (o->IntersectsRay(_camera.getPosition() + vec, vec, &interInfo))
 						{
 							if (itDist > _camera.NearClip && itDist < _camera.FarClip)
 							{
@@ -65,12 +68,11 @@ namespace Tricible
 					}
 					if (prim)
 					{
-						Point3 inter = _camera.getPosition() + vec + (vec * dist);
 						Point3 normal;
-						prim->ComputeNormal(inter, vec, normal);
+						prim->ComputeNormal(interInfo, normal);
 						for (ALight *l : _lights)
 						{
-							Point3 tmp = (inter - l->getPosition());
+							Point3 tmp = (interInfo.Intersection - l->getPosition());
 							tmp = tmp / tmp.Length();
 							float mult = tmp.Dot(normal);
 							if (mult < 0.f)
@@ -85,11 +87,12 @@ namespace Tricible
 							b = (unsigned char)(min((float)b * mult * (float)l->colr.channels[3] / 255.f, 255.f));
 							for (AIntersectable *o : _objects) if (false)
 							{
-								Point3 ray = (l->getPosition() - inter);
+								Point3 ray = (l->getPosition() - interInfo.Intersection);
+								IntersectionInfo interInfoShadow;
 								//ray = ray / ray.Length();
 								float dist = 0;
 								int col = 0;
-								if (o != prim && o->IntersectsRay(inter, ray, dist, col))
+								if (o != prim && o->IntersectsRay(interInfo.Intersection, ray, &interInfoShadow))
 								{
 									r = (unsigned char)((float)r / 2.f);
 									g = (unsigned char)((float)g / 2.f);
