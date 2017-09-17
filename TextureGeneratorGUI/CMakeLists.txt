@@ -9,6 +9,8 @@ project(TricibleTextureGeneratorGUI)
 set (
     "${CMAKE_PROJECT_NAME}RootSources"
     "main.cpp"
+	"Unit Testing/PerlinNoise.cpp"
+	"Unit Testing/PerlinNoise.hpp"
 )
 
 set(
