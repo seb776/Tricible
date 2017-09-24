@@ -7,7 +7,7 @@ namespace Tricible
 	class AObject
 	{
 	protected:
-		Point3 position;
+		Point3 _position;
 		int _color;
 	public:
 		AObject()
@@ -15,11 +15,11 @@ namespace Tricible
 		}
 		virtual void AddPosition(const Point3& pos)
 		{
-			position += pos;
+			_position += pos;
 		}
 		TRICIBLE_FORCEINLINE const Point3& getPosition() const
 		{
-			return this->position;
+			return this->_position;
 		}
 	};
 

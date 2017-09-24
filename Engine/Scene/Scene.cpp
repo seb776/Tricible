@@ -12,11 +12,11 @@ namespace Tricible
 			float nearestDist = -1.0f;
 			for (Tricible::AIntersectable *o : Objects)
 			{
-				if (o->IntersectsRay(CurrentCamera->getPosition() + vec, vec, interInfo))
+				if (o->IntersectsRay(origin, vec, interInfo))
 				{
 					float interDist = interInfo->Distance;
 
-					if (interInfo->Distance > CurrentCamera->NearClip && interInfo->Distance < CurrentCamera->FarClip)
+					if (interDist > CurrentCamera->NearClip && interDist < CurrentCamera->FarClip)
 					{
 						if (nearestDist < 0.f || interDist < nearestDist)
 						{
@@ -26,11 +26,16 @@ namespace Tricible
 					}
 				}
 			}
+			interInfo->Intersection = interInfo->Origin + interInfo->Direction * interInfo->Distance;
 			return !!interInfo->Object;
 		}
 
 		void Scene::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
 		{
+			auto &normalDir = interInfo.Intersection - this->_position;
+
+			normalDir.Normalize();
+			normal = normalDir;
 		}
 	}
 }

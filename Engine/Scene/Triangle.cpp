@@ -7,6 +7,7 @@ bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, Intersec
 {
 	if (this->Plane::IntersectsRay(origin, vec, interInfo))
 	{
+		interInfo->Intersection = origin + vec * interInfo->Distance;
 		//Point3 a = origin + (vec * dist);
 		//std::cout << a._x << "/" << a._y << "/" << a._z << Triangle::IsInside(_a, _b, _c, origin + (vec * dist)) << std::endl;
 		return Triangle::IsInside(_a, _b, _c, interInfo->Intersection);
@@ -24,7 +25,7 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c)
 	_c = c;
 	_normal = (b - a).Cross(c - a);
 	_color = 0xFF00FF00;
-	position = a;
+	_position = a;
 	Material = new Material::Material(Color::RGB(0, 0, 0xFF), Color::RGB());
 
 }

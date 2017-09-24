@@ -29,11 +29,6 @@ namespace Tricible
 			_resX = resX;
 			_resY = resY;
 			image = new int[resX * resY];
-			//_objects.push_back((Tricible::AIntersectable *)new Scene::Sphere());
-			//Scene->Objects.push_back((Tricible::AIntersectable *)new Plane());
-			//Scene->Objects.push_back((Tricible::AIntersectable *)new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f,5.f), Point3(25.f, 2.5f, 2.5f)));
-			//Scene->Lights.push_back(new ALight(0xFF424242, Point3(0.f, 25.f, 0.f), 150.f));
-			//Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, 0.f, 75.f), 150.f));
 		}
 
 		void Render()
@@ -62,14 +57,14 @@ namespace Tricible
 						interInfo.Object->ComputeNormal(interInfo, normal);
 						for (ALight *l : Scene->Lights)
 						{
-							Point3 tmp = (interInfo.Intersection - l->getPosition());
+							Point3 tmp = (l->getPosition() - interInfo.Intersection);
 							tmp = tmp / tmp.Length();
-							float mult = tmp.Dot(normal);
-							if (mult < 0.f)
-								mult = 0.f;
-							mult *= l->intensity;
-							Color::RGB currentColor = diffuseColor * mult;
-							finalColor += currentColor;
+							const float mult = tmp.Dot(normal);
+							if (mult > 0.f)
+							{
+								Color::RGB currentColor = diffuseColor *mult * l->intensity;
+								finalColor += currentColor;
+							}
 						}
 					}
 					image[x + y * _resX] = finalColor.ToInt();

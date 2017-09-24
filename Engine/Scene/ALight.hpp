@@ -9,7 +9,7 @@ namespace Tricible
 	public:
 		ALight(int color, const Point3& pos, float maxDist)
 		{
-			position = pos;
+			_position = pos;
 			colr._color = color;
 			_maxDist = maxDist;
 			intensity = 2.f;

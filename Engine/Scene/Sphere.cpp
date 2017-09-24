@@ -15,7 +15,7 @@ namespace Tricible
 		{
 			radius = 5.f;
 			radiusSqr = radius * radius;
-			position = Tricible::Point3(55.f, 0.f, 0.f);
+			_position = Tricible::Point3(55.f, 0.f, 0.f);
 			//_color = 0xFF000000; // Red
 			_color = 0xFF0000FF;
 			Material = new Material::Material(Color::RGB(0, 0xFF, 0), Color::RGB());
@@ -28,7 +28,7 @@ namespace Tricible
 
 		bool Sphere::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo)
 		{
-			const Tricible::Point3 oc = (origin - position);
+			const Tricible::Point3 oc = (origin - _position);
 			const float b = oc.Dot(vec);
 			const float c = oc.Dot(oc) - radiusSqr;
 
@@ -37,17 +37,23 @@ namespace Tricible
 			const float discr = b * b - c;
 			if (discr < 0.f)
 				return false;
-
-			interInfo->Distance = -b - sqrtf(discr);
+			float sqrtDiscr = sqrtf(discr);
+			float solA = -b - sqrtDiscr;
+			float solB = -b + sqrtDiscr;
+			if (solA < 0.0f)
+				interInfo->Distance = solB;
+			else
+				interInfo->Distance = min(solA, solB);
 			interInfo->Direction = vec;
 			interInfo->Origin = origin;
-			interInfo->Intersection = origin + vec * interInfo->Distance;
 			return true;
 		}
 		void Sphere::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
 		{
-			normal = position - interInfo.Intersection;
+			normal = _position - interInfo.Intersection;
 			normal.Normalize();
+			if (interInfo.Direction.Dot(normal) > 0.0f)
+				normal = -normal;
 		}
 	}
 }

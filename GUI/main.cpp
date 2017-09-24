@@ -24,11 +24,11 @@ using namespace Tricible;
 
 void SetupScene(Tricible::Renderer *renderer)
 {
-	//renderer->Scene->Objects.push_back((Tricible::AIntersectable *)new Scene::Sphere());
+	renderer->Scene->Objects.push_back(new Scene::Sphere());
 	renderer->Scene->Objects.push_back(new Plane());
 	renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
-	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(0.f, 25.f, 0.f), 150.f));
-	renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 150.f));
+	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(0.f, 25.f, 10.f), 1.f));
+	renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
 }
 
 // courte_p : J'ai découpé la partie du "main" qui s'occupe de gérer la translation de la caméra via les événements de la SFML
@@ -44,11 +44,12 @@ void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecO
 	}
 	if (key == sf::Keyboard::Left)
 	{
-		renderer->Scene->CurrentCamera->SetPitch(renderer->Scene->CurrentCamera->pitch + 0.01f);
+
+		renderer->Scene->CurrentCamera->MoveLeft();
 	}
 	if (key == sf::Keyboard::Right)
 	{
-		renderer->Scene->CurrentCamera->SetPitch(renderer->Scene->CurrentCamera->pitch - 0.01f);
+		renderer->Scene->CurrentCamera->MoveRight();
 	}
 	if (key == sf::Keyboard::Add)
 	{
@@ -70,17 +71,20 @@ void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecO
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+	int width = 800;
+	int height = 600;
+	sf::RenderWindow window(sf::VideoMode(width, height), "My window");
 	sf::Texture	texture;
 	sf::Sprite sprite;
-	Tricible::Renderer renderer(800, 600, 0, new Scene::Scene());
+	Tricible::Renderer renderer(width, height, 0, new Scene::Scene());
 	sf::String fpsCount;
 	SetupScene(&renderer);
 	std::clock_t start;
 	std::clock_t end;
 	double duration = 0.0;
 
-	if (!texture.create(800, 600))
+
+	if (!texture.create(width, height))
 	{
 		std::cerr << "fail creating the texture" << std::endl;
 		return 1;
@@ -90,20 +94,69 @@ int main()
 	Tricible::Point3 vecOrigin(1.f, 0.f, .0f);
 	Tricible::Point3 curDir;
 	int iFrameCount = 0;
+	bool isMouseLocked = false;
+	sf::Vector2i lastMousePos = sf::Vector2i(0, 0);
+	bool wasSetMousePosition = false;
 	while (window.isOpen())
 	{
 		start = std::clock();
 		sf::Event event;
+
 		if (window.pollEvent(event))
 		{
 			switch (event.type)
 			{
-				case sf::Event::KeyPressed:
+			case sf::Event::KeyPressed:
+			{
+				std::cout << renderer.Scene->CurrentCamera->getPosition()._x << "/" << renderer.Scene->CurrentCamera->getPosition()._y << "/" << renderer.Scene->CurrentCamera->getPosition()._z << std::endl;
+				translateCamera(&renderer, vecOrigin, event.key.code);
+				break;
+			}
+			case sf::Event::KeyReleased:
+			{
+				if (event.key.code == sf::Keyboard::L)
 				{
-					std::cout << renderer.Scene->CurrentCamera->getPosition()._x << "/" << renderer.Scene->CurrentCamera->getPosition()._y << "/" << renderer.Scene->CurrentCamera->getPosition()._z << std::endl;
-					translateCamera(&renderer, vecOrigin, event.key.code);
-					break;
+					isMouseLocked = !isMouseLocked;
 				}
+				break;
+			}
+			case sf::Event::MouseMoved:
+			{
+				if (isMouseLocked)
+				{
+				sf::Vector2i currentMousePos = sf::Vector2i(event.mouseMove.x, event.mouseMove.y);
+				sf::Vector2f mouseDelta = (sf::Vector2f)lastMousePos - (sf::Vector2f)currentMousePos;
+
+				const float mouseSensitivity = -0.0005f;
+				mouseDelta *= mouseSensitivity;
+				renderer.Scene->CurrentCamera->SetPitch(renderer.Scene->CurrentCamera->pitch - (mouseDelta.x));
+				renderer.Scene->CurrentCamera->SetYaw(renderer.Scene->CurrentCamera->yaw - (mouseDelta.y));
+
+				uint32_t maxMousePosRadius = min(window.getSize().x, window.getSize().y) / 3;
+				sf::Vector2f windowCenter = (sf::Vector2f)window.getSize() / 2.0f;
+				Point3 curMousePos = Point3(currentMousePos.x, currentMousePos.y, 0.0f);
+				Point3 winCenter = Point3(windowCenter.x, windowCenter.y, 0.0f);
+				if ((curMousePos - winCenter).Length() > maxMousePosRadius) {
+					sf::Mouse::setPosition(sf::Vector2i((int)windowCenter.x, (int)windowCenter.y), window);
+					lastMousePos = (sf::Vector2i)windowCenter;
+				}
+				else {
+					lastMousePos = currentMousePos;
+				}
+				}
+				//if (isMouseLocked && !wasSetMousePosition)
+				//{
+				//	std::cout << mouseDelta.x << std::endl;
+				//	sf::Mouse::setPosition(window.getPosition() + (sf::Vector2i)(window.getSize() / 2U));
+				//	float coefSpeedRot = -10000.0f;
+				//	renderer.Scene->CurrentCamera->SetPitch(renderer.Scene->CurrentCamera->pitch - (mouseDelta.x / coefSpeedRot));
+				//	renderer.Scene->CurrentCamera->SetYaw(renderer.Scene->CurrentCamera->yaw - (mouseDelta.y / coefSpeedRot));
+				//	wasSetMousePosition = true;
+				//}
+				//else if (wasSetMousePosition)
+				//	wasSetMousePosition = false;
+				break;
+			}
 			}
 			if (event.type == sf::Event::Closed)
 				window.close();
