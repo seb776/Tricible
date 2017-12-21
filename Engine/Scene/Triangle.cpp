@@ -18,7 +18,8 @@ bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, Intersec
 //void Triangle::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
 //{
 //}
-Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c)
+Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c) :
+	Plane()
 {
 	_a = a;
 	_b = b;

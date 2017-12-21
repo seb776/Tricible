@@ -18,7 +18,8 @@ namespace Tricible
 			Camera *CurrentCamera;
 			Camera DefaultCamera;
 
-			Scene()
+			Scene() :
+				AIntersectable()
 			{
 				CurrentCamera = &DefaultCamera;
 			}

@@ -21,8 +21,8 @@ namespace Tricible
 	void Plane::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
 	{
 		const float res = interInfo.Direction.Dot(_normal);
-		if (res <= 0.f)
-			normal = _normal.Reverse();
+		if (res > 0.f)
+			normal = _normal .Reverse();
 		else
 			normal = _normal;
 	}

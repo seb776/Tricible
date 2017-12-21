@@ -10,7 +10,8 @@ namespace Tricible
 	protected:
 		Point3 _normal;
 	public:
-		Plane()
+		Plane() :
+			AIntersectable()
 		{
 			_position._z = -1.f;
 			_color = 0xFFFF0000;
