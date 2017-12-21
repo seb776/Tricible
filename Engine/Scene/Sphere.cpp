@@ -13,7 +13,7 @@ namespace Tricible
 	{
 		Sphere::Sphere()
 		{
-			radius = 5.f;
+			radius = 10.f;
 			radiusSqr = radius * radius;
 			_position = Tricible::Point3(55.f, 0.f, 0.f);
 			//_color = 0xFF000000; // Red
@@ -21,9 +21,9 @@ namespace Tricible
 			Material = new Material::Material(Color::RGB(0, 0xFF, 0), Color::RGB());
 
 		}
-		Sphere::Sphere(int a)
+		Sphere::Sphere(int a) :
+			radius(a), radiusSqr(a * a)
 		{
-
 		}
 
 		bool Sphere::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip)
@@ -102,8 +102,6 @@ namespace Tricible
 			//const float discr = b * b - c;
 			//if (discr < 0.f)
 			//	return false;
-
-
 
 			//float sqrtDiscr = sqrtf(discr);
 			//float solA = -b - sqrtDiscr;

@@ -11,20 +11,28 @@ namespace Tricible
 		{
 			float nearestDist = -1.0f;
 			interInfo->Origin = origin;
+			IntersectionInfo retainedInterInfo;
+
 			for (Tricible::AIntersectable *o : Objects)
 			{
-				if (o->IntersectsRay(origin, vec, interInfo, CurrentCamera->NearClip, CurrentCamera->FarClip))
+				IntersectionInfo curInterInfo;
+
+				if (o->IntersectsRay(origin, vec, &curInterInfo, CurrentCamera->NearClip, CurrentCamera->FarClip))
 				{
-					float interDist = interInfo->Distance;
+					float interDist = curInterInfo.Distance;
 
 					if ((nearestDist < 0.f || interDist < nearestDist) && (interDist > CurrentCamera->NearClip && interDist < CurrentCamera->FarClip))
 					{
-						interInfo->Object = o;
+						curInterInfo.Object = o;
+						retainedInterInfo = curInterInfo;
 						nearestDist = interDist;
 					}
 				}
 			}
-			interInfo->Intersection = interInfo->Origin + interInfo->Direction * interInfo->Distance;
+
+			retainedInterInfo.Intersection = retainedInterInfo.Origin + retainedInterInfo.Direction * retainedInterInfo.Distance;
+
+			*interInfo = retainedInterInfo;
 			return !!interInfo->Object;
 		}
 

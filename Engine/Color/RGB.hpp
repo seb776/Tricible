@@ -153,6 +153,7 @@ namespace Tricible
 				return *this;
 			}
 
+			// TODO Rename to ToUint32_t
 			uint32_t ToInt()
 			{
 				//return (_red << 24) + (_green << 16) + (_blue << 8) + 0xFF;
