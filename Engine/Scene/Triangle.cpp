@@ -3,9 +3,9 @@
 
 using namespace Tricible;
 
-bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo)
+bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 {
-	if (this->Plane::IntersectsRay(origin, vec, interInfo))
+	if (this->Plane::IntersectsRay(origin, vec, interInfo, nearClip, farClip))
 	{
 		interInfo->Intersection = origin + vec * interInfo->Distance;
 		//Point3 a = origin + (vec * dist);

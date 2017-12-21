@@ -7,22 +7,20 @@ namespace Tricible
 	namespace Scene
 	{
 
-		bool Scene::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo)
+		bool Scene::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip)
 		{
 			float nearestDist = -1.0f;
+			interInfo->Origin = origin;
 			for (Tricible::AIntersectable *o : Objects)
 			{
-				if (o->IntersectsRay(origin, vec, interInfo))
+				if (o->IntersectsRay(origin, vec, interInfo, CurrentCamera->NearClip, CurrentCamera->FarClip))
 				{
 					float interDist = interInfo->Distance;
 
-					if (interDist > CurrentCamera->NearClip && interDist < CurrentCamera->FarClip)
+					if ((nearestDist < 0.f || interDist < nearestDist) && (interDist > CurrentCamera->NearClip && interDist < CurrentCamera->FarClip))
 					{
-						if (nearestDist < 0.f || interDist < nearestDist)
-						{
-							interInfo->Object = o;
-							nearestDist = interDist;
-						}
+						interInfo->Object = o;
+						nearestDist = interDist;
 					}
 				}
 			}

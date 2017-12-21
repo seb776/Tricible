@@ -155,6 +155,7 @@ namespace Tricible
 
 			uint32_t ToInt()
 			{
+				//return (_red << 24) + (_green << 16) + (_blue << 8) + 0xFF;
 				return 0xFF000000 + _red + (_green << 8) + (_blue << 16);
 			}
 		};

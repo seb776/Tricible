@@ -37,7 +37,7 @@ namespace Tricible
 			pitch = yaw = roll = 0.f;
 			SetPitch(0.f);
 			SetYaw(0.f);
-			focale = 40.f / tanf(45.f / 2.f);
+			focale = 10.0f;// 40.f / tanf(45.f / 2.f);
 			_position._x = 0.f;
 			NearClip = 0.1f;
 			FarClip = 10000.f;

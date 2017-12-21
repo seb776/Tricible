@@ -28,7 +28,7 @@ void SetupScene(Tricible::Renderer *renderer)
 	renderer->Scene->Objects.push_back(new Plane());
 	renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
 	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(0.f, 25.f, 10.f), 1.f));
-	renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
+	//renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
 }
 
 // courte_p : J'ai découpé la partie du "main" qui s'occupe de gérer la translation de la caméra via les événements de la SFML
@@ -96,7 +96,6 @@ int main()
 	int iFrameCount = 0;
 	bool isMouseLocked = false;
 	sf::Vector2i lastMousePos = sf::Vector2i(0, 0);
-	bool wasSetMousePosition = false;
 	while (window.isOpen())
 	{
 		start = std::clock();
@@ -144,17 +143,6 @@ int main()
 					lastMousePos = currentMousePos;
 				}
 				}
-				//if (isMouseLocked && !wasSetMousePosition)
-				//{
-				//	std::cout << mouseDelta.x << std::endl;
-				//	sf::Mouse::setPosition(window.getPosition() + (sf::Vector2i)(window.getSize() / 2U));
-				//	float coefSpeedRot = -10000.0f;
-				//	renderer.Scene->CurrentCamera->SetPitch(renderer.Scene->CurrentCamera->pitch - (mouseDelta.x / coefSpeedRot));
-				//	renderer.Scene->CurrentCamera->SetYaw(renderer.Scene->CurrentCamera->yaw - (mouseDelta.y / coefSpeedRot));
-				//	wasSetMousePosition = true;
-				//}
-				//else if (wasSetMousePosition)
-				//	wasSetMousePosition = false;
 				break;
 			}
 			}

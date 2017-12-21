@@ -19,7 +19,7 @@ namespace Tricible
 		}
 
 		// Inherited via AIntersectable
-		__declspec(dllexport) virtual bool IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo) override;
+		__declspec(dllexport) virtual bool IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip) override;
 		__declspec(dllexport) virtual void ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal) override;
 	};
 }

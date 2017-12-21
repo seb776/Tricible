@@ -46,7 +46,7 @@ namespace Tricible
 					// IntersectionInfo *retainedInter;
 					IntersectionInfo interInfo;
 
-					if (Scene->IntersectsRay(camera.getPosition() + vec, vec, &interInfo))
+					if (Scene->IntersectsRay(camera.getPosition() + vec, vec, &interInfo, camera.NearClip, camera.FarClip))
 					{
 						Color::RGB diffuseColor;
 						if (interInfo.Object->Material != nullptr)
@@ -55,17 +55,24 @@ namespace Tricible
 						}
 						Point3 normal;
 						interInfo.Object->ComputeNormal(interInfo, normal);
-						for (ALight *l : Scene->Lights)
-						{
-							Point3 tmp = (l->getPosition() - interInfo.Intersection);
-							tmp = tmp / tmp.Length();
-							const float mult = tmp.Dot(normal);
-							if (mult > 0.f)
-							{
-								Color::RGB currentColor = diffuseColor *mult * l->intensity;
-								finalColor += currentColor;
-							}
-						}
+						Point3 vecToVisualizeAsCol = normal;
+						finalColor = Color::RGB((vecToVisualizeAsCol._x * 0.5f + 0.5f) * 255.0f, (vecToVisualizeAsCol._y * 0.5f + 0.5f) * 255.0f, (vecToVisualizeAsCol._z * 0.5f + 0.5f) * 255.0f);
+
+
+						float distMax = 50.0f;
+						int colDist = Clamp((int)(255 * (1.0f - Clamp01(interInfo.Distance / distMax))), 0, 255);
+						finalColor = Color::RGB(colDist, colDist, colDist);
+						//for (ALight *l : Scene->Lights)
+						//{
+						//	Point3 tmp = (l->getPosition() - interInfo.Intersection);
+						//	tmp.Normalize();
+						//	const float mult = Clamp01(tmp.Dot(normal));
+						//	if (true)//mult > 0.f)
+						//	{
+						//		Color::RGB currentColor = diffuseColor/* Color::RGB(255, 255, 255)*/ * mult;// *l->intensity;
+						//		finalColor += currentColor;
+						//	}
+						//}
 					}
 					image[x + y * _resX] = finalColor.ToInt();
 				}
