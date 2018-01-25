@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Point3.hpp"
+#include "../Tools/Point3.hpp"
 
 namespace Tricible
 {
@@ -8,7 +8,6 @@ namespace Tricible
 	{
 	protected:
 		Point3 _position;
-		int _color;
 	public:
 		AObject()
 		{

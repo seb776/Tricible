@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Point3.hpp"
+#include "../Tools/Point3.hpp"
 
 namespace Tricible
 {

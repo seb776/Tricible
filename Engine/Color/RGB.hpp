@@ -2,7 +2,7 @@
 
 // Standard library header
 #include <stdint.h>
-#include "../Tools.hpp"
+#include "../Tools/Tools.hpp"
 
 namespace Tricible
 {

@@ -1,5 +1,7 @@
 #include "IntersectionInfo.hpp"
 #include "Triangle.hpp"
+#include <limits>
+#include <iostream>
 
 using namespace Tricible;
 
@@ -15,9 +17,6 @@ bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, Intersec
 	return false;
 }
 
-//void Triangle::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
-//{
-//}
 Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c) :
 	Plane()
 {
@@ -25,9 +24,11 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c) :
 	_b = b;
 	_c = c;
 	_normal = (b - a).Cross(c - a);
-	_color = 0xFF00FF00;
+
 	_position = a;
 	Material = new Material::Material(Color::RGB(0, 0, 0xFF), Color::RGB());
+	//std::cout << (uint32_t)Material->DiffuseColor.Red() << ":" << (uint32_t)Material->DiffuseColor.Green() << ":" << (uint32_t)Material->DiffuseColor.Blue() << std::endl;
+
 
 }
 // http://blackpawn.com/texts/pointinpoly/
@@ -51,6 +52,7 @@ bool Triangle::IsInside(const Point3& a, const Point3& b, const Point3& c, const
 	float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
 	// Check if point is in triangle
-	return (u >= 0.f) && (v >= 0.f) && (u + v < 1.f);
+	const float epsilon = std::numeric_limits<float>::epsilon();
+	return (u > -epsilon) && (v > -epsilon) && (u + v < 1.f);
 }
 

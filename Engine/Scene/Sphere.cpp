@@ -16,8 +16,6 @@ namespace Tricible
 			radius = 10.f;
 			radiusSqr = radius * radius;
 			_position = Tricible::Point3(55.f, 0.f, 0.f);
-			//_color = 0xFF000000; // Red
-			_color = 0xFF0000FF;
 			Material = new Material::Material(Color::RGB(0, 0xFF, 0), Color::RGB());
 
 		}

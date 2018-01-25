@@ -7,14 +7,13 @@ namespace Tricible
 {
 	class Plane : public AObject, public AIntersectable
 	{
-	protected:
+	public:
 		Point3 _normal;
 	public:
 		Plane() :
 			AIntersectable()
 		{
-			_position._z = -1.f;
-			_color = 0xFFFF0000;
+			_position = Point3();
 			_normal = Point3(0.f, 1.f, 0.f);
 			Material = new Material::Material(Color::RGB(0xFF, 0, 0), Color::RGB());
 		}
