@@ -92,6 +92,8 @@ namespace Tricible
 							normVec.Normalize();
 							float pitch = asinf(-(normVec._y));
 							float yaw = atan2f(normVec._x, normVec._z);
+							
+							//finalColor = Scene->Skymap->Get360PixelBilinearInterpolation(pitch, yaw);
 							finalColor = Scene->Skymap->Get360Pixel(pitch, yaw);
 						}
 						else
