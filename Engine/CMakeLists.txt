@@ -216,6 +216,7 @@ add_library(
     STATIC
     ${EngineFiles}
 )
+
 target_link_libraries(
 	TricibleEngine
 	optimized
@@ -224,4 +225,10 @@ target_link_libraries(
 	${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/FreeImage.lib
 )
 
-configure_file(./Resources/ ${CMAKE_CURRENT_BINARY_DIR}/Resources/ @ONLY)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/Resources/" $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/)
+
+##add_custom_command(TARGET TricibleEngine PRE_BUILD
+##                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+##                       ./Resources/ $<TARGET_FILE_DIR:TricibleEngine>)
+##configure_file(./Resources/ ${CMAKE_CURRENT_BINARY_DIR}/Resources/ COPYONLY)

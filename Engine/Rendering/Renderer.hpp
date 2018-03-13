@@ -94,6 +94,10 @@ namespace Tricible
 							float yaw = atan2f(normVec._x, normVec._z);
 							finalColor = Scene->Skymap->Get360Pixel(pitch, yaw);
 						}
+						else
+						{
+							finalColor = Color::RGB();
+						}
 					}
 					image[x + y * _resX] = finalColor.ToInt();
 				}

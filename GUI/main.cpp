@@ -29,7 +29,7 @@ void SetupScene(Tricible::Renderer *renderer)
 	renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
 	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(20.f, 20.f, 20.f), 1.f));
 	//renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
-	renderer->Scene->Skymap = new Texture("Image.jpg");
+	renderer->Scene->Skymap = new Texture("Resources/Image.jpg");
 }
 
 // courte_p : J'ai découpé la partie du "main" qui s'occupe de gérer la translation de la caméra via les événements de la SFML
