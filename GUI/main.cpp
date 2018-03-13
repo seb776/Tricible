@@ -105,7 +105,6 @@ int main()
 		translateCamera(&renderer, vecOrigin);
 		if (window.pollEvent(event))
 		{
-
 			switch (event.type)
 			{
 			case sf::Event::KeyPressed:
