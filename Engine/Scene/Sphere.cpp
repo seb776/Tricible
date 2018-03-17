@@ -20,8 +20,10 @@ namespace Tricible
 
 		}
 		Sphere::Sphere(int a) :
-			radius(a), radiusSqr(a * a)
+			radius(), radiusSqr()
 		{
+			radius = static_cast<float>(a);
+			radiusSqr = static_cast<float>(a * a);
 		}
 
 		bool Sphere::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip)

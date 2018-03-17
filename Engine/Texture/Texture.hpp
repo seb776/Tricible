@@ -54,24 +54,19 @@ namespace Tricible
 		// yaw -pi > x >= pi
 		Color::RGB Get360PixelBilinearInterpolation(float pitch, float yaw)
 		{
-			uint32_t x;
-			uint32_t y;
+			uint32_t x = std::numeric_limits<uint32_t>::min();
+			uint32_t y = std::numeric_limits<uint32_t>::min();
+			float factX = std::numeric_limits<float>::min();
+			float factY = std::numeric_limits<float>::min();
 			RGBQUAD colorA;
 			RGBQUAD colorB;
 			RGBQUAD colorC;
 			RGBQUAD colorD;
-			yaw = yaw * (yaw >= 0.0f) + (yaw + M_PI2) * (yaw < 0);
-			float factX = Clamp01(yaw / M_PI2);
-			float factY = Clamp01((pitch + M_PI_2) / M_PI);
-			factX = 1.0f - factX;
-			factY = 1.0f - factY;
+			GetFactors(pitch, yaw, factX, factY);
+			GetCoordinates(factX, factY, x, y);
 
 			float floatX = factX * (float)(_width - 1U);
 			float floatY = factY * (float)(_height - 1U);
-
-			x = (uint32_t)(factX * (_width - 1U));
-			y = (uint32_t)(factY * (_height - 1U));
-
 			float coefX = floatX - x;
 			float coefY = floatY - y;
 			auto ret = FreeImage_GetPixelColor(_image, x, y, &colorA);
@@ -100,19 +95,37 @@ namespace Tricible
 		// yaw -pi > x >= pi
 		Color::RGB Get360Pixel(float pitch, float yaw)
 		{
-			uint32_t x;
-			uint32_t y;
+			uint32_t x = std::numeric_limits<uint32_t>::min();
+			uint32_t y = std::numeric_limits<uint32_t>::min();
+			float factX = std::numeric_limits<float>::min();
+			float factY = std::numeric_limits<float>::min();
 			RGBQUAD color;
-			yaw = yaw * (yaw >= 0.0f) + (yaw + M_PI2) * (yaw < 0);
-			float factX = Clamp01(yaw / M_PI2);
-			float factY = Clamp01((pitch + M_PI_2) / M_PI);
-			factX = 1.0f - factX;
-			factY = 1.0f - factY;
-			x = (uint32_t)(factX * (_width - 1U));
-			y = (uint32_t)(factY * (_height - 1U));
+
+			GetFactors(pitch, yaw, factX, factY);
+			GetCoordinates(factX, factY, x, y);
 			auto ret = FreeImage_GetPixelColor(_image, x, y, &color);
 			Color::RGB col = Color::RGB(color.rgbRed, color.rgbGreen, color.rgbBlue);
 			return col;
+		}
+
+	private:
+		inline void GetFactors(float pitch, float yaw, float &factX, float &factY)
+		{
+			float pi = static_cast<float>(M_PI);
+			float twoPi = 2 * pi;
+			float halfPi = pi * 0.5f;
+
+			yaw = yaw * (yaw >= 0.0f) + (yaw + twoPi) * (yaw < 0);
+			factX = Clamp01(yaw / twoPi);
+			factY = Clamp01((pitch + halfPi) / pi);
+			factX = 1.0f - factX;
+			factY = 1.0f - factY;
+		}
+
+		inline void GetCoordinates(float factX, float factY, uint32_t &x, uint32_t &y)
+		{
+			x = static_cast<uint32_t>(factX * (_width - 1));
+			y = static_cast<uint32_t>(factY * (_height - 1));
 		}
 	};
 }
