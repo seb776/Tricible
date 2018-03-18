@@ -22,10 +22,13 @@ namespace Tricible
 			__declspec(dllexport) Sphere(int a);
 			float radius;
 
-
 			// Inherited via AIntersectable
 			virtual bool IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip) override;
 			virtual void ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal) override;
+
+			static Point3 ComputeUV(const Point3& normal);
+
+			virtual ~Sphere();
 		};
 	}
 }

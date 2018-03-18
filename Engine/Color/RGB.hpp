@@ -153,6 +153,15 @@ namespace Tricible
 				return *this;
 			}
 
+			RGB operator+(const RGB& rightValue)
+			{
+				Color::RGB col;
+				col._red = Clamp((uint32_t)this->_red + (uint32_t)rightValue._red, 0U, 255U);
+				col._green = Clamp((uint32_t)this->_green + (uint32_t)rightValue._green, 0U, 255U);
+				col._blue = Clamp((uint32_t)this->_blue + (uint32_t)rightValue._blue, 0U, 255U);
+				return col;
+			}
+
 			// TODO Rename to ToUint32_t
 			uint32_t ToInt()
 			{

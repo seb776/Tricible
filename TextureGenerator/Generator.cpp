@@ -1,5 +1,5 @@
-#include "../Engine/Renderer.hpp"
-#include "../Engine/Tools.hpp"
+#include "../Engine/Rendering/Renderer.hpp" //.. ../Engine/Renderer.hpp"
+#include "../Engine/Tools/Tools.hpp"
 
 class Generator
 {

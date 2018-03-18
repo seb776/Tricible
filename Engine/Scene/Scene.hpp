@@ -19,9 +19,12 @@ namespace Tricible
 			std::vector<ALight *>	Lights;
 			Camera *CurrentCamera;
 			Camera DefaultCamera;
+			Material::Material DefaultDiffuseMaterial;
 
 			Scene() :
-				AIntersectable()
+				AIntersectable(),
+				DefaultDiffuseMaterial(Color::RGB(0U, 255U, 0U), Color::RGB(30U, 30U, 30U)),
+				Skymap(nullptr)
 			{
 				CurrentCamera = &DefaultCamera;
 			}

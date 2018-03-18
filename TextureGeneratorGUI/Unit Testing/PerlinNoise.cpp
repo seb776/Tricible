@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-#include "../../Engine/Renderer.hpp"
+#include "../../Engine/Rendering/Renderer.hpp"
 
 #include "../../TextureGenerator/PerlinNoise.hpp"
 #include "../../TextureGenerator/GradientsLinear.hpp"
