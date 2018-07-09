@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Engine/Random/RNG.hpp"
-#include "../Engine/Interpolation/Interpolation.hpp"
+#include "../Engine/Tools/RNG.hpp"
+#include "../Engine/Tools/Interpolation.hpp"
 
 namespace Tricible
 {
