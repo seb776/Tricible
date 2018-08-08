@@ -32,18 +32,18 @@ source_group(
 ## Texture #########################################################
 #################################################################
 set(FOLDER_GROUP Texture)
-set(
-    "${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-)
-set(
-    "${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"./Texture/Texture.hpp"
-)
-
+ set(
+     "${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
+ )
+ set(
+     "${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
+	 "./Texture/Texture.hpp"
+ )
+	
 source_group(
     "${FOLDER_GROUP}\\"
     FILES
-    ${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources}
+	${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources}
 )
 source_group(
     "${FOLDER_GROUP}\\"
@@ -227,8 +227,3 @@ target_link_libraries(
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/Resources/" $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/)
-
-##add_custom_command(TARGET TricibleEngine PRE_BUILD
-##                   COMMAND ${CMAKE_COMMAND} -E copy_directory
-##                       ./Resources/ $<TARGET_FILE_DIR:TricibleEngine>)
-##configure_file(./Resources/ ${CMAKE_CURRENT_BINARY_DIR}/Resources/ COPYONLY)

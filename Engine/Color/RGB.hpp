@@ -169,6 +169,29 @@ namespace Tricible
 				return 0xFF000000 + _red + (_green << 8) + (_blue << 16);
 			}
 		};
+
+		class HDRARGB
+		{
+		public:
+			float A;
+			float R;
+			float G;
+			float B;
+			HDRARGB() :
+				HDRARGB(1.0f,0.0f,0.0f, 0.0f)
+			{}
+
+			HDRARGB(float a, float r, float g, float b) :
+				A(a),
+				R(r),
+				G(g),
+				B(b)
+			{}
+
+			operator RGB() const {
+				return RGB(static_cast<int8_t>(R * 255.f), static_cast<int8_t>(G * 255.f), static_cast<int8_t>(B * 255.f));
+			}
+		};
 	}
 }
 

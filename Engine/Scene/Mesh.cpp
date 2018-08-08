@@ -35,7 +35,7 @@ bool Tricible::Scene::Mesh::IntersectsRay(const Point3 & origin, const Point3 & 
 void Tricible::Scene::Mesh::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
 {
 	// TODO
-	interInfo.Object->ComputeNormal(interInfo, normal);
+	//interInfo.Object->ComputeNormal(interInfo, normal);
 	//auto &normalDir = interInfo.Intersection - this->_position;
 
 	//normalDir.Normalize();

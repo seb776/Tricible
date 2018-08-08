@@ -16,9 +16,9 @@ namespace Tricible
 			std::vector<tinyobj::shape_t> shapes;
 			std::vector<tinyobj::material_t> materials;
 			std::string err;
-			std::istream *istream = new std::ifstream(filePath);
+			std::ifstream ifstream = std::ifstream(filePath);
 			
-			bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, istream);
+			bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, &ifstream);
 
 			if (ret)
 			{
@@ -27,6 +27,7 @@ namespace Tricible
 			else
 			{
 				std::cerr << "tinyobj : fail" << std::endl;
+				return nullptr;
 			}
 			Scene *scene = new Scene();
 
@@ -46,6 +47,8 @@ namespace Tricible
 					Point3 v0 = Point3(attrib.vertices[3 * idx0.vertex_index + 0], attrib.vertices[3 * idx0.vertex_index + 1], attrib.vertices[3 * idx0.vertex_index + 2]);
 					Point3 v1 = Point3(attrib.vertices[3 * idx1.vertex_index + 0], attrib.vertices[3 * idx1.vertex_index + 1], attrib.vertices[3 * idx1.vertex_index + 2]);
 					Point3 v2 = Point3(attrib.vertices[3 * idx2.vertex_index + 0], attrib.vertices[3 * idx2.vertex_index + 1], attrib.vertices[3 * idx2.vertex_index + 2]);
+					std::cout << "v0=> " << v0._x << ":" << v0._y << ":" << v0._z << std::endl;
+					std::cout << "v1=> " << v1._x << ":" << v1._y << ":" << v1._z << std::endl;
 					//Point3 n0 = Point3(attrib.normals[3 * idx0.normal_index], attrib.normals[3 * idx0.normal_index + 1], attrib.normals[3 * idx0.normal_index + 2]);
 					Triangle *tri = new Triangle(v0, v1, v2);
 					//tri->_normal = n0;
@@ -55,7 +58,6 @@ namespace Tricible
 
 				scene->Objects.push_back(mesh);
 			}
-			delete istream;
 			return scene;
 		}
 
