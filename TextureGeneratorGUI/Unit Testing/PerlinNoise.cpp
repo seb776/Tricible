@@ -1,7 +1,10 @@
 //
-// Author: Sebastien Maire
+// Author: Pierre COURTEILLE
 //
 
+//----------------------------------------//
+// include SFML
+//----------------------------------------//
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -9,17 +12,21 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+//----------------------------------------//
+// include STL
+//----------------------------------------//
 #include <iostream>
 #include <string>
 
 #include "../../Engine/Rendering/Renderer.hpp"
 
+//----------------------------------------//
+// include Tricible
+//----------------------------------------//
 #include "../../TextureGenerator/PerlinNoise.hpp"
 #include "../../TextureGenerator/GradientsLinear.hpp"
 
-#include "Windows.h" // TODO PCO dépendance Windows.h pour la fonction "GetCurrentDirectory"
-
-namespace UT
+namespace UnitTesting
 {
 	#define		SIZE_IMG_WIDTH	800		// taille de l'image PNG
 	#define		SIZE_IMG_HEIGHT	500		// taille de l'image PNG
@@ -179,65 +186,6 @@ namespace UT
 
 		// nettoyage
 		delete[] result;
-	}
-
-	// ----------------------------------------------------------------
-	// Section : Tolls / test
-	// ----------------------------------------------------------------
-
-	void draw_img_from_sfml(const std::string & img)
-	{
-		sf::RenderWindow window(sf::VideoMode(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT), "PCO : My window");
-
-		sf::Texture	texture;
-		texture.loadFromFile(img);
-		sf::Sprite sprite;
-		sprite.setTexture(texture);
-		window.draw(sprite);
-		window.display();
-
-		std::cout << "----------------------------------------" << std::endl;
-		std::cout << "SFML STOPPED -> Press key to continue" << std::endl;
-		getchar();
-	}
-
-	void run_one_test(const std::string & TestTitle, void (*ptrFunction)(void))
-	{
-		std::cout << " START : " << TestTitle << std::endl;
-		try
-		{
-			ptrFunction();
-		}
-		catch (std::exception exp)
-		{
-			std::cout << " --> ERROR : " << exp.what() << std::endl;
-		}
-		std::cout << " END : " << TestTitle << " --// " << std::endl;
-	}
-
-	int run_unit_testing_perlin_noise()
-	{
-		char path_current_directory[MAX_PATH + 1];
-
-		GetCurrentDirectory(MAX_PATH, path_current_directory);
-
-		std::cout << "----------------------------------------" << std::endl;
-		std::cout << "By PCO : Unit Testing / Perlin Noise" << std::endl;
-		std::cout << "Current Directories : " << path_current_directory << std::endl;
-		std::cout << "----------------------------------------" << std::endl;
-
-		run_one_test("PerlinNoise_1D", &PerlinNoise_1D);
-		run_one_test("PerlinNoise_1D_Stacked", &PerlinNoise_1D_Stacked);
-		run_one_test("PerlinNoise_2D", &PerlinNoise_2D);
-		run_one_test("PerlinNoise_2D_Stacked", &PerlinNoise_2D_Stacked);
-		run_one_test("PerlinNoise_2D_Stacked_With_Color", &PerlinNoise_2D_Stacked_With_Color);
-
-		draw_img_from_sfml("Example_PerlinNoise_2D_Stacked_With_Color.png");
-
-		std::cout << "----------------------------------------" << std::endl;
-		std::cout << "Press any key to exit... (STOPPED)" << std::endl;
-		getchar();
-		return 0;
 	}
 }
 
