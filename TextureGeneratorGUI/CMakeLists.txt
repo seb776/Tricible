@@ -28,7 +28,9 @@ add_executable(
 )
 
 target_link_libraries(
+    TricibleTextureGeneratorGUI
     TricibleTextureGenerator
+    TricibleEngine
 )
 
 include_directories(${DIR_LIB_SFML_ROOT}/include)

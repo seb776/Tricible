@@ -21,13 +21,19 @@
 //----------------------------------------//
 // include Tricible
 //----------------------------------------//
-#include "../../TextureGenerator/PerlinNoise.hpp"
-#include "../../TextureGenerator/GradientsLinear.hpp"
+#include "../../TextureGenerator/Procedural1D/Curve.hpp"
+#include "../../TextureGenerator/Procedural1D/OverlappedCurve.hpp"
+#include "../../TextureGenerator/Procedural2D/PerlinNoise.hpp"
+#include "../../TextureGenerator/Procedural2D/OverlappedPerlinNoise.hpp"
+#include "../../TextureGenerator/Utility/Gradient/LinearGradient.hpp"
 
 namespace UnitTesting
 {
 	#define		SIZE_IMG_WIDTH	800		// taille de l'image PNG
 	#define		SIZE_IMG_HEIGHT	500		// taille de l'image PNG
+
+	using namespace Tricible;
+	using namespace Utility;
 
 	// Va générer une image PNG dans le dossier courant
 	// Courbe à une dimension - de gauche à droite
@@ -40,7 +46,7 @@ namespace UnitTesting
 		int temp_y_coord;								// pour stocker la valeur Y de la courbe
 
 		// compute perlin noise
-		Tricible::PerlinNoise::PerlinNoise1D(6, SIZE_IMG_WIDTH, &result);
+		Procedural1D::Curve(6, SIZE_IMG_WIDTH, &result);
 
 		// mise en place d'un fond blanc
 		image.create(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, sf::Color::White);
@@ -61,14 +67,14 @@ namespace UnitTesting
 	// Courbe à une dimension - de gauche à droite
 	// L'axe X est constant (horizontal)
 	// L'axe Y varie (vertical)
-	void PerlinNoise_1D_Stacked()
+	void PerlinNoise_1D_Overlapped()
 	{
 		float * result = new float[SIZE_IMG_WIDTH];		// buffer de l'image
 		sf::Image image;                                // SFML pour enregistrer le fichier PNG
 		int temp_y_coord;								// pour stocker la valeur Y de la courbe
 
 		// compute perlin noise
-		Tricible::PerlinNoise::PerlinNoise1DStacked(16, 4, 0.3f, SIZE_IMG_WIDTH, &result);
+		Procedural1D::OverlappedCurve(16, 4, 0.3f, SIZE_IMG_WIDTH, &result);
 
 		// mise en place d'un fond blanc
 		image.create(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, sf::Color::White);
@@ -79,7 +85,7 @@ namespace UnitTesting
 			temp_y_coord = result[x] * SIZE_IMG_HEIGHT;
 			image.setPixel(x, result[x] * SIZE_IMG_HEIGHT, sf::Color(0, 0, 0)); // courbe noir
 		}
-		image.saveToFile("Example_PerlinNoise_1D_Stacked.png");
+		image.saveToFile("Example_PerlinNoise_1D_Overlapped.png");
 
 		// nettoyage
 		delete[] result;
@@ -95,7 +101,7 @@ namespace UnitTesting
 		int result_color;
 
 		// compute perlin noise
-		Tricible::PerlinNoise::PerlinNoise2D(20, 12, SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, &result);
+		Procedural2D::PerlinNoise(20, 12, SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, &result);
 
 		// mise en place d'un fond blanc
 		image.create(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, sf::Color::White);
@@ -110,7 +116,7 @@ namespace UnitTesting
 				image.setPixel(x, y, pixel);
 			}
 		}
-		image.saveToFile("Example_PerlinNoise_2D.png");
+		image.saveToFile("Example_Overlapped_2D.png");
 
 		// nettoyage
 		delete[] result;
@@ -118,7 +124,7 @@ namespace UnitTesting
 
 	// Va générer une image PNG dans le dossier courant
 	// Nuage de gris
-	void PerlinNoise_2D_Stacked()
+	void PerlinNoise_2D_Overlapped()
 	{
 		float * result = new float[SIZE_IMG_HEIGHT * SIZE_IMG_WIDTH]; // buffer de l'image
 		sf::Color pixel;
@@ -126,7 +132,7 @@ namespace UnitTesting
 		int result_color;
 
 		// compute perlin noise
-		Tricible::PerlinNoise::PerlinNoise2DStacked(16, 9, 5, 0.25f, SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, &result);
+		Procedural2D::OverlappedPerlinNoise(16, 9, 5, 0.25f, SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, &result);
 
 		// mise en place d'un fond blanc
 		image.create(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, sf::Color::White);
@@ -141,7 +147,7 @@ namespace UnitTesting
 				image.setPixel(x, y, pixel);
 			}
 		}
-		image.saveToFile("Example_PerlinNoise_2D_Stacked.png");
+		image.saveToFile("Example_PerlinNoise_2D_Overlapped.png");
 
 		// nettoyage
 		delete[] result;
@@ -149,21 +155,21 @@ namespace UnitTesting
 
 	// Va générer une image PNG dans le dossier courant
 	// Nuage de gris qui est ensuite colorisé avec une liste de gradientColor
-	void PerlinNoise_2D_Stacked_With_Color()
+	void PerlinNoise_2D_Overlapped_With_Color()
 	{
 		// compute perlin noise
 		float * result = new float[SIZE_IMG_HEIGHT * SIZE_IMG_WIDTH];
-		Tricible::PerlinNoise::PerlinNoise2DStacked(30, 15, 8, 0.30f, SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, &result);
+		Procedural2D::OverlappedPerlinNoise(30, 15, 8, 0.30f, SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, &result);
 
 		// gradient mapping
-		Tricible::GradientsLinear grad;
+		Utility::Gradient::LinearGradient grad;
 
-		grad.AddGradientPoint(Tricible::GradientPoint(0.00f, Tricible::Color::RGBA(0, 50, 200)));
-		grad.AddGradientPoint(Tricible::GradientPoint(0.30f, Tricible::Color::RGBA(0, 200, 0)));
-		grad.AddGradientPoint(Tricible::GradientPoint(0.45f, Tricible::Color::RGBA(200, 50, 0)));
-		grad.AddGradientPoint(Tricible::GradientPoint(0.55f, Tricible::Color::RGBA(200, 255, 0)));
-		grad.AddGradientPoint(Tricible::GradientPoint(0.70f, Tricible::Color::RGBA(200, 50, 200)));
-		grad.AddGradientPoint(Tricible::GradientPoint(1.00f, Tricible::Color::RGBA(0, 200, 200)));
+		grad.AddPoint(Gradient::PointGradient(0.00f, Color::RGBA(0, 50, 200)));
+		grad.AddPoint(Gradient::PointGradient(0.30f, Color::RGBA(0, 200, 0)));
+		grad.AddPoint(Gradient::PointGradient(0.45f, Color::RGBA(200, 50, 0)));
+		grad.AddPoint(Gradient::PointGradient(0.55f, Color::RGBA(200, 255, 0)));
+		grad.AddPoint(Gradient::PointGradient(0.70f, Color::RGBA(200, 50, 200)));
+		grad.AddPoint(Gradient::PointGradient(1.00f, Color::RGBA(0, 200, 200)));
 
 		// render perlin noise
 		sf::Color pixel;
@@ -180,7 +186,7 @@ namespace UnitTesting
 				image.setPixel(x, y, pixel);
 			}
 		}
-		image.saveToFile("Example_PerlinNoise_2D_Stacked_With_Color.png");
+		image.saveToFile("Example_PerlinNoise_2D_Overlapped_With_Color.png");
 
 		// nettoyage
 		delete[] result;
