@@ -3,7 +3,7 @@
 #include <string>
 #include "../Color/RGB.hpp"
 //#define FREEIMAGE_LIB
-#include "FreeImage.h"
+#include <FreeImage.h>
 #include "../Tools/Tools.hpp"
 #define _USE_MATH_DEFINES
 #include <cmath>

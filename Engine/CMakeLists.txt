@@ -75,19 +75,22 @@ source_group(
 
 ## Tools ###########################################################
 #################################################################
-set(FOLDER_GROUP  Tools)
+set(FOLDER_GROUP Tools)
 set(
     "${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
 		"./Tools/Point3.cpp"
+		"./Tools/Interpolation.cpp"
 )
 set(
     "${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
 	"./Tools/Point3.hpp"
     "./Tools/3x3Matrix.hpp"
 	"./Tools/Interpolation.hpp"
+	"./Tools/Interpolation.tpp"
     "./Tools/Tools.hpp"
     "./Tools/Macros.hpp"
 	"./Tools/RNG.hpp"
+	"./Tools/RNG.tpp"
 )
 
 source_group(

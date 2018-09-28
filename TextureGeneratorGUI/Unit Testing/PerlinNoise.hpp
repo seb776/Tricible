@@ -13,9 +13,9 @@
 namespace UnitTesting
 {
 	void PerlinNoise_1D();
-	void PerlinNoise_1D_Stacked();
+	void PerlinNoise_1D_Overlapped();
 	void PerlinNoise_2D();
-	void PerlinNoise_2D_Stacked();
-	void PerlinNoise_2D_Stacked_With_Color();
+	void PerlinNoise_2D_Overlapped();
+	void PerlinNoise_2D_Overlapped_With_Color();
 }
 
