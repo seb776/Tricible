@@ -50,6 +50,7 @@ namespace Tricible
 			//interInfo->Distance = min(dA, dB);
 			interInfo->Direction = vec;
 			interInfo->Origin = origin;
+			interInfo->Primitive = this;
 			return true;
 		}
 

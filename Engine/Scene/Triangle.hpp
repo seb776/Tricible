@@ -10,7 +10,7 @@ namespace Tricible
 		Point3 _a, _b, _c;
 
 	public:
-		__declspec(dllexport) Triangle(const Point3& a, const Point3& b, const Point3& c);
+		__declspec(dllexport) Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol);
 
 		__declspec(dllexport) static bool IsInside(const Point3& a, const Point3& b, const Point3& c, const Point3& point);
 

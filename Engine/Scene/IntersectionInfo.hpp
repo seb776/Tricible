@@ -9,6 +9,7 @@ namespace Tricible
 	class IntersectionInfo
 	{
 	public:
+		AIntersectable *Primitive;
 		AIntersectable *Object;
 		float Distance;
 		Point3 Origin;

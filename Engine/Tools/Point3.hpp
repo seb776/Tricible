@@ -23,6 +23,12 @@ namespace Tricible
 		{
 		}
 
+		explicit Point3(float x) :
+			Point3(x, x, x)
+		{
+
+		}
+
 		TRICIBLE_FORCEINLINE float Dot(const Point3& rhs) const
 		{
 			return (_x * rhs._x) + (_y * rhs._y) + (_z * rhs._z);

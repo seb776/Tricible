@@ -63,13 +63,13 @@ namespace Tricible
 
 			if (interInfo.Object != nullptr)
 			{
-				Point3 normal;
+				Point3 normal = Point3(1.0, 1.0, 1.0);
 				interInfo.Object->ComputeNormal(interInfo, normal);
 
 				// Texture / material lookup
-				if (interInfo.Object->Material != nullptr)
+				if (interInfo.Primitive->Material != nullptr)
 				{
-					diffuseColor = interInfo.Object->Material->DiffuseColor;
+					diffuseColor = interInfo.Primitive->Material->DiffuseColor;
 				}
 				else
 				{
@@ -124,7 +124,8 @@ namespace Tricible
 					IntersectionInfo interInfo = IntersectionInfo();
 
 					Scene->IntersectsRay(camera.getPosition() + vec, vec, &interInfo, camera.NearClip, camera.FarClip);
-					finalColor = RenderPixel(normVec, interInfo);
+					//finalColor = RenderPixel(normVec, interInfo);
+					finalColor = RenderDepth(interInfo.Distance, 100.0f);
 					image[x + y * _resX] = finalColor.ToInt();
 				}
 			}
