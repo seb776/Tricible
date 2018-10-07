@@ -10,7 +10,9 @@ namespace Tricible
 
 		if (distL > 0.f)
 		{
+			interInfo->Primitive = this;
 			interInfo->Distance = distL;
+			interInfo->Intersection = origin + vec * interInfo->Distance;
 			interInfo->Direction = vec;
 			interInfo->Origin = origin;
 			return true;
@@ -22,7 +24,7 @@ namespace Tricible
 	{
 		const float res = interInfo.Direction.Dot(_normal);
 		if (res > 0.f)
-			normal = _normal .Reverse();
+			normal = _normal.Reverse();
 		else
 			normal = _normal;
 	}

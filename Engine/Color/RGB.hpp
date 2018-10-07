@@ -153,11 +153,43 @@ namespace Tricible
 				return *this;
 			}
 
+			RGB operator+(const RGB& rightValue)
+			{
+				Color::RGB col;
+				col._red = Clamp((uint32_t)this->_red + (uint32_t)rightValue._red, 0U, 255U);
+				col._green = Clamp((uint32_t)this->_green + (uint32_t)rightValue._green, 0U, 255U);
+				col._blue = Clamp((uint32_t)this->_blue + (uint32_t)rightValue._blue, 0U, 255U);
+				return col;
+			}
+
 			// TODO Rename to ToUint32_t
 			uint32_t ToInt()
 			{
 				//return (_red << 24) + (_green << 16) + (_blue << 8) + 0xFF;
 				return 0xFF000000 + _red + (_green << 8) + (_blue << 16);
+			}
+		};
+
+		class HDRARGB
+		{
+		public:
+			float A;
+			float R;
+			float G;
+			float B;
+			HDRARGB() :
+				HDRARGB(1.0f,0.0f,0.0f, 0.0f)
+			{}
+
+			HDRARGB(float a, float r, float g, float b) :
+				A(a),
+				R(r),
+				G(g),
+				B(b)
+			{}
+
+			operator RGB() const {
+				return RGB(static_cast<int8_t>(R * 255.f), static_cast<int8_t>(G * 255.f), static_cast<int8_t>(B * 255.f));
 			}
 		};
 	}
