@@ -35,6 +35,8 @@ endif(MINGW)
 set (DIR_LIB_SFML ${DIR_LIB_SFML_ROOT}/${DIR_COMPILER}/${DIR_ARCH}/lib)
 set (DIR_DLL_SFML ${DIR_LIB_SFML_ROOT}/${DIR_COMPILER}/${DIR_ARCH}/dll)
 
+set (DIR_TOOLS ${CMAKE_CURRENT_SOURCE_DIR}/Tools)
+
 add_subdirectory(GUI)
 add_subdirectory(Engine)
 add_subdirectory(TextureGenerator)

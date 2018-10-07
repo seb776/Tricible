@@ -145,7 +145,6 @@ set(FOLDER_GROUP Tools)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
 	"E:/z0rg/Projects/Tricible/Engine/Tools/Interpolation.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/MerdiqueRoot.cpp"
 	"E:/z0rg/Projects/Tricible/Engine/Tools/Point3.cpp"
 	"E:/z0rg/Projects/Tricible/Engine/Tools/RNG.cpp"
 )
@@ -194,13 +193,6 @@ add_library(
     ${SourceFiles}
 )
 
-add_custom_command(TARGET  ${PROJECT_NAME}
-					PRE_BUILD
-					COMMAND 
-				    ${PROJECT_SOURCE_DIR}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR}
-					DEPENDS ${PROJECT_SOURCE_DIR}/CMakeScript.py
-)
-
 target_link_libraries(
 	TricibleEngine
 	optimized
@@ -209,5 +201,18 @@ target_link_libraries(
 	${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/FreeImage.lib
 )
 
+## This command triggers the sources list update, it generates ${SourceFiles} and filters
+add_custom_command(TARGET  ${PROJECT_NAME}
+					PRE_BUILD
+					COMMAND 
+				    ${DIR_TOOLS}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR} ${PROJECT_NAME}
+					DEPENDS ${DIR_TOOLS}/CMakeScript.py
+)
+
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/Resources/" $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/)
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/Resources/" $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/
+)
+
+
+
+

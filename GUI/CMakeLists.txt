@@ -6,21 +6,39 @@
 cmake_minimum_required(VERSION 2.8)
 project(TricibleGUI)
 
-set (
-    "${CMAKE_PROJECT_NAME}RootSources"
-    "main.cpp"
+## SOURCE_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT
+#### Root ####
+##########
+
+set(FOLDER_GROUP Root)
+set(
+	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
+	"E:/z0rg/Projects/Tricible/GUI/main.cpp"
+)
+set(
+	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
+)
+source_group(
+	"\\"
+	FILES
+	${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources}
+)
+source_group(
+	"\\"
+	FILES
+	${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes}
 )
 
 set(
-    "${CMAKE_PROJECT_NAME}Sources}"
-    ${${CMAKE_PROJECT_NAME}RootSources}
+	"SourceFiles"
+	${${CMAKE_PROJECT_NAME}RootSources}
+	${${CMAKE_PROJECT_NAME}RootIncludes}
 )
-
-MESSAGE (${DIR_LIB_SFML_ROOT})
+## SOURCE_CODE_INJECTION_END ## DO NOT REMOVE THIS LINE, IT'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT
 
 add_executable(
     TricibleGUI
-    "${${CMAKE_PROJECT_NAME}RootSources}"
+    ${SourceFiles}
 )
 
 target_link_libraries(
@@ -54,7 +72,16 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD TARGET  COMMAND ${CMAKE_COMMAND} -E copy_if_different  "${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/FreeImage.dll" $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:TricibleEngine>/Resources/ $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/)
+    COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:TricibleEngine>/Resources/ $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/
+)
+
+## This command triggers the sources list update, it generates ${SourceFiles} and filters
+add_custom_command(TARGET  ${PROJECT_NAME}
+					PRE_BUILD
+					COMMAND 
+				    ${DIR_TOOLS}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR} ${PROJECT_NAME}
+					DEPENDS ${DIR_TOOLS}/CMakeScript.py
+)
 	
 ## ATTENTION VS SPECIFIC
 set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/$(Configuration)")

@@ -63,10 +63,10 @@ def generate_folder_group(out_file, name, is_root, source_files):
 			out_file.write(')\n\n')
 	
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 4:
 	sys.exit()
 	
-print(sys.argv[0] + '(' + sys.argv[1] + ') => Generating CMakeLists.txt at ' + sys.argv[2])
+print(sys.argv[0] + '(' + sys.argv[1] + '.' + sys.argv[3] + ') => Generating CMakeLists.txt at ' + sys.argv[2])
 
 source_filename = './sources.cmake'
 cmake_lists = './CMakeLists.txt'
@@ -75,12 +75,13 @@ tmp_filename = source_filename + '.tmp'
 out_cmakefile = open(source_filename, 'w')
 
 all_group_list = []
-is_root = False
 for path, dirs, files in os.walk(sys.argv[2]):
+	is_root = False
 	source_files = get_cpp_sources(path)
 	if (len(source_files[0]) > 0 or len(source_files[1]) > 0):
 		folder_name = ntpath.basename(path)
-		if not folder_name:
+		print("=>" + folder_name + "/" + path)
+		if path is sys.argv[2]:
 			folder_name = 'Root'
 			is_root = True
 		all_group_list = all_group_list + [folder_name]
