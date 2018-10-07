@@ -19,8 +19,11 @@ namespace Tricible
 
 		}
 		Sphere::Sphere(int a) :
-			radius(a), radiusSqr(a * a)
+			radius(), radiusSqr()
 		{
+
+			radius = static_cast<float>(a);
+			radiusSqr = static_cast<float>(a * a);
 			_position = Tricible::Point3(55.f, 0.f, 0.f);
 			this->Material = nullptr;
 		}
