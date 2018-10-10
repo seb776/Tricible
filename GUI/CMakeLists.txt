@@ -13,7 +13,7 @@ project(TricibleGUI)
 set(FOLDER_GROUP Root)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/GUI/main.cpp"
+	".//main.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"

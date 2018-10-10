@@ -13,12 +13,12 @@ project(TricibleTextureGeneratorGUI)
 set(FOLDER_GROUP Root)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/TextureGeneratorGUI/main.cpp"
-	"E:/z0rg/Projects/Tricible/TextureGeneratorGUI/UnitTesting_Tools.cpp"
+	".//main.cpp"
+	".//UnitTesting_Tools.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/TextureGeneratorGUI/UnitTesting_Tools.hpp"
+	".//UnitTesting_Tools.hpp"
 )
 source_group(
 	"\\"
@@ -37,11 +37,11 @@ source_group(
 set(FOLDER_GROUP Unit_Testing)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/TextureGeneratorGUI/Unit_Testing/PerlinNoise.cpp"
+	".//Unit_Testing/PerlinNoise.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/TextureGeneratorGUI/Unit_Testing/PerlinNoise.hpp"
+	".//Unit_Testing/PerlinNoise.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"

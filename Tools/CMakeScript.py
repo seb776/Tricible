@@ -22,6 +22,13 @@ def get_cpp_sources(path):
 		if (lower_filename.endswith(include_exts)):
 			files[1].append(path + '\\' + file)
 	return files
+	
+def absolute_path_to_relative(path, project_folder):
+	base_path = project_folder.replace('\\', '/')
+	file_path = path.replace('\\', '/')
+	common_prefix = os.path.commonprefix([base_path, file_path])
+	#print('Common=>' + file_path[len(common_prefix):])
+	return './' + file_path[len(common_prefix):]
 
 def generate_folder_group(out_file, name, is_root, source_files):
 			if (is_root):
@@ -35,13 +42,15 @@ def generate_folder_group(out_file, name, is_root, source_files):
 			out_file.write('set(\n')
 			out_file.write('\t\"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources\"\n')
 			for file in source_files[0]:
-				out_file.write('\t\"' + file.replace('\\', '/') + '\"\n')
+				relative_path = absolute_path_to_relative(file, sys.argv[2])
+				out_file.write('\t\"' + relative_path + '\"\n')
 			out_file.write(')\n')
 			
 			out_file.write('set(\n')
 			out_file.write('\t\"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes\"\n')
 			for file in source_files[1]:
-				out_file.write('\t\"' + file.replace('\\', '/') + '\"\n')
+				relative_path = absolute_path_to_relative(file, sys.argv[2])
+				out_file.write('\t\"' + relative_path + '\"\n')
 			out_file.write(')\n')
 			
 			out_file.write('source_group(\n')

@@ -1,6 +1,6 @@
 ##
-## Author: Pierre CourteilleSebastien
-## Contribs:
+## Author: Pierre Courteille
+## Contribs: Sebastien Maire
 ##
 
 ## version minium du cmake
@@ -17,14 +17,14 @@ project(TricibleTextureGenerator)
 set(FOLDER_GROUP Procedural1D)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural1D/Curve.cpp"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural1D/OverlappedCurve.cpp"
+	".//Procedural1D/Curve.cpp"
+	".//Procedural1D/OverlappedCurve.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural1D/Curve.hpp"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural1D/OverlappedCurve.hpp"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural1D/Procedural1D.hpp"
+	".//Procedural1D/Curve.hpp"
+	".//Procedural1D/OverlappedCurve.hpp"
+	".//Procedural1D/Procedural1D.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -43,14 +43,14 @@ source_group(
 set(FOLDER_GROUP Procedural2D)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural2D/OverlappedPerlinNoise.cpp"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural2D/PerlinNoise.cpp"
+	".//Procedural2D/OverlappedPerlinNoise.cpp"
+	".//Procedural2D/PerlinNoise.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural2D/OverlappedPerlinNoise.hpp"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural2D/PerlinNoise.hpp"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Procedural2D/Procedural2D.hpp"
+	".//Procedural2D/OverlappedPerlinNoise.hpp"
+	".//Procedural2D/PerlinNoise.hpp"
+	".//Procedural2D/Procedural2D.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -72,8 +72,8 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Utility/Gradient/LinearGradient.hpp"
-	"E:/z0rg/Projects/Tricible/TextureGenerator/Utility/Gradient/PointGradient.hpp"
+	".//Utility/Gradient/LinearGradient.hpp"
+	".//Utility/Gradient/PointGradient.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
