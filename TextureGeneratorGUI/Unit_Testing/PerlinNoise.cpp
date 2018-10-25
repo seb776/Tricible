@@ -37,8 +37,8 @@ namespace UnitTesting
 	using namespace Tricible;
 	using namespace Utility;
 
-	// Va générer une image PNG dans le dossier courant
-	// Courbe à une dimension - de gauche à droite
+	// Va gÃ©nÃ©rer une image PNG dans le dossier courant
+	// Courbe Ã  une dimension - de gauche Ã  droite
 	// L'axe X est constant (horizontal)
 	// L'axe Y varie (vertical)
 	void PerlinNoise_1D()
@@ -65,8 +65,8 @@ namespace UnitTesting
 		delete[] result;
 	}
 
-	// Va générer une image PNG dans le dossier courant
-	// Courbe à une dimension - de gauche à droite
+	// Va gÃ©nÃ©rer une image PNG dans le dossier courant
+	// Courbe Ã  une dimension - de gauche Ã  droite
 	// L'axe X est constant (horizontal)
 	// L'axe Y varie (vertical)
 	void PerlinNoise_1D_Overlapped()
@@ -93,7 +93,7 @@ namespace UnitTesting
 		delete[] result;
 	}
 
-	// Va générer une image PNG dans le dossier courant
+	// Va gÃ©nÃ©rer une image PNG dans le dossier courant
 	// Nuage de gris
 	void PerlinNoise_2D()
 	{
@@ -124,7 +124,7 @@ namespace UnitTesting
 		delete[] result;
 	}
 
-	// Va générer une image PNG dans le dossier courant
+	// Va gÃ©nÃ©rer une image PNG dans le dossier courant
 	// Nuage de gris
 	void PerlinNoise_2D_Overlapped()
 	{
@@ -155,8 +155,8 @@ namespace UnitTesting
 		delete[] result;
 	}
 
-	// Va générer une image PNG dans le dossier courant
-	// Nuage de gris qui est ensuite colorisé avec une liste de gradientColor
+	// Va gÃ©nÃ©rer une image PNG dans le dossier courant
+	// Nuage de gris qui est ensuite colorisï¿½ avec une liste de gradientColor
 	void PerlinNoise_2D_Overlapped_With_Color()
 	{
 		// compute perlin noise
@@ -194,4 +194,3 @@ namespace UnitTesting
 		delete[] result;
 	}
 }
-
