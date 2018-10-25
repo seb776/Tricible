@@ -43,9 +43,9 @@ namespace UnitTesting
 	// L'axe Y varie (vertical)
 	void PerlinNoise_1D()
 	{
-		float * result = new float[SIZE_IMG_WIDTH];		// buffer de l'image
-		sf::Image image;								// SFML pour enregistrer le fichier PNG
-		int temp_y_coord;								// pour stocker la valeur Y de la courbe
+		float * result = new float[SIZE_IMG_WIDTH];     // buffer de l'image
+		sf::Image image;                                // SFML pour enregistrer le fichier PNG
+		int temp_y_coord;                               // pour stocker la valeur Y de la courbe
 
 		// compute perlin noise
 		Procedural1D::Curve(6, SIZE_IMG_WIDTH, &result);
@@ -54,7 +54,7 @@ namespace UnitTesting
 		image.create(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, sf::Color::White);
 
 		// affichage de la courbe
-		for (int x = 0; x < SIZE_IMG_WIDTH; x++)
+		for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 		{
 			temp_y_coord = result[x] * SIZE_IMG_HEIGHT;
 			image.setPixel(x, result[x] * SIZE_IMG_HEIGHT, sf::Color(0, 0, 0)); // courbe noir
@@ -71,9 +71,9 @@ namespace UnitTesting
 	// L'axe Y varie (vertical)
 	void PerlinNoise_1D_Overlapped()
 	{
-		float * result = new float[SIZE_IMG_WIDTH];		// buffer de l'image
+		float * result = new float[SIZE_IMG_WIDTH];     // buffer de l'image
 		sf::Image image;                                // SFML pour enregistrer le fichier PNG
-		int temp_y_coord;								// pour stocker la valeur Y de la courbe
+		int temp_y_coord;                               // pour stocker la valeur Y de la courbe
 
 		// compute perlin noise
 		Procedural1D::OverlappedCurve(16, 4, 0.3f, SIZE_IMG_WIDTH, &result);
@@ -82,7 +82,7 @@ namespace UnitTesting
 		image.create(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, sf::Color::White);
 
 		// affichage de la courbe
-		for (int x = 0; x < SIZE_IMG_WIDTH; x++)
+		for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 		{
 			temp_y_coord = result[x] * SIZE_IMG_HEIGHT;
 			image.setPixel(x, result[x] * SIZE_IMG_HEIGHT, sf::Color(0, 0, 0)); // courbe noir
@@ -111,7 +111,7 @@ namespace UnitTesting
 		// render perlin noise
 		for (int y = 0; y < SIZE_IMG_HEIGHT; ++y)
 		{
-			for (int x = 0; x < SIZE_IMG_WIDTH; x++)
+			for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 			{
 				result_color = result[y * SIZE_IMG_WIDTH + x] * 255.0f; // 255 = blanc
 				pixel = sf::Color(result_color, result_color, result_color);
@@ -142,7 +142,7 @@ namespace UnitTesting
 		// render perlin noise
 		for (int y = 0; y < SIZE_IMG_HEIGHT; ++y)
 		{
-			for (int x = 0; x < SIZE_IMG_WIDTH; x++)
+			for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 			{
 				result_color = result[y * SIZE_IMG_WIDTH + x] * 255.0f; // 255 = blanc
 				pixel = sf::Color(result_color, result_color, result_color);
@@ -181,7 +181,7 @@ namespace UnitTesting
 		image.create(SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, sf::Color::White);
 		for (int y = 0; y < SIZE_IMG_HEIGHT; ++y)
 		{
-			for (int x = 0; x < SIZE_IMG_WIDTH; x++)
+			for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 			{
 				grad.GetColor(result[y * SIZE_IMG_WIDTH + x], &resultGrad);
 				pixel = sf::Color(resultGrad.Red(), resultGrad.Green(), resultGrad.Blue());

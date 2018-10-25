@@ -20,7 +20,7 @@ namespace Procedural1D
 		float tmpFrequency = 1.0;
 		const float frequency = 2.0f; // Description : à chaque octave, on va multiplier le nombre de point qui compose la courbe incarnant le "bruit" 
 
-		for (int i = 0; i < octaves; i++)
+		for (int i = 0; i < octaves; ++i)
 		{
 			sum += amplitude * Procedural1D::ComputeSmoothNoise(x * tmpFrequency);
 			amplitude *= OverlapPercent;
@@ -45,7 +45,7 @@ namespace Procedural1D
 		// TODO PCO : Limiter NbrPerlinNoiseStacked de [2 ; 1024] (1 refusé car reviens à faire PerlinNoise1D(...)
 		const float scale = 1.0f / SizeBuffer * (NbrPoint - 1); // TODO PCO constexpr ?
 
-		for (int x = 0; x < SizeBuffer; x++)
+		for (int x = 0; x < SizeBuffer; ++x)
 		{
 			(*BufferNoise)[x] = ComputeSmoothNoise(x * scale, NbrNoiseStacked, OverlapPercent);
 		}
