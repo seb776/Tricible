@@ -35,7 +35,7 @@ namespace Tricible
 
 		Color::RGB RenderNormalizedVecAsNormal(const Point3& vecToVisualizeAsCol, const IntersectionInfo& interInfo)
 		{
-			return Color::RGB((vecToVisualizeAsCol._x * 0.5f + 0.5f) * 255.0f, (vecToVisualizeAsCol._y * 0.5f + 0.5f) * 255.0f, (vecToVisualizeAsCol._z * 0.5f + 0.5f) * 255.0f);
+			return Color::RGB(static_cast<uint8_t>((vecToVisualizeAsCol._x * 0.5f + 0.5f) * 255.0f), static_cast<uint8_t>((vecToVisualizeAsCol._y * 0.5f + 0.5f) * 255.0f), static_cast<uint8_t>((vecToVisualizeAsCol._z * 0.5f + 0.5f) * 255.0f));
 		}
 
 		Color::RGB RenderFloatLessThreshold(float value, float threshold)
@@ -114,7 +114,7 @@ namespace Tricible
 				for (int x = 0; x < _resX; ++x)
 				{
 					Point3 vec;
-					camera.GetRay(x - (_resX * .5f), y - (_resY * .5f), vec);
+					camera.GetRay(static_cast<int>(x - (_resX * .5f)), static_cast<int>(y - (_resY * .5f)), vec);
 					vec.Normalize();
 					Color::RGB finalColor = Color::RGB();
 					float nearestDist = -1.f;

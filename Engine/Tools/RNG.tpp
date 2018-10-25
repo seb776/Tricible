@@ -43,7 +43,7 @@ namespace Tricible
 	T Random(int x)
 	{
 		// TODO : limit auto -> 2147483647 == 2 ^ 31 ???
-		constexpr float Threshold = 2147483647 / (borderRight - borderLeft);
+		constexpr float Threshold = 2147483647.f / (borderRight - borderLeft);
 
 		// some bitwise operations
 		x = (x << 13) ^ x;
@@ -61,9 +61,8 @@ namespace Tricible
 	template<typename T, int borderLeft, int borderRight>
 	T Random(int x, int y)
 	{
-		int tmp = Random<T, borderLeft, borderRight>(x) * 1073741823;
-
-		return Random<T, borderLeft, borderRight>(tmp + y);
+		T tmp = Random<T, borderLeft, borderRight>(x) * 1073741823;
+		return Random<T, borderLeft, borderRight>(static_cast<int>(tmp + y));
 	}
 
 	// Description : Generate random number from 2 parameters
@@ -72,10 +71,9 @@ namespace Tricible
 	template<typename T, int borderLeft, int borderRight>
 	T Random(int x, int y, int z)
 	{
-		int tmp = Random<T, borderLeft, borderRight>(x) * 1073741823;
-
-		tmp = Random<T, borderLeft, borderRight>(tmp + y) * 1073741823;
-		return Random<T, borderLeft, borderRight>(tmp + z);
+		T tmp = Random<T, borderLeft, borderRight>(x) * 1073741823;
+		tmp = Random<T, borderLeft, borderRight>(static_cast<int>(tmp + y)) * 1073741823;
+		return Random<T, borderLeft, borderRight>(static_cast<int>(tmp + z));
 	}
 }
 
