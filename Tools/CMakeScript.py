@@ -31,45 +31,45 @@ def absolute_path_to_relative(path, project_folder):
 	return './' + file_path[len(common_prefix):]
 
 def generate_folder_group(out_file, name, is_root, source_files):
-			if (is_root):
-				name = 'Root'
-			out_file.write('#### ' + name + ' ####\n')			
-			out_file.write('##########\n')
-			out_file.write('\n')
-			
-			out_file.write('set(FOLDER_GROUP ' + name + ')\n')
-			
-			out_file.write('set(\n')
-			out_file.write('\t\"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources\"\n')
-			for file in source_files[0]:
-				relative_path = absolute_path_to_relative(file, sys.argv[2])
-				out_file.write('\t\"' + relative_path + '\"\n')
-			out_file.write(')\n')
-			
-			out_file.write('set(\n')
-			out_file.write('\t\"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes\"\n')
-			for file in source_files[1]:
-				relative_path = absolute_path_to_relative(file, sys.argv[2])
-				out_file.write('\t\"' + relative_path + '\"\n')
-			out_file.write(')\n')
-			
-			out_file.write('source_group(\n')
-			if (not is_root):
-				out_file.write('\t\"${FOLDER_GROUP}\\\\"\n')
-			else:
-				out_file.write('\t\"\\\\"\n')
-			out_file.write('\tFILES\n')
-			out_file.write('\t${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources}\n')
-			out_file.write(')\n')
-			
-			out_file.write('source_group(\n')
-			if (not is_root):
-				out_file.write('\t\"${FOLDER_GROUP}\\\\"\n')
-			else:
-				out_file.write('\t\"\\\\"\n')
-			out_file.write('\tFILES\n')
-			out_file.write('\t${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes}\n')
-			out_file.write(')\n\n')
+	if (is_root):
+		name = 'Root'
+	out_file.write('#### ' + name + ' ####\n')			
+	out_file.write('##########\n')
+	out_file.write('\n')
+	
+	out_file.write('set(FOLDER_GROUP ' + name + ')\n')
+	
+	out_file.write('set(\n')
+	out_file.write('\t\"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources\"\n')
+	for file in source_files[0]:
+		relative_path = absolute_path_to_relative(file, sys.argv[2])
+		out_file.write('\t\"' + relative_path + '\"\n')
+	out_file.write(')\n')
+	
+	out_file.write('set(\n')
+	out_file.write('\t\"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes\"\n')
+	for file in source_files[1]:
+		relative_path = absolute_path_to_relative(file, sys.argv[2])
+		out_file.write('\t\"' + relative_path + '\"\n')
+	out_file.write(')\n')
+	
+	out_file.write('source_group(\n')
+	if (not is_root):
+		out_file.write('\t\"${FOLDER_GROUP}\\\\"\n')
+	else:
+		out_file.write('\t\"\\\\"\n')
+	out_file.write('\tFILES\n')
+	out_file.write('\t${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources}\n')
+	out_file.write(')\n')
+	
+	out_file.write('source_group(\n')
+	if (not is_root):
+		out_file.write('\t\"${FOLDER_GROUP}\\\\"\n')
+	else:
+		out_file.write('\t\"\\\\"\n')
+	out_file.write('\tFILES\n')
+	out_file.write('\t${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes}\n')
+	out_file.write(')\n\n')
 	
 
 if len(sys.argv) < 4:
