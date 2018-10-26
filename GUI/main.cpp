@@ -46,7 +46,6 @@ void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecO
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-
 		renderer->Scene->CurrentCamera->MoveLeft();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -78,7 +77,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(width, height), "My window");
 	sf::Texture	texture;
 	sf::Sprite sprite;
-	auto scene = Scene::Scene::LoadFromObj("Resources/test.obj");
+	auto scene = Scene::Scene::LoadFromObj("Resources/CornellBox.obj");
 	Tricible::Renderer renderer(width, height, 0, scene);
 	sf::String fpsCount;
 	SetupScene(&renderer);
