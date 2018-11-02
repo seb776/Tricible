@@ -44,7 +44,7 @@ namespace Procedural1D
 		// TODO PCO : Check if NbrPoint is >= 2
 		const float scale = 1.0f / SizeBuffer * (NbrPoint - 1); // TODO constexpr ?
 
-		for (int x = 0; x < SizeBuffer; x++)
+		for (int x = 0; x < SizeBuffer; ++x)
 		{
 			(*BufferNoise)[x] = ComputeSmoothNoise(x * scale);
 		}

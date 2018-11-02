@@ -20,7 +20,7 @@ namespace Procedural2D
 		float tmpFrequency = 1.0;
 		const float frequency = 2.0f; // Description : à chaque octave, on va multiplier le nombre de point qui compose la courbe incarnant le "bruit" 
 
-		for (int i = 0; i < octaves; i++)
+		for (int i = 0; i < octaves; ++i)
 		{
 			sum += amplitude * Procedural2D::ComputeSmoothNoise(x * tmpFrequency, y * tmpFrequency);
 			amplitude *= OverlapPercent;
@@ -44,9 +44,9 @@ namespace Procedural2D
 		const float scaleX = 1.0f / SizeBufferX * (NbrPointX - 1);
 		const float scaleY = 1.0f / SizeBufferY * (NbrPointY - 1);
 
-		for (int y = 0; y < SizeBufferY; y++)
+		for (int y = 0; y < SizeBufferY; ++y)
 		{
-			for (int x = 0; x < SizeBufferX; x++)
+			for (int x = 0; x < SizeBufferX; ++x)
 			{
 				(*BufferNoise)[y * SizeBufferX + x] = ComputeSmoothNoise(x * scaleX, y * scaleY, NbrPerlinNoiseStacked, OverlapPercent);
 			}

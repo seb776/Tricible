@@ -10,6 +10,10 @@
 #define TRICIBLE_DLL_EXPORT __declspec(dllexport)
 #endif
 
+#ifndef _MATH_DEFINES_DEFINED
+#define _MATH_DEFINES_DEFINED
+#endif
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846f
 #endif
