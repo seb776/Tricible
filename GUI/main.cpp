@@ -134,7 +134,7 @@ int main()
 
 				uint32_t maxMousePosRadius = min(window.getSize().x, window.getSize().y) / 3;
 				sf::Vector2f windowCenter = (sf::Vector2f)window.getSize() / 2.0f;
-				Point3 curMousePos = Point3(static_cast<float>(currentMousePos.x), static_cast<float>(currentMousePos.y), 0.0f);
+				Point3 curMousePos = Point3(currentMousePos.x, currentMousePos.y, 0.0f);
 				Point3 winCenter = Point3(windowCenter.x, windowCenter.y, 0.0f);
 				if ((curMousePos - winCenter).Length() > maxMousePosRadius) {
 					sf::Mouse::setPosition(sf::Vector2i((int)windowCenter.x, (int)windowCenter.y), window);

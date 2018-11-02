@@ -36,7 +36,7 @@ namespace Tricible
 	template<typename T>
 	const T Cosinerp(const T& a, const T& b, float t)
 	{
-		float k = static_cast<float>((1.0f - cos(t * M_PI)) * 0.5f);
+		float k = (1.0f - cos(t * M_PI)) * 0.5f;
 		return UnclampedLerp(a, b, k);
 	}
 

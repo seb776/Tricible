@@ -133,11 +133,11 @@ namespace Utility
 				assert(colorOut != nullptr);
 
 				// Find the first element in the gradient point array that has a gradient position larger than the gradient position passed to this method.
-				int indexPosition = static_cast<int>(std::upper_bound(_points.begin(), _points.end(), position) - _points.begin());
+				int indexPosition = std::upper_bound(_points.begin(), _points.end(), position) - _points.begin();
 
 				// Find the two nearest gradient points so that we can perform linear interpolation on the color.
-				int indexLeft = Tricible::Clamp<int>(indexPosition - 1, 0, static_cast<int>(_points.size()) - 1);
-				int indexRight = Tricible::Clamp<int>(indexPosition, 0, static_cast<int>(_points.size()) - 1);
+				int indexLeft = Tricible::Clamp<int>(indexPosition - 1, 0, _points.size() - 1);
+				int indexRight = Tricible::Clamp<int>(indexPosition, 0, _points.size() - 1);
 
 				// If some gradient points are missing (which occurs if the gradient position passed to this method is greater than the largest gradient
 				// position or less than the smallest gradient position in the array), get the corresponding gradient color of the nearest gradient point and exit now.

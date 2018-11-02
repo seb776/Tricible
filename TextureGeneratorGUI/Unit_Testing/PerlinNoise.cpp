@@ -45,7 +45,7 @@ namespace UnitTesting
 	{
 		float * result = new float[SIZE_IMG_WIDTH];     // buffer de l'image
 		sf::Image image;                                // SFML pour enregistrer le fichier PNG
-		unsigned int temp_y_coord;                      // pour stocker la valeur Y de la courbe
+		int temp_y_coord;                               // pour stocker la valeur Y de la courbe
 
 		// compute perlin noise
 		Procedural1D::Curve(6, SIZE_IMG_WIDTH, &result);
@@ -56,8 +56,8 @@ namespace UnitTesting
 		// affichage de la courbe
 		for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 		{
-			temp_y_coord = static_cast<unsigned int> (result[x] * SIZE_IMG_HEIGHT);
-			image.setPixel(x, temp_y_coord, sf::Color(0, 0, 0)); // courbe noire
+			temp_y_coord = result[x] * SIZE_IMG_HEIGHT;
+			image.setPixel(x, result[x] * SIZE_IMG_HEIGHT, sf::Color(0, 0, 0)); // courbe noir
 		}
 		image.saveToFile("Example_PerlinNoise_1D.png");
 
@@ -73,7 +73,7 @@ namespace UnitTesting
 	{
 		float * result = new float[SIZE_IMG_WIDTH];     // buffer de l'image
 		sf::Image image;                                // SFML pour enregistrer le fichier PNG
-		unsigned int temp_y_coord;                      // pour stocker la valeur Y de la courbe
+		int temp_y_coord;                               // pour stocker la valeur Y de la courbe
 
 		// compute perlin noise
 		Procedural1D::OverlappedCurve(16, 4, 0.3f, SIZE_IMG_WIDTH, &result);
@@ -84,8 +84,8 @@ namespace UnitTesting
 		// affichage de la courbe
 		for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 		{
-			temp_y_coord = static_cast<unsigned int> (result[x] * SIZE_IMG_HEIGHT);
-			image.setPixel(x, temp_y_coord, sf::Color(0, 0, 0)); // courbe noire
+			temp_y_coord = result[x] * SIZE_IMG_HEIGHT;
+			image.setPixel(x, result[x] * SIZE_IMG_HEIGHT, sf::Color(0, 0, 0)); // courbe noir
 		}
 		image.saveToFile("Example_PerlinNoise_1D_Overlapped.png");
 
@@ -100,7 +100,7 @@ namespace UnitTesting
 		float * result = new float[SIZE_IMG_HEIGHT * SIZE_IMG_WIDTH]; // buffer de l'image
 		sf::Color pixel;
 		sf::Image image;
-		uint8_t result_color;
+		int result_color;
 
 		// compute perlin noise
 		Procedural2D::PerlinNoise(20, 12, SIZE_IMG_WIDTH, SIZE_IMG_HEIGHT, &result);
@@ -113,7 +113,7 @@ namespace UnitTesting
 		{
 			for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 			{
-				result_color = static_cast<uint8_t>(result[y * SIZE_IMG_WIDTH + x] * 255.0f); // 255 = blanc
+				result_color = result[y * SIZE_IMG_WIDTH + x] * 255.0f; // 255 = blanc
 				pixel = sf::Color(result_color, result_color, result_color);
 				image.setPixel(x, y, pixel);
 			}
@@ -144,7 +144,7 @@ namespace UnitTesting
 		{
 			for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 			{
-				result_color = static_cast<uint8_t>(result[y * SIZE_IMG_WIDTH + x] * 255.0f); // 255 = blanc
+				result_color = result[y * SIZE_IMG_WIDTH + x] * 255.0f; // 255 = blanc
 				pixel = sf::Color(result_color, result_color, result_color);
 				image.setPixel(x, y, pixel);
 			}
