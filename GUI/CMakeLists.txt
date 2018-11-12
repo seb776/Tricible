@@ -13,7 +13,7 @@ project(TricibleGUI)
 set(FOLDER_GROUP Root)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	".//main.cpp"
+	"./main.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
@@ -94,7 +94,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 add_custom_command(TARGET  ${PROJECT_NAME}
 					PRE_BUILD
 					COMMAND 
-				    ${DIR_TOOLS}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR} ${PROJECT_NAME}
+				    ${DIR_TOOLS}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME}
 					DEPENDS ${DIR_TOOLS}/CMakeScript.py
 )
 	

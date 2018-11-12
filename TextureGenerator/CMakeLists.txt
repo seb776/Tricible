@@ -17,14 +17,14 @@ project(TricibleTextureGenerator)
 set(FOLDER_GROUP Procedural1D)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	".//Procedural1D/Curve.cpp"
-	".//Procedural1D/OverlappedCurve.cpp"
+	"./Procedural1D/Curve.cpp"
+	"./Procedural1D/OverlappedCurve.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Procedural1D/Curve.hpp"
-	".//Procedural1D/OverlappedCurve.hpp"
-	".//Procedural1D/Procedural1D.hpp"
+	"./Procedural1D/Curve.hpp"
+	"./Procedural1D/OverlappedCurve.hpp"
+	"./Procedural1D/Procedural1D.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -43,14 +43,14 @@ source_group(
 set(FOLDER_GROUP Procedural2D)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	".//Procedural2D/OverlappedPerlinNoise.cpp"
-	".//Procedural2D/PerlinNoise.cpp"
+	"./Procedural2D/OverlappedPerlinNoise.cpp"
+	"./Procedural2D/PerlinNoise.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Procedural2D/OverlappedPerlinNoise.hpp"
-	".//Procedural2D/PerlinNoise.hpp"
-	".//Procedural2D/Procedural2D.hpp"
+	"./Procedural2D/OverlappedPerlinNoise.hpp"
+	"./Procedural2D/PerlinNoise.hpp"
+	"./Procedural2D/Procedural2D.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -72,8 +72,8 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Utility/Gradient/LinearGradient.hpp"
-	".//Utility/Gradient/PointGradient.hpp"
+	"./Utility/Gradient/LinearGradient.hpp"
+	"./Utility/Gradient/PointGradient.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -111,7 +111,7 @@ add_library(
 add_custom_command(TARGET  ${PROJECT_NAME}
 					PRE_BUILD
 					COMMAND 
-				    ${DIR_TOOLS}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR} ${PROJECT_NAME}
+				    ${DIR_TOOLS}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME}
 					DEPENDS ${DIR_TOOLS}/CMakeScript.py
 )
 
