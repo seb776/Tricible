@@ -1,6 +1,7 @@
 # !/usr/bin/python
 import argparse
 import fnmatch
+import logging
 import ntpath
 import os
 import re
@@ -13,6 +14,15 @@ source_exts = ('.cpp', '.c', '.mm')
 cmake_lists = 'CMakeLists.txt'
 source_filename = 'sources.cmake'
 tmp_filename = source_filename + '.tmp'
+
+
+logger = logging.getLogger('cmake_script.py')
+
+def configure_logger():
+    logger.setLevel(logging.INFO)
+    ch = logging.StreamHandler()
+    ch.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', "%H:%M:%S"))
+    logger.addHandler(ch)
 
 def get_cpp_sources(path):
 	files = ([], [])
@@ -82,7 +92,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args.project_directory = to_unix_path(args.project_directory)
     configure_logger()
-tmp_filename = source_filename + '.tmp'
+    logger.info('Generating ' + args.project_solution_name + '.' + args.project_name + '\'s CMakeLists.txt at ' + args.project_directory +'...')
 out_cmakefile = open(source_filename, 'w')
 all_group_list = []
     for path, dirs, files in os.walk(args.project_directory):
@@ -137,3 +147,4 @@ out_cmakefile.close()
     except:
         pass
 
+    logger.info('Done Generating ' + args.project_solution_name + '.' + args.project_name + '\'s CMakeLists.txt at ' + args.project_directory)
