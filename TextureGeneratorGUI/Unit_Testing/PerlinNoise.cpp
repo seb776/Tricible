@@ -56,8 +56,8 @@ namespace UnitTesting
 		// affichage de la courbe
 		for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 		{
-			temp_y_coord = result[x] * SIZE_IMG_HEIGHT;
-			image.setPixel(x, result[x] * SIZE_IMG_HEIGHT, sf::Color(0, 0, 0)); // courbe noir
+			temp_y_coord = (int)(result[x] * SIZE_IMG_HEIGHT);		// coord sur l'axe vertical
+			image.setPixel(x, temp_y_coord, sf::Color(0, 0, 0));	// courbe noir
 		}
 		image.saveToFile("Example_PerlinNoise_1D.png");
 
@@ -84,8 +84,8 @@ namespace UnitTesting
 		// affichage de la courbe
 		for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 		{
-			temp_y_coord = result[x] * SIZE_IMG_HEIGHT;
-			image.setPixel(x, result[x] * SIZE_IMG_HEIGHT, sf::Color(0, 0, 0)); // courbe noir
+			temp_y_coord = (int)(result[x] * SIZE_IMG_HEIGHT);		// coord sur l'axe vertical
+			image.setPixel(x, temp_y_coord, sf::Color(0, 0, 0));	// courbe noir
 		}
 		image.saveToFile("Example_PerlinNoise_1D_Overlapped.png");
 
@@ -113,7 +113,7 @@ namespace UnitTesting
 		{
 			for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 			{
-				result_color = result[y * SIZE_IMG_WIDTH + x] * 255.0f; // 255 = blanc
+				result_color = (int)(result[y * SIZE_IMG_WIDTH + x] * 255.0f); // 255 = blanc
 				pixel = sf::Color(result_color, result_color, result_color);
 				image.setPixel(x, y, pixel);
 			}
@@ -144,7 +144,7 @@ namespace UnitTesting
 		{
 			for (int x = 0; x < SIZE_IMG_WIDTH; ++x)
 			{
-				result_color = result[y * SIZE_IMG_WIDTH + x] * 255.0f; // 255 = blanc
+				result_color = (int)(result[y * SIZE_IMG_WIDTH + x] * 255.0f); // 255 = blanc
 				pixel = sf::Color(result_color, result_color, result_color);
 				image.setPixel(x, y, pixel);
 			}

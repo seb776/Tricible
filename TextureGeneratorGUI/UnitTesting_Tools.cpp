@@ -85,7 +85,7 @@ namespace UnitTesting
 		// afficher une image à partir d'un fichier dans une fenêtre SFML
 		void DrawInSfmlWindowFromPictureFile(const std::string & pathPicture)
 		{
-			sf::RenderWindow window(sf::VideoMode(SIZE_WINDOW_WIDTH, SIZE_WINDOW_HEIGHT), "Unit Testing - courte_p (waiting activated in console)");
+			sf::RenderWindow window(sf::VideoMode(SIZE_WINDOW_WIDTH, SIZE_WINDOW_HEIGHT), "Unit Testing (waiting mode activated in console)");
 			sf::Texture	texture;
 			sf::Sprite sprite;
 
