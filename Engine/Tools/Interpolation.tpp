@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace Tricible
 {
 #ifndef M_PI

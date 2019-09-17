@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(TricibleEngine)
 
-execute_process(COMMAND ${PROJECT_SOURCE_DIR}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR})
+execute_process(COMMAND ${PROJECT_SOURCE_DIR}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME})
 
 include_directories(${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/)
 include_directories(${DIR_LIB_EXT})
@@ -21,8 +21,8 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Color/RGB.hpp"
-	".//Color/RGBA.hpp"
+	"./Color/RGB.hpp"
+	"./Color/RGBA.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -44,7 +44,7 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Material/Material.hpp"
+	"./Material/Material.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -66,7 +66,7 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Rendering/Renderer.hpp"
+	"./Rendering/Renderer.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -85,26 +85,26 @@ source_group(
 set(FOLDER_GROUP Scene)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	".//Scene/AIntersectable.cpp"
-	".//Scene/Mesh.cpp"
-	".//Scene/Plane.cpp"
-	".//Scene/Scene.cpp"
-	".//Scene/Sphere.cpp"
-	".//Scene/Triangle.cpp"
+	"./Scene/AIntersectable.cpp"
+	"./Scene/Mesh.cpp"
+	"./Scene/Plane.cpp"
+	"./Scene/Scene.cpp"
+	"./Scene/Sphere.cpp"
+	"./Scene/Triangle.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Scene/AIntersectable.hpp"
-	".//Scene/ALight.hpp"
-	".//Scene/AObject.hpp"
-	".//Scene/Camera.hpp"
-	".//Scene/IntersectionInfo.hpp"
-	".//Scene/Mesh.hpp"
-	".//Scene/Plane.hpp"
-	".//Scene/Scene.hpp"
-	".//Scene/Source.hpp"
-	".//Scene/Sphere.hpp"
-	".//Scene/Triangle.hpp"
+	"./Scene/AIntersectable.hpp"
+	"./Scene/ALight.hpp"
+	"./Scene/AObject.hpp"
+	"./Scene/Camera.hpp"
+	"./Scene/IntersectionInfo.hpp"
+	"./Scene/Mesh.hpp"
+	"./Scene/Plane.hpp"
+	"./Scene/Scene.hpp"
+	"./Scene/Source.hpp"
+	"./Scene/Sphere.hpp"
+	"./Scene/Triangle.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -126,7 +126,7 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Texture/Texture.hpp"
+	"./Texture/Texture.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -145,20 +145,20 @@ source_group(
 set(FOLDER_GROUP Tools)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	".//Tools/Interpolation.cpp"
-	".//Tools/Point3.cpp"
-	".//Tools/RNG.cpp"
+	"./Tools/Interpolation.cpp"
+	"./Tools/Point3.cpp"
+	"./Tools/RNG.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	".//Tools/3x3Matrix.hpp"
-	".//Tools/Interpolation.hpp"
-	".//Tools/Interpolation.tpp"
-	".//Tools/Macros.hpp"
-	".//Tools/Point3.hpp"
-	".//Tools/RNG.hpp"
-	".//Tools/RNG.tpp"
-	".//Tools/Tools.hpp"
+	"./Tools/3x3Matrix.hpp"
+	"./Tools/Interpolation.hpp"
+	"./Tools/Interpolation.tpp"
+	"./Tools/Macros.hpp"
+	"./Tools/Point3.hpp"
+	"./Tools/RNG.hpp"
+	"./Tools/RNG.tpp"
+	"./Tools/Tools.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -218,14 +218,10 @@ target_link_libraries(
 add_custom_command(TARGET  ${PROJECT_NAME}
 					PRE_BUILD
 					COMMAND 
-				    ${DIR_TOOLS}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR} ${PROJECT_NAME}
+				    ${DIR_TOOLS}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME}
 					DEPENDS ${DIR_TOOLS}/CMakeScript.py
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/Resources/" $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/
 )
-
-
-
-
