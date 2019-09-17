@@ -9,6 +9,7 @@ project(TricibleEngine)
 execute_process(COMMAND ${PROJECT_SOURCE_DIR}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR})
 
 include_directories(${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/)
+include_directories(${DIR_LIB_EXT})
 
 ## SOURCE_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT
 #### Color ####
@@ -192,6 +193,18 @@ add_library(
     STATIC
     ${SourceFiles}
 )
+
+FIND_LIBRARY(OPENCL_LIBRARIES opencl64 )
+	IF( OPENCL_LIBRARIES )
+		FIND_LIBRARY(OPENCL_LIBRARIES opencl32 )
+	ENDIF( OPENCL_LIBRARIES )
+	
+	SET( OPENCL_FOUND "NO" )
+IF(OPENCL_LIBRARIES )
+	SET( OPENCL_FOUND "YES" )
+ENDIF(OPENCL_LIBRARIES)
+
+find_package( OpenCL REQUIRED )
 
 target_link_libraries(
 	TricibleEngine
