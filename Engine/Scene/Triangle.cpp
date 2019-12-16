@@ -44,7 +44,6 @@ bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, Intersec
 	//	return false;
 	//return false;
 
-	const auto &backupPrim = interInfo->Primitive;
 	if (this->Plane::IntersectsRay(origin, vec, interInfo, nearClip, farClip))
 	{
 		bool res = Triangle::IsInside(_a, _b, _c, interInfo->Intersection);
@@ -57,7 +56,6 @@ bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, Intersec
 		//Point3 a = origin + (vec * dist);
 		//st d::cout << a._x << "/" << a._y << "/" << a._z << Triangle::IsInside(_a, _b, _c, origin + (vec * dist)) << std::endl;
 	}
-	interInfo->Primitive = backupPrim;
 	return false;
 }
 
@@ -67,6 +65,8 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol) 
 	_a = a;
 	_b = b;
 	_c = c;
+	_position = a;
+
 	Point3 norm = (b - a).Cross(c - a);
 	norm.Normalize();
 	_normal = norm;
@@ -93,7 +93,7 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol) 
 		Color::RGB(0x6A, 0x82, 0x6C)
 	};
 
-	_position = a;
+	
 	Material = new Material::Material(colors[iCol], Color::RGB());
 	//std::cout << (uint32_t)Material->DiffuseColor.Red() << ":" << (uint32_t)Material->DiffuseColor.Green() << ":" << (uint32_t)Material->DiffuseColor.Blue() << std::endl;
 
