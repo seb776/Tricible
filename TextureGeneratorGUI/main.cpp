@@ -30,13 +30,13 @@ int RunBlock_AllPerlinNoise()
 	// bloc de tests
 	std::cout << "BLOCK : PerlinNoise" << std::endl;
 	UnitTesting::Tools::RunTest_NoParameters("1D", &UnitTesting::PerlinNoise_1D);
-	UnitTesting::Tools::RunTest_NoParameters("1D_Stacked", &UnitTesting::PerlinNoise_1D_Overlapped);
+	UnitTesting::Tools::RunTest_NoParameters("1D_Overlapped", &UnitTesting::PerlinNoise_1D_Overlapped);
 	UnitTesting::Tools::RunTest_NoParameters("2D", &UnitTesting::PerlinNoise_2D);
-	UnitTesting::Tools::RunTest_NoParameters("2D_Stacked", &UnitTesting::PerlinNoise_2D_Overlapped);
-	UnitTesting::Tools::RunTest_NoParameters("2D_Stacked_With_Color", &UnitTesting::PerlinNoise_2D_Overlapped_With_Color);
+	UnitTesting::Tools::RunTest_NoParameters("2D_Overlapped", &UnitTesting::PerlinNoise_2D_Overlapped);
+	UnitTesting::Tools::RunTest_NoParameters("2D_Overlapped_With_Color", &UnitTesting::PerlinNoise_2D_Overlapped_With_Color);
 
 	// spéciale : afficher une image dans une fenêtre SFML
-	UnitTesting::Tools::DrawInSfmlWindowFromPictureFile("Example_PerlinNoise_2D_Stacked_With_Color.png");
+	UnitTesting::Tools::DrawInSfmlWindowFromPictureFile("Example_PerlinNoise_2D_Overlapped_With_Color.png");
 
 	// pied de page
 	std::cout << "----------------------------------------" << std::endl;

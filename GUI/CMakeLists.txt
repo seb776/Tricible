@@ -13,7 +13,7 @@ project(TricibleGUI)
 set(FOLDER_GROUP Root)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/GUI/main.cpp"
+	"./main.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
@@ -46,13 +46,28 @@ target_link_libraries(
     TricibleEngine
 )
 
+FIND_LIBRARY(OPENCL_LIBRARIES opencl64 )
+	IF( OPENCL_LIBRARIES )
+		FIND_LIBRARY(OPENCL_LIBRARIES opencl32 )
+	ENDIF( OPENCL_LIBRARIES )
+	
+	SET( OPENCL_FOUND "NO" )
+IF(OPENCL_LIBRARIES )
+	SET( OPENCL_FOUND "YES" )
+ENDIF(OPENCL_LIBRARIES)
+
+
 include_directories(${DIR_LIB_SFML_ROOT}/include)
 include_directories(${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/)
+include_directories(${DIR_LIB_EXT})
+
+find_package( OpenCL REQUIRED )
 
 TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-graphics.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-graphics-d.${STATIC_LIB_EXT})
 TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-window.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-window-d.${STATIC_LIB_EXT})
 TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-system.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-system-d.${STATIC_LIB_EXT})
 TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-network.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-network-d.${STATIC_LIB_EXT})
+TARGET_LINK_LIBRARIES(TricibleGUI ${OpenCL_LIBRARIES})
 
 target_link_libraries(
 	TricibleGUI
@@ -79,7 +94,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 add_custom_command(TARGET  ${PROJECT_NAME}
 					PRE_BUILD
 					COMMAND 
-				    ${DIR_TOOLS}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR} ${PROJECT_NAME}
+				    ${DIR_TOOLS}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME}
 					DEPENDS ${DIR_TOOLS}/CMakeScript.py
 )
 	

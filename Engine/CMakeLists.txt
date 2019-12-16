@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(TricibleEngine)
 
-execute_process(COMMAND ${PROJECT_SOURCE_DIR}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR})
+execute_process(COMMAND ${PROJECT_SOURCE_DIR}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME})
 
 include_directories(${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/)
 
@@ -20,8 +20,8 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/Engine/Color/RGB.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Color/RGBA.hpp"
+	"./Color/RGB.hpp"
+	"./Color/RGBA.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -43,7 +43,7 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/Engine/Material/Material.hpp"
+	"./Material/Material.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -65,7 +65,7 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/Engine/Rendering/Renderer.hpp"
+	"./Rendering/Renderer.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -84,26 +84,26 @@ source_group(
 set(FOLDER_GROUP Scene)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/AIntersectable.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Mesh.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Plane.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Scene.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Sphere.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Triangle.cpp"
+	"./Scene/AIntersectable.cpp"
+	"./Scene/Mesh.cpp"
+	"./Scene/Plane.cpp"
+	"./Scene/Scene.cpp"
+	"./Scene/Sphere.cpp"
+	"./Scene/Triangle.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/AIntersectable.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/ALight.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/AObject.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Camera.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/IntersectionInfo.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Mesh.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Plane.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Scene.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Source.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Sphere.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Scene/Triangle.hpp"
+	"./Scene/AIntersectable.hpp"
+	"./Scene/ALight.hpp"
+	"./Scene/AObject.hpp"
+	"./Scene/Camera.hpp"
+	"./Scene/IntersectionInfo.hpp"
+	"./Scene/Mesh.hpp"
+	"./Scene/Plane.hpp"
+	"./Scene/Scene.hpp"
+	"./Scene/Source.hpp"
+	"./Scene/Sphere.hpp"
+	"./Scene/Triangle.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -125,7 +125,7 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/Engine/Texture/Texture.hpp"
+	"./Texture/Texture.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -144,20 +144,20 @@ source_group(
 set(FOLDER_GROUP Tools)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/Interpolation.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/Point3.cpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/RNG.cpp"
+	"./Tools/Interpolation.cpp"
+	"./Tools/Point3.cpp"
+	"./Tools/RNG.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/3x3Matrix.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/Interpolation.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/Interpolation.tpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/Macros.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/Point3.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/RNG.hpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/RNG.tpp"
-	"E:/z0rg/Projects/Tricible/Engine/Tools/Tools.hpp"
+	"./Tools/3x3Matrix.hpp"
+	"./Tools/Interpolation.hpp"
+	"./Tools/Interpolation.tpp"
+	"./Tools/Macros.hpp"
+	"./Tools/Point3.hpp"
+	"./Tools/RNG.hpp"
+	"./Tools/RNG.tpp"
+	"./Tools/Tools.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"
@@ -205,14 +205,10 @@ target_link_libraries(
 add_custom_command(TARGET  ${PROJECT_NAME}
 					PRE_BUILD
 					COMMAND 
-				    ${DIR_TOOLS}/CMakeScript.py ${CMAKE_PROJECT_NAME} ${PROJECT_SOURCE_DIR} ${PROJECT_NAME}
+				    ${DIR_TOOLS}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME}
 					DEPENDS ${DIR_TOOLS}/CMakeScript.py
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory "${PROJECT_SOURCE_DIR}/Resources/" $<TARGET_FILE_DIR:${PROJECT_NAME}>/Resources/
 )
-
-
-
-

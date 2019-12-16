@@ -47,7 +47,10 @@ namespace UnitTesting
 			auto castTo_time_t = std::chrono::system_clock::to_time_t(dateTimeNow);
 			std::stringstream bufferStream;
 
-			bufferStream << std::put_time(std::localtime(&castTo_time_t), "%Y-%m-%d %X"); // 2018-12-31 1654
+			struct tm timeinfo;
+			localtime_s(&timeinfo, &castTo_time_t);
+
+			bufferStream << std::put_time(&timeinfo, "%Y-%m-%d %X"); // 2018-12-31 1654
 
 			return bufferStream.str(); // passage par copie
 		}
@@ -82,7 +85,7 @@ namespace UnitTesting
 		// afficher une image à partir d'un fichier dans une fenêtre SFML
 		void DrawInSfmlWindowFromPictureFile(const std::string & pathPicture)
 		{
-			sf::RenderWindow window(sf::VideoMode(SIZE_WINDOW_WIDTH, SIZE_WINDOW_HEIGHT), "Unit Testing - courte_p (waiting activated in console)");
+			sf::RenderWindow window(sf::VideoMode(SIZE_WINDOW_WIDTH, SIZE_WINDOW_HEIGHT), "Unit Testing (waiting mode activated in console)");
 			sf::Texture	texture;
 			sf::Sprite sprite;
 

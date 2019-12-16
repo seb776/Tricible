@@ -83,7 +83,8 @@ namespace Tricible
 				{
 					float interDist = curInterInfo.Distance;
 
-					if ((nearestDist < 0.f || interDist < nearestDist) && (interDist > CurrentCamera->NearClip && interDist < CurrentCamera->FarClip))
+					if ((nearestDist < 0.f || interDist < nearestDist) && 
+						(interDist > CurrentCamera->NearClip && interDist < CurrentCamera->FarClip))
 					{
 						curInterInfo.Object = o;
 						retainedInterInfo = curInterInfo;

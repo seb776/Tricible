@@ -19,11 +19,35 @@
 #include "../Engine/Scene/Sphere.hpp"
 #include "../Engine/Scene/Triangle.hpp"
 #include "../Engine/Scene/Camera.hpp"
+#include <CL/cl.h>
 
 using namespace Tricible;
 
 void SetupScene(Tricible::Renderer *renderer)
 {
+	cl_platform_id platform;
+	cl_device_id dev;
+	int err;
+
+	/* Identify a platform */
+	err = clGetPlatformIDs(1, &platform, NULL);
+	if (err < 0) {
+		perror("Couldn't identify a platform");
+		exit(1);
+	}
+
+	// Access a device
+	// GPU
+	err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &dev, NULL);
+	if (err == CL_DEVICE_NOT_FOUND) {
+		// CPU
+		err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &dev, NULL);
+	}
+	if (err < 0) {
+		perror("Couldn't access any devices");
+		exit(1);
+	}
+
 	renderer->Scene->Objects.push_back(new Scene::Sphere());
 	renderer->Scene->Objects.push_back(new Plane());
 	//renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
@@ -46,7 +70,6 @@ void translateCamera(Tricible::Renderer *renderer, const Tricible::Point3 & vecO
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-
 		renderer->Scene->CurrentCamera->MoveLeft();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -78,7 +101,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(width, height), "My window");
 	sf::Texture	texture;
 	sf::Sprite sprite;
-	auto scene = Scene::Scene::LoadFromObj("Resources/test.obj");
+	auto scene = Scene::Scene::LoadFromObj("Resources/CornellBox.obj");
 	Tricible::Renderer renderer(width, height, 0, scene);
 	sf::String fpsCount;
 	SetupScene(&renderer);

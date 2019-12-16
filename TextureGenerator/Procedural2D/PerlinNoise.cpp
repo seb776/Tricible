@@ -49,9 +49,9 @@ namespace Procedural2D
 		const float scaleX = 1.0f / SizeBufferX * (NbrPointX - 1);
 		const float scaleY = 1.0f / SizeBufferY * (NbrPointY - 1);
 
-		for (int y = 0; y < SizeBufferY; y++)
+		for (int y = 0; y < SizeBufferY; ++y)
 		{
-			for (int x = 0; x < SizeBufferX; x++)
+			for (int x = 0; x < SizeBufferX; ++x)
 			{
 				(*BufferNoise)[y * SizeBufferX + x] = ComputeSmoothNoise(x * scaleX, y * scaleY);
 			}

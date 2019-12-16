@@ -92,8 +92,7 @@ namespace Tricible
 			{
 				if (Scene->Skymap != nullptr)
 				{
-					Point3 normVec = pixelVec.Normalize();// .Normalize();
-					//pixelVec.Normalize();
+					Point3 normVec = pixelVec.Normalize();
 					auto uvw = Scene::Sphere::ComputeUV(normVec);
 					finalColor = Scene->Skymap->Get360Pixel(uvw._x, uvw._y);
 					//finalColor = Scene->Skymap->Get360PixelBilinearInterpolation(uvw._x, uvw._y);
@@ -124,8 +123,8 @@ namespace Tricible
 					IntersectionInfo interInfo = IntersectionInfo();
 
 					Scene->IntersectsRay(camera.getPosition() + vec, vec, &interInfo, camera.NearClip, camera.FarClip);
-					//finalColor = RenderPixel(normVec, interInfo);
-					finalColor = RenderDepth(interInfo.Distance, 100.0f);
+					finalColor = RenderPixel(normVec, interInfo);
+					//finalColor = RenderDepth(interInfo.Distance, 100.0f);
 					image[x + y * _resX] = finalColor.ToInt();
 				}
 			}
