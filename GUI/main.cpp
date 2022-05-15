@@ -19,41 +19,18 @@
 #include "../Engine/Scene/Sphere.hpp"
 #include "../Engine/Scene/Triangle.hpp"
 #include "../Engine/Scene/Camera.hpp"
-#include <CL/cl.h>
+
 
 using namespace Tricible;
 
 void SetupScene(Tricible::Renderer *renderer)
 {
-	cl_platform_id platform;
-	cl_device_id dev;
-	int err;
-
-	/* Identify a platform */
-	err = clGetPlatformIDs(1, &platform, NULL);
-	if (err < 0) {
-		perror("Couldn't identify a platform");
-		exit(1);
-	}
-
-	// Access a device
-	// GPU
-	err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &dev, NULL);
-	if (err == CL_DEVICE_NOT_FOUND) {
-		// CPU
-		err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 1, &dev, NULL);
-	}
-	if (err < 0) {
-		perror("Couldn't access any devices");
-		exit(1);
-	}
-
 	renderer->Scene->Objects.push_back(new Scene::Sphere());
 	renderer->Scene->Objects.push_back(new Plane());
 	//renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
 	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(20.f, 20.f, 20.f), 1.f));
 	//renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
-	renderer->Scene->Skymap = new Texture("Resources/Image.jpg");
+	renderer->Scene->Skymap = new Texture("Resources/Outside.jpg");
 	//renderer->Scene->LoadFromObj("Resources/test.obj");
 }
 
@@ -103,6 +80,7 @@ int main()
 	sf::Sprite sprite;
 	auto scene = Scene::Scene::LoadFromObj("Resources/CornellBox.obj");
 	Tricible::Renderer renderer(width, height, 0, scene);
+	renderer.GetAvaialableHardware();
 	sf::String fpsCount;
 	SetupScene(&renderer);
 	std::clock_t start;
