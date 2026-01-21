@@ -3,7 +3,7 @@
 ## Contribs:
 ##
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
 project(TricibleEngine)
 
 execute_process(COMMAND ${PROJECT_SOURCE_DIR}/CMakeScript.py -s ${CMAKE_PROJECT_NAME} -d ${PROJECT_SOURCE_DIR} -p ${PROJECT_NAME})
