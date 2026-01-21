@@ -14,6 +14,11 @@ set (DIR_LIB_SFML_ROOT ${DIR_LIB_EXT}/SFML)
 set(STATIC_LIB_EXT lib)
 set(STATIC_LIB_PREFIX "")
 
+set(OpenCL_INCLUDE_DIR "C:/Program Files/OpenCL-SDK/include")
+set(OpenCL_LIBRARY "C:/Program Files/OpenCL-SDK/lib/OpenCL.lib")
+
+find_package(OpenCL REQUIRED)
+
 if (MINGW)
     set(DIR_COMPILER GCC_SJLJ_4_8_1)
     set(STATIC_LIB_EXT a)
