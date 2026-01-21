@@ -63,7 +63,7 @@ include_directories(${DIR_LIB_SFML_ROOT}/include)
 include_directories(${DIR_LIB_EXT}/FreeImage/${DIR_ARCH}/)
 include_directories(${DIR_LIB_EXT})
 
-find_package( OpenCL REQUIRED )
+
 
 TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-graphics.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-graphics-d.${STATIC_LIB_EXT})
 TARGET_LINK_LIBRARIES(TricibleGUI optimized ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-window.${STATIC_LIB_EXT} debug ${DIR_LIB_SFML}/${STATIC_LIB_PREFIX}sfml-window-d.${STATIC_LIB_EXT})

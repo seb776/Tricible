@@ -204,8 +204,8 @@ IF(OPENCL_LIBRARIES )
 	SET( OPENCL_FOUND "YES" )
 ENDIF(OPENCL_LIBRARIES)
 
-find_package( OpenCL REQUIRED )
 
+TARGET_LINK_LIBRARIES(TricibleEngine ${OpenCL_LIBRARIES})
 target_link_libraries(
 	TricibleEngine
 	optimized

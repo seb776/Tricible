@@ -10,7 +10,7 @@
 
 namespace Tricible
 {
-
+	// TODO resize function
 	class Texture
 	{
 	public:
@@ -18,7 +18,8 @@ namespace Tricible
 		int _height;
 		FIBITMAP* _image;
 	public:
-		Texture()
+		Texture() :
+			_width(0), _height(0)
 		{
 
 		}

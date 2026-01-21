@@ -42,7 +42,7 @@ namespace Tricible
 		TRICIBLE_FORCEINLINE float Length() const
 		{
 			float l = this->LengthSquare();
-			return sqrtf(l); // TODO courte_p : Renvoyer une valeur absolue ? ou laisser comme ça ? z0rg: c'est déjà une valeur absolue
+			return sqrtf(l);
 		}
 
 		TRICIBLE_FORCEINLINE Point3 Normalize() const
