@@ -31,6 +31,11 @@ namespace Tricible
 			}
 			Scene *scene = new Scene();
 			int iShape = 0;
+
+			// TODO issue is probably there 
+			// Try to match this implementation
+			// TODO take attributes (uv, normals...)
+			// https://github.com/tinyobjloader/tinyobjloader/blob/release/examples/viewer/viewer.cc
 			for (auto& shape : shapes)
 			{
 

@@ -98,8 +98,8 @@ namespace Tricible
 		Color::RGB RenderPixel(const Point3& pixelVec, const IntersectionInfo& interInfo)
 		{
 
-			Color::RGB finalColor;
-			Color::RGB diffuseColor;
+			Color::RGB finalColor = Color::RGB(0, 0, 0);
+			Color::RGB diffuseColor = Color::RGB(0, 0, 0);
 
 			if (interInfo.Object != nullptr)
 			{
@@ -142,7 +142,7 @@ namespace Tricible
 					finalColor = Scene->BackgroundColor;
 				}
 			}
-			return finalColor;
+			return finalColor + Color::RGB(42,42,42);
 		}
 
 		void Render()

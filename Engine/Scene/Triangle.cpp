@@ -7,42 +7,42 @@ using namespace Tricible;
 
 bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 {
-	//const float EPSILON = 0.0000001;
-	//Point3 vertex0 = this->_a;
-	//Point3 vertex1 = this->_b;
-	//Point3 vertex2 = this->_c;
-	//Point3 edge1, edge2, h, s, q;
-	//float a, f, u, v;
-	//edge1 = vertex1 - vertex0;
-	//edge2 = vertex2 - vertex0;
-	//h = vec.Cross(edge2);
-	//a = edge1.Dot(h);
-	//if (a > -EPSILON && a < EPSILON)
-	//	return false;
-	//f = 1 / a;
-	//s = origin - vertex0;
-	//u = f * (s.Dot(h));
-	//if (u < 0.0 || u > 1.0)
-	//	return false;
-	//q = s.Cross(edge1);
-	//v = f * vec.Dot(q);
-	//if (v < 0.0 || u + v > 1.0)
-	//	return false;
-	//// At this stage we can compute t to find out where the intersection point is on the line.
-	//float t = f * edge2.Dot(q);
-	//if (t > EPSILON) // ray intersection
-	//{
-	//	//outIntersectionPoint = origin + vec * t;
-	//	interInfo->Primitive = this;
-	//	interInfo->Distance = t;
-	//	interInfo->Origin = origin;
-	//	interInfo->Direction = vec;
-	//	interInfo->Intersection = origin + vec * t;
-	//	return true;
-	//}
-	//else // This means that there is a line intersection but not a ray intersection.
-	//	return false;
-	//return false;
+	const float EPSILON = 0.0000001;
+	Point3 vertex0 = this->_a;
+	Point3 vertex1 = this->_b;
+	Point3 vertex2 = this->_c;
+	Point3 edge1, edge2, h, s, q;
+	float a, f, u, v;
+	edge1 = vertex1 - vertex0;
+	edge2 = vertex2 - vertex0;
+	h = vec.Cross(edge2);
+	a = edge1.Dot(h);
+	if (a > -EPSILON && a < EPSILON)
+		return false;
+	f = 1 / a;
+	s = origin - vertex0;
+	u = f * (s.Dot(h));
+	if (u < 0.0 || u > 1.0)
+		return false;
+	q = s.Cross(edge1);
+	v = f * vec.Dot(q);
+	if (v < 0.0 || u + v > 1.0)
+		return false;
+	// At this stage we can compute t to find out where the intersection point is on the line.
+	float t = f * edge2.Dot(q);
+	if (t > EPSILON) // ray intersection
+	{
+		//outIntersectionPoint = origin + vec * t;
+		interInfo->Primitive = this;
+		interInfo->Distance = t;
+		interInfo->Origin = origin;
+		interInfo->Direction = vec;
+		interInfo->Intersection = origin + vec * t;
+		return true;
+	}
+	else // This means that there is a line intersection but not a ray intersection.
+		return false;
+	return false;
 
 	if (this->Plane::IntersectsRay(origin, vec, interInfo, nearClip, farClip))
 	{
@@ -65,7 +65,7 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol) 
 	_a = a;
 	_b = b;
 	_c = c;
-	_position = a;
+	_position = Point3(0.f,0.f,0.f);
 
 	Point3 norm = (b - a).Cross(c - a);
 	norm.Normalize();
