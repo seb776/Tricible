@@ -7,42 +7,42 @@ using namespace Tricible;
 
 bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 {
-	const float EPSILON = 0.0000001;
-	Point3 vertex0 = this->_a;
-	Point3 vertex1 = this->_b;
-	Point3 vertex2 = this->_c;
-	Point3 edge1, edge2, h, s, q;
-	float a, f, u, v;
-	edge1 = vertex1 - vertex0;
-	edge2 = vertex2 - vertex0;
-	h = vec.Cross(edge2);
-	a = edge1.Dot(h);
-	if (a > -EPSILON && a < EPSILON)
-		return false;
-	f = 1 / a;
-	s = origin - vertex0;
-	u = f * (s.Dot(h));
-	if (u < 0.0 || u > 1.0)
-		return false;
-	q = s.Cross(edge1);
-	v = f * vec.Dot(q);
-	if (v < 0.0 || u + v > 1.0)
-		return false;
-	// At this stage we can compute t to find out where the intersection point is on the line.
-	float t = f * edge2.Dot(q);
-	if (t > EPSILON) // ray intersection
-	{
-		//outIntersectionPoint = origin + vec * t;
-		interInfo->Primitive = this;
-		interInfo->Distance = t;
-		interInfo->Origin = origin;
-		interInfo->Direction = vec;
-		interInfo->Intersection = origin + vec * t;
-		return true;
-	}
-	else // This means that there is a line intersection but not a ray intersection.
-		return false;
-	return false;
+	//const float EPSILON = 0.0000001;
+	//Point3 vertex0 = this->_a;
+	//Point3 vertex1 = this->_b;
+	//Point3 vertex2 = this->_c;
+	//Point3 edge1, edge2, h, s, q;
+	//float a, f, u, v;
+	//edge1 = vertex1 - vertex0;
+	//edge2 = vertex2 - vertex0;
+	//h = vec.Cross(edge2);
+	//a = edge1.Dot(h);
+	//if (a > -EPSILON && a < EPSILON)
+	//	return false;
+	//f = 1 / a;
+	//s = origin - vertex0;
+	//u = f * (s.Dot(h));
+	//if (u < 0.0 || u > 1.0)
+	//	return false;
+	//q = s.Cross(edge1);
+	//v = f * vec.Dot(q);
+	//if (v < 0.0 || u + v > 1.0)
+	//	return false;
+	//// At this stage we can compute t to find out where the intersection point is on the line.
+	//float t = f * edge2.Dot(q);
+	//if (t > EPSILON) // ray intersection
+	//{
+	//	//outIntersectionPoint = origin + vec * t;
+	//	interInfo->Primitive = this;
+	//	interInfo->Distance = t;
+	//	interInfo->Origin = origin;
+	//	interInfo->Direction = vec;
+	//	interInfo->Intersection = origin + vec * t;
+	//	return true;
+	//}
+	//else // This means that there is a line intersection but not a ray intersection.
+	//	return false;
+	//return false;
 
 	if (this->Plane::IntersectsRay(origin, vec, interInfo, nearClip, farClip))
 	{
@@ -65,9 +65,9 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol) 
 	_a = a;
 	_b = b;
 	_c = c;
-	_position = Point3(0.f,0.f,0.f);
+	_position = a;//Point3(0.f, 0.f, 0.f);
 
-	Point3 norm = (b - a).Cross(c - a);
+	Point3 norm = (_c - _a).Cross(_b - _a);
 	norm.Normalize();
 	_normal = norm;
 
@@ -125,27 +125,48 @@ bool Triangle::IsInside(const Point3& a, const Point3& b, const Point3& c, const
 	//}
 	//return false;
 
+	Point3 n = (b - a).Cross(c - a);
+	n.Normalize();
+	Point3 p_proj = point - n * n.Dot(point - a); // project point onto plane
+
+	Point3 v0 = b - a;
+	Point3 v1 = c - a;
+	Point3 v2 = p_proj - a;
+
+	float dot00 = v0.Dot(v0);
+	float dot01 = v0.Dot(v1);
+	float dot02 = v0.Dot(v2);
+	float dot11 = v1.Dot(v1);
+	float dot12 = v1.Dot(v2);
+
+	float invDenom = 1.0f / (dot00 * dot11 - dot01 * dot01);
+	float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+	float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+	float w = 1.0f - u - v;
+
+	const float EPS = 1e-5f;  // world-scale tolerance
+	return (u >= -EPS) && (v >= -EPS) && (w >= -EPS);
 
 	// Compute vectors        
-	auto v0 = c - a;
-	auto v1 = b - a;
-	auto v2 = point - a;
+	//auto v0 = c - a;
+	//auto v1 = b - a;
+	//auto v2 = point - a;
 
-	// Compute dot products
-	const float	dot00 = v0.Dot(v0);
-	const float	dot01 = v0.Dot(v1);
-	const float	dot02 = v0.Dot(v2);
-	const float	dot11 = v1.Dot(v1);
-	const float	dot12 = v1.Dot(v2);
+	//// Compute dot products
+	//const float	dot00 = v0.Dot(v0);
+	//const float	dot01 = v0.Dot(v1);
+	//const float	dot02 = v0.Dot(v2);
+	//const float	dot11 = v1.Dot(v1);
+	//const float	dot12 = v1.Dot(v2);
 
-	// Compute barycentric coordinates
-	float invDenom = 1.f / (dot00 * dot11 - dot01 * dot01);
-	float v = (dot11 * dot02 - dot01 * dot12) * invDenom;
-	float w = (dot00 * dot12 - dot01 * dot02) * invDenom;
-	float u = 1.0f - v - w;
-	// Check if point is in triangle
-	const float epsilon = std::numeric_limits<float>::epsilon();
-	return (u > -epsilon) && (v > -epsilon) && (u + v < 1.f);
+	//// Compute barycentric coordinates
+	//float invDenom = 1.f / (dot00 * dot11 - dot01 * dot01);
+	//float v = (dot11 * dot02 - dot01 * dot12) * invDenom;
+	//float w = (dot00 * dot12 - dot01 * dot02) * invDenom;
+	//float u = 1.0f - v - w;
+	//// Check if point is in triangle
+	//const float epsilon = std::numeric_limits<float>::epsilon();
+	//return (u > -epsilon) && (v > -epsilon) && (u + v < 1.f);
 }
 
 

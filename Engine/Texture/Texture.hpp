@@ -37,8 +37,10 @@ namespace Tricible
 
 		bool LoadFromPath(std::string filePath)
 		{
-			auto imgType = FreeImage_GetFileType(filePath.c_str(), 0);
-			_image = FreeImage_Load(imgType, filePath.c_str());
+			auto& exePath = GetCurrentExecutableDirectory();
+			auto& fixedFilepath = PathCombine(exePath, filePath);
+			auto imgType = FreeImage_GetFileType(fixedFilepath.c_str(), 0);
+			_image = FreeImage_Load(imgType, fixedFilepath.c_str());
 			_height = FreeImage_GetHeight(_image);
 			_width = FreeImage_GetWidth(_image);
 			return true;

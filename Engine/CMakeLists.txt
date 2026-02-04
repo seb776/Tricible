@@ -148,6 +148,7 @@ set(
 	"./Tools/Interpolation.cpp"
 	"./Tools/Point3.cpp"
 	"./Tools/RNG.cpp"
+	"./Tools/Tools.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"

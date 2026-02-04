@@ -12,7 +12,7 @@ namespace Tricible
 		{
 			interInfo->Primitive = this;
 			interInfo->Distance = distL;
-			interInfo->Intersection = origin + vec * interInfo->Distance;
+			interInfo->Intersection = origin + vec * distL;
 			interInfo->Direction = vec;
 			interInfo->Origin = origin;
 			return true;

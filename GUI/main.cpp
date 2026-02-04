@@ -14,6 +14,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <ctime>
 #include <string>
+
 #include "../Engine/Scene/Scene.hpp"
 #include "../Engine/Scene/Plane.hpp"
 #include "../Engine/Scene/Sphere.hpp"
@@ -23,18 +24,21 @@
 
 using namespace Tricible;
 
+// TODO Move this
 void SetupScene(Tricible::Renderer* renderer)
 {
+	auto& curDir = GetCurrentExecutableDirectory();
+
+	renderer->Scene = Scene::Scene::LoadFromObj(PathCombine(curDir, "./Resources/test.obj"));
 	renderer->Scene->Objects.push_back(new Scene::Sphere());
 	renderer->Scene->Objects.push_back(new Plane());
 	//renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
 	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(20.f, 20.f, 20.f), 1.f));
 	//renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
 	renderer->Scene->Skymap = new Texture("Resources/Outside.jpg");
-	//renderer->Scene->LoadFromObj("Resources/test.obj");
 }
 
-// courte_p : J'ai découpé la partie du "main" qui s'occupe de gérer la translation de la caméra via les événements de la SFML
+// TODO move this
 void translateCamera(Tricible::Renderer* renderer, const Tricible::Point3& vecOrigin)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -55,11 +59,11 @@ void translateCamera(Tricible::Renderer* renderer, const Tricible::Point3& vecOr
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add))
 	{
-		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw + 0.01f);
+		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw + 0.01f);  // TODO Make constant
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract))
 	{
-		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw - 0.01f);
+		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw - 0.01f);  // TODO Make constant
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
@@ -79,9 +83,8 @@ int main()
 	sf::Texture	texture;
 	sf::Sprite sprite;
 
-	auto scene = Scene::Scene::LoadFromObj("Resources/CornellBoxTri.obj");
-	Tricible::Renderer renderer(width, height, 0, scene);
-	renderer.GetAvaialableHardware();
+	Tricible::Renderer renderer(width, height, 0);
+	renderer.GetAvailableHardware();
 
 	SetupScene(&renderer);
 
@@ -130,7 +133,7 @@ int main()
 					sf::Vector2i currentMousePos = sf::Vector2i(event.mouseMove.x, event.mouseMove.y);
 					sf::Vector2f mouseDelta = (sf::Vector2f)lastMousePos - (sf::Vector2f)currentMousePos;
 
-					const float mouseSensitivity = -0.0005f;
+					const float mouseSensitivity = -0.0005f; // TODO Make constant
 					mouseDelta *= mouseSensitivity;
 					renderer.Scene->CurrentCamera->SetPitch(renderer.Scene->CurrentCamera->pitch - (mouseDelta.x));
 					renderer.Scene->CurrentCamera->SetYaw(renderer.Scene->CurrentCamera->yaw - (mouseDelta.y));

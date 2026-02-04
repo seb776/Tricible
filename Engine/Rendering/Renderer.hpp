@@ -12,27 +12,32 @@
 #include "../Scene/Camera.hpp"
 #include "../Tools/Tools.hpp"
 
+#include <vector>
+#include <thread>
+#include <functional>
+#include <algorithm>
+#include <iostream>
+#include <ppl.h>
+
 namespace Tricible
 {
 	class Renderer
 	{
 	public:
-		int *image;
+		int* image;
 		int _resX;
 		int _resY;
-		Scene::Scene *Scene;
-		/*	std::vector<AIntersectable *>	_objects;
-			std::vector<ALight *>	_lights;
-			Camera _camera;*/
+		Scene::Scene* Scene;
+
 	public:
-		Renderer(int resX, int resY, int bpp, Scene::Scene *scene) :Scene(scene)
+		Renderer(int resX, int resY, int bpp)
 		{
 			_resX = resX;
 			_resY = resY;
 			image = new int[resX * resY];
 		}
 
-		void GetAvaialableHardware()
+		void GetAvailableHardware()
 		{
 			std::vector<cl::Platform> platforms;
 			cl::Platform::get(&platforms);
@@ -95,9 +100,37 @@ namespace Tricible
 			return Color::RGB(colDist, colDist, colDist);
 		}
 
+		void parallel_fora(size_t start, size_t end, std::function<void(size_t)> func, size_t num_threads = std::thread::hardware_concurrency())
+		{
+			if (num_threads == 0) num_threads = std::thread::hardware_concurrency();
+			if (num_threads == 0) num_threads = 1; // fallback
+
+			size_t total = end - start;
+			size_t chunk_size = (total + num_threads - 1) / num_threads; // ceil division
+
+			std::vector<std::thread> threads;
+
+			for (size_t t = 0; t < num_threads; ++t)
+			{
+				size_t chunk_start = start + t * chunk_size;
+				size_t chunk_end = std::min(chunk_start + chunk_size, end);
+
+				if (chunk_start >= chunk_end) break; // no work for this thread
+
+				threads.emplace_back([chunk_start, chunk_end, &func]() {
+					for (size_t i = chunk_start; i < chunk_end; ++i)
+					func(i);
+					});
+			}
+
+			for (auto& th : threads)
+				th.join();
+		}
+
 		Color::RGB RenderPixel(const Point3& pixelVec, const IntersectionInfo& interInfo)
 		{
-
+			if (!Scene)
+				return Color::RGB();
 			Color::RGB finalColor = Color::RGB(0, 0, 0);
 			Color::RGB diffuseColor = Color::RGB(0, 0, 0);
 
@@ -116,14 +149,14 @@ namespace Tricible
 					diffuseColor = this->Scene->DefaultDiffuseMaterial.DiffuseColor;
 				}
 
-				for (ALight *l : Scene->Lights)
+				for (ALight* l : Scene->Lights)
 				{
 					Point3 tmp = (l->getPosition() - interInfo.Intersection);
 					tmp.Normalize();
 					const float mult = Clamp01(tmp.Dot(normal));
 					if (mult > 0.f)
 					{
-						Color::RGB currentColor = diffuseColor *mult * l->intensity;
+						Color::RGB currentColor = diffuseColor * mult * l->intensity;
 						finalColor += currentColor;
 					}
 				}
@@ -142,32 +175,33 @@ namespace Tricible
 					finalColor = Scene->BackgroundColor;
 				}
 			}
-			return finalColor + Color::RGB(42,42,42);
+			return finalColor + Color::RGB(42, 42, 42);
 		}
 
 		void Render()
 		{
+			if (!Scene)
+				return;
 			auto& camera = *Scene->CurrentCamera;
-			for (int y = 0; y < _resY; ++y)
-			{
-				for (int x = 0; x < _resX; ++x)
+			//for (int y = 0; y < _resY; ++y)
+			concurrency::parallel_for(0, _resY, [&](int y)
 				{
-					Point3 vec;
-					camera.GetRay(x - (_resX * .5f), y - (_resY * .5f), vec);
-					vec.Normalize();
-					Color::RGB finalColor = Color::RGB();
-					float nearestDist = -1.f;
-					// IntersectionInfo *retainedInter;
-					Point3 normVec = vec;
-					normVec.Normalize();
-					IntersectionInfo interInfo = IntersectionInfo();
+					for (int x = 0; x < _resX; ++x)
+					{
 
-					Scene->IntersectsRay(camera.getPosition() + vec, vec, &interInfo, camera.NearClip, camera.FarClip);
-					finalColor = RenderPixel(normVec, interInfo);
-					//finalColor = RenderDepth(interInfo.Distance, 100.0f);
-					image[x + y * _resX] = finalColor.ToInt();
-				}
-			}
+						Point3 rayDir;
+						camera.GetRay(x - (_resX * .5f), y - (_resY * .5f), rayDir);
+						rayDir.Normalize();
+
+						IntersectionInfo interInfo = IntersectionInfo();
+						Scene->IntersectsRay(camera.getPosition() + rayDir, rayDir, &interInfo, camera.NearClip, camera.FarClip);
+
+						Color::RGB finalColor = RenderPixel(rayDir, interInfo);
+						//finalColor = RenderDepth(interInfo.Distance, 100.0f);
+						image[x + y * _resX] = finalColor.ToInt();
+					}
+
+				});
 		}
 	};
 }

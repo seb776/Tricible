@@ -2,6 +2,7 @@
 
 #include <type_traits>
 #include <time.h>
+#include <string>
 
 namespace Tricible
 {
@@ -37,4 +38,9 @@ namespace Tricible
 	{
 		return Clamp01(value, min, max);
 	}
+
+	std::string GetCurrentDirectory();
+	std::string GetCurrentExecutableDirectory();
+	std::string PathCombine(const std::string& a, const std::string& b);
+
 }

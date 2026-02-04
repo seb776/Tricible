@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include "Macros.hpp"
 #include <math.h>
 
@@ -130,6 +131,14 @@ namespace Tricible
 		static const Point3 down;
 		static const Point3 left;
 		static const Point3 right;
+
+		TRICIBLE_FORCEINLINE std::string ToString() const
+		{
+			std::stringstream ss;
+
+			ss << "(" << _x << ", " << _y << ", " << _z << ")";
+			return ss.str();
+		}
 	};
 }
 
