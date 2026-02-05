@@ -34,8 +34,8 @@ namespace Tricible
 			static Scene *LoadFromObj(const std::string& filePath);
 
 			// Inherited via AIntersectable
-			virtual bool IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip) override;
-			virtual void ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal) override;
+			virtual bool IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip) override;
+			virtual void ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal) override;
 		};
 	}
 }

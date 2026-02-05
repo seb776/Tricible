@@ -33,13 +33,13 @@ void SetupScene(Tricible::Renderer* renderer)
 	renderer->Scene->Objects.push_back(new Scene::Sphere());
 	renderer->Scene->Objects.push_back(new Plane());
 	//renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
-	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Point3(20.f, 20.f, 20.f), 1.f));
+	renderer->Scene->Lights.push_back(new ALight(0xFF424242, Vector3(20.f, 20.f, 20.f), 1.f));
 	//renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
 	renderer->Scene->Skymap = new Texture("Resources/Outside.jpg");
 }
 
 // TODO move this
-void translateCamera(Tricible::Renderer* renderer, const Tricible::Point3& vecOrigin)
+void translateCamera(Tricible::Renderer* renderer, const Tricible::Vector3& vecOrigin)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
@@ -67,11 +67,11 @@ void translateCamera(Tricible::Renderer* renderer, const Tricible::Point3& vecOr
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		renderer->Scene->CurrentCamera->AddPosition(Tricible::Point3::up);
+		renderer->Scene->CurrentCamera->AddPosition(Tricible::Vector3::up);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 	{
-		renderer->Scene->CurrentCamera->AddPosition(Tricible::Point3::down);
+		renderer->Scene->CurrentCamera->AddPosition(Tricible::Vector3::down);
 	}
 }
 
@@ -100,8 +100,8 @@ int main()
 	}
 	window.setKeyRepeatEnabled(true);
 
-	Tricible::Point3 vecOrigin(1.f, 0.f, .0f);
-	Tricible::Point3 curDir;
+	Tricible::Vector3 vecOrigin(1.f, 0.f, .0f);
+	Tricible::Vector3 curDir;
 	int iFrameCount = 0;
 	bool isMouseLocked = false;
 	sf::Vector2i lastMousePos = sf::Vector2i(0, 0);
@@ -140,8 +140,8 @@ int main()
 
 					uint32_t maxMousePosRadius = min(window.getSize().x, window.getSize().y) / 3;
 					sf::Vector2f windowCenter = (sf::Vector2f)window.getSize() / 2.0f;
-					Point3 curMousePos = Point3(currentMousePos.x, currentMousePos.y, 0.0f);
-					Point3 winCenter = Point3(windowCenter.x, windowCenter.y, 0.0f);
+					Vector3 curMousePos = Vector3(currentMousePos.x, currentMousePos.y, 0.0f);
+					Vector3 winCenter = Vector3(windowCenter.x, windowCenter.y, 0.0f);
 					if ((curMousePos - winCenter).Length() > maxMousePosRadius) {
 						sf::Mouse::setPosition(sf::Vector2i((int)windowCenter.x, (int)windowCenter.y), window);
 						lastMousePos = (sf::Vector2i)windowCenter;

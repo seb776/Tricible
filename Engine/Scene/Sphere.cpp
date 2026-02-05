@@ -24,13 +24,13 @@ namespace Tricible
 
 			radius = static_cast<float>(a);
 			radiusSqr = static_cast<float>(a * a);
-			_position = Tricible::Point3(55.f, 0.f, 0.f);
+			_position = Tricible::Vector3(55.f, 0.f, 0.f);
 			this->Material = nullptr;
 		}
 
-		bool Sphere::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip)
+		bool Sphere::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip)
 		{
-			Point3 oc = origin - _position;
+			Vector3 oc = origin - _position;
 			float ocl = oc.Length();
 			//oc.Normalize();
 			float frontDot = vec.Dot(oc);
@@ -57,14 +57,14 @@ namespace Tricible
 			return true;
 		}
 
-		Point3 Sphere::ComputeUV(const Point3& normal)
+		Vector3 Sphere::ComputeUV(const Vector3& normal)
 		{
-			Point3 uvw((atan2f(normal._x, normal._z) + M_PI) / M_PI2, (asinf(normal._y) / M_PI_2) * 0.5f + 0.5f, 0.0f);
+			Vector3 uvw((atan2f(normal._x, normal._z) + M_PI) / M_PI2, (asinf(normal._y) / M_PI_2) * 0.5f + 0.5f, 0.0f);
 			
 			return uvw;
 		}
 
-		void Sphere::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
+		void Sphere::ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal)
 		{
 			normal = _position - interInfo.Intersection;
 			normal.Normalize();

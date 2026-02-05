@@ -1,6 +1,6 @@
 #include "Mesh.hpp"
 
-bool Tricible::Scene::Mesh::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
+bool Tricible::Scene::Mesh::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 {
 	float nearestDist = -1.0f;
 	interInfo->Origin = origin;
@@ -32,7 +32,7 @@ bool Tricible::Scene::Mesh::IntersectsRay(const Point3 & origin, const Point3 & 
 	return false;
 }
 
-void Tricible::Scene::Mesh::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
+void Tricible::Scene::Mesh::ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal)
 {
 	// TODO
 	interInfo.Primitive->ComputeNormal(interInfo, normal);

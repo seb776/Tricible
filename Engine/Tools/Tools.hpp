@@ -34,9 +34,9 @@ namespace Tricible
 	}
 
 	template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-	T Saturate(T value, T min, T max)
+	T Saturate(T value)
 	{
-		return Clamp01(value, min, max);
+		return Clamp01(value);
 	}
 
 	std::string GetCurrentDirectory();

@@ -146,9 +146,9 @@ set(FOLDER_GROUP Tools)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
 	"./Tools/Interpolation.cpp"
-	"./Tools/Point3.cpp"
 	"./Tools/RNG.cpp"
 	"./Tools/Tools.cpp"
+	"./Tools/Vector3.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
@@ -156,10 +156,10 @@ set(
 	"./Tools/Interpolation.hpp"
 	"./Tools/Interpolation.tpp"
 	"./Tools/Macros.hpp"
-	"./Tools/Point3.hpp"
 	"./Tools/RNG.hpp"
 	"./Tools/RNG.tpp"
 	"./Tools/Tools.hpp"
+	"./Tools/Vector3.hpp"
 )
 source_group(
 	"${FOLDER_GROUP}\\"

@@ -30,7 +30,8 @@ namespace Tricible
 		Scene::Scene* Scene;
 
 	public:
-		Renderer(int resX, int resY, int bpp)
+		Renderer(int resX, int resY, int bpp) :
+			Scene(nullptr)
 		{
 			_resX = resX;
 			_resY = resY;
@@ -78,7 +79,7 @@ namespace Tricible
 
 
 
-		Color::RGB RenderNormalizedVecAsNormal(const Point3& vecToVisualizeAsCol, const IntersectionInfo& interInfo)
+		Color::RGB RenderNormalizedVecAsNormal(const Vector3& vecToVisualizeAsCol, const IntersectionInfo& interInfo)
 		{
 			return Color::RGB((vecToVisualizeAsCol._x * 0.5f + 0.5f) * 255.0f, (vecToVisualizeAsCol._y * 0.5f + 0.5f) * 255.0f, (vecToVisualizeAsCol._z * 0.5f + 0.5f) * 255.0f);
 		}
@@ -99,7 +100,7 @@ namespace Tricible
 			uint8_t colDist = Clamp((int32_t)(255 * (1.0f - Clamp01(value / distMax))), 0, 255);
 			return Color::RGB(colDist, colDist, colDist);
 		}
-
+		// TODO Fix this implem and move it
 		void parallel_fora(size_t start, size_t end, std::function<void(size_t)> func, size_t num_threads = std::thread::hardware_concurrency())
 		{
 			if (num_threads == 0) num_threads = std::thread::hardware_concurrency();
@@ -127,7 +128,7 @@ namespace Tricible
 				th.join();
 		}
 
-		Color::RGB RenderPixel(const Point3& pixelVec, const IntersectionInfo& interInfo)
+		Color::RGB RenderPixel(const Vector3& pixelVec, const IntersectionInfo& interInfo)
 		{
 			if (!Scene)
 				return Color::RGB();
@@ -136,7 +137,7 @@ namespace Tricible
 
 			if (interInfo.Object != nullptr)
 			{
-				Point3 normal = Point3(1.0, 1.0, 1.0);
+				Vector3 normal = Vector3(1.0, 1.0, 1.0);
 				interInfo.Object->ComputeNormal(interInfo, normal);
 
 				// Texture / material lookup
@@ -151,7 +152,7 @@ namespace Tricible
 
 				for (ALight* l : Scene->Lights)
 				{
-					Point3 tmp = (l->getPosition() - interInfo.Intersection);
+					Vector3 tmp = (l->getPosition() - interInfo.Intersection);
 					tmp.Normalize();
 					const float mult = Clamp01(tmp.Dot(normal));
 					if (mult > 0.f)
@@ -165,7 +166,7 @@ namespace Tricible
 			{
 				if (Scene->Skymap != nullptr)
 				{
-					Point3 normVec = pixelVec.Normalize();
+					Vector3 normVec = pixelVec.Normalize();
 					auto uvw = Scene::Sphere::ComputeUV(normVec);
 					finalColor = Scene->Skymap->Get360Pixel(uvw._x, uvw._y);
 					//finalColor = Scene->Skymap->Get360PixelBilinearInterpolation(uvw._x, uvw._y);
@@ -189,7 +190,7 @@ namespace Tricible
 					for (int x = 0; x < _resX; ++x)
 					{
 
-						Point3 rayDir;
+						Vector3 rayDir;
 						camera.GetRay(x - (_resX * .5f), y - (_resY * .5f), rayDir);
 						rayDir.Normalize();
 

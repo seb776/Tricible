@@ -4,7 +4,7 @@
 namespace Tricible
 {
 	// https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection
-	bool Plane::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
+	bool Plane::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 	{
 		float distL = (_position - origin).Dot(_normal) / vec.Dot(_normal);
 
@@ -20,7 +20,7 @@ namespace Tricible
 		return false;
 	}
 
-	void Plane::ComputeNormal(const IntersectionInfo & interInfo, Point3 & normal)
+	void Plane::ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal)
 	{
 		const float res = interInfo.Direction.Dot(_normal);
 		if (res > 0.f)

@@ -12,7 +12,7 @@ namespace Tricible
 
 		AIntersectable();
 
-		virtual bool IntersectsRay(const Point3& origin, const Point3& vec, IntersectionInfo *interInfo, float nearClip, float farClip) = 0;
-		virtual void ComputeNormal(const IntersectionInfo& interInfo, Point3& normal) = 0;
+		virtual bool IntersectsRay(const Vector3& origin, const Vector3& vec, IntersectionInfo *interInfo, float nearClip, float farClip) = 0;
+		virtual void ComputeNormal(const IntersectionInfo& interInfo, Vector3& normal) = 0;
 	};
 }

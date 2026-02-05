@@ -18,14 +18,14 @@ namespace Tricible
 		int _height;
 		FIBITMAP* _image;
 	public:
-		Texture() :
-			_width(0), _height(0)
+		Texture() : Texture(0,0)
 		{
 
 		}
 
 		Texture(int width, int height) :
-			_width(width), _height(height)
+			_width(width), _height(height),
+			_image(nullptr)
 		{
 
 		}

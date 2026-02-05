@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Point3.hpp"
+#include "Vector3.hpp"
 #include <math.h>
 
 namespace Tricible
@@ -8,29 +8,29 @@ namespace Tricible
 	class Matrix3x3
 	{
 	public:
-		Point3 matrix[3];
+		Vector3 matrix[3];
 		Matrix3x3()
 		{
 			InitToIdentity();
 		}
 		void InitToIdentity()
 		{
-			matrix[0] = Point3::x;
-			matrix[1] = Point3::y;
-			matrix[2] = Point3::z;
+			matrix[0] = Vector3::x;
+			matrix[1] = Vector3::y;
+			matrix[2] = Vector3::z;
 		}
 		void InitToZero()
 		{
 			for (int i = 0; i < 3; ++i)
-				matrix[i] = Point3();
+				matrix[i] = Vector3();
 		}
 
-		Point3 operator*(const Point3& rhs) const
+		Vector3 operator*(const Vector3& rhs) const
 		{
 			float res[3];
 			for (int i = 0; i < 3; ++i)
 				res[i] = matrix[i].Dot(rhs);
-			return Point3(res[0], res[1], res[2]);
+			return Vector3(res[0], res[1], res[2]);
 		}
 
 		// https://fr.wikipedia.org/wiki/Matrice_de_rotation

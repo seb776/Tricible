@@ -5,7 +5,7 @@
 
 using namespace Tricible;
 
-bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
+bool Triangle::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 {
 	//const float EPSILON = 0.0000001;
 	//Point3 vertex0 = this->_a;
@@ -44,6 +44,46 @@ bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, Intersec
 	//	return false;
 	//return false;
 
+	// Muller thing
+	//constexpr float epsilon = std::numeric_limits<float>::epsilon();
+
+	//Vector3 edge1 = this->_b - this->_a;
+	//Vector3 edge2 = this->_c - this->_a;
+	//Vector3 ray_cross_e2 = vec.Cross(edge2);
+	//float det = edge1.Dot(ray_cross_e2);
+
+	//if (det > -epsilon && det < epsilon)
+	//	return false;    // This ray is parallel to this triangle.
+
+	//float inv_det = 1.0 / det;
+	//Vector3 s = origin - this->_a;
+	//float u = inv_det * s.Dot(ray_cross_e2);
+
+	//if ((u < 0 && abs(u) > epsilon) || (u > 1 && abs(u - 1) > epsilon))
+	//	return false;
+
+	//Vector3 s_cross_e1 = s.Cross(edge1);
+	//float v = inv_det * vec.Dot(s_cross_e1);
+
+	//if ((v < 0 && abs(v) > epsilon) || (u + v > 1 && abs(u + v - 1) > epsilon))
+	//	return false;
+
+	//// At this stage we can compute t to find out where the intersection point is on the line.
+	//float t = inv_det * edge2.Dot(s_cross_e1);
+
+	//if (t > epsilon) // ray intersection
+	//{
+	//	interInfo->Primitive = this;
+	//	interInfo->Direction = vec;
+	//	interInfo->Origin = origin;
+	//	interInfo->Intersection = Vector3(origin + vec * t);
+	//	interInfo->Distance = t;
+	//	return  true;
+	//}
+	//else // This means that there is a line intersection but not a ray intersection.
+	//	return false;
+
+
 	if (this->Plane::IntersectsRay(origin, vec, interInfo, nearClip, farClip))
 	{
 		bool res = Triangle::IsInside(_a, _b, _c, interInfo->Intersection);
@@ -59,7 +99,7 @@ bool Triangle::IntersectsRay(const Point3 & origin, const Point3 & vec, Intersec
 	return false;
 }
 
-Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol) :
+Triangle::Triangle(const Vector3& a, const Vector3& b, const Vector3& c, int iCol) :
 	Plane()
 {
 	_a = a;
@@ -67,7 +107,7 @@ Triangle::Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol) 
 	_c = c;
 	_position = a;//Point3(0.f, 0.f, 0.f);
 
-	Point3 norm = (_c - _a).Cross(_b - _a);
+	Vector3 norm = (_b - _a).Cross(_c - _a);
 	norm.Normalize();
 	_normal = norm;
 
@@ -105,17 +145,17 @@ float Sign(float sign)
 	return (sign < 0.0f ? -1.0f : 1.0f);
 }
 
-bool SameSide(Point3 p1, Point3 p2, Point3 A, Point3 B)
+bool SameSide(Vector3 p1, Vector3 p2, Vector3 A, Vector3 B)
 {
-	Point3 cp1 = (B - A).Cross(p1 - A);
-	Point3 cp2 = (B - A).Cross(p2 - A);
+	Vector3 cp1 = (B - A).Cross(p1 - A);
+	Vector3 cp2 = (B - A).Cross(p2 - A);
 	if (cp1.Dot(cp2) >= 0) return true;
 	return false;
 
 }
 
 // http://blackpawn.com/texts/pointinpoly/
-bool Triangle::IsInside(const Point3& a, const Point3& b, const Point3& c, const Point3& point)
+bool Triangle::IsInside(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& point)
 {
 	//if (SameSide(point, a, b, c) && SameSide(point, b, a, c) && SameSide(point, c, a, b))
 	//{
@@ -125,13 +165,13 @@ bool Triangle::IsInside(const Point3& a, const Point3& b, const Point3& c, const
 	//}
 	//return false;
 
-	Point3 n = (b - a).Cross(c - a);
+	Vector3 n = (b - a).Cross(c - a);
 	n.Normalize();
-	Point3 p_proj = point - n * n.Dot(point - a); // project point onto plane
+	Vector3 p_proj = point - n * n.Dot(point - a); // project point onto plane
 
-	Point3 v0 = b - a;
-	Point3 v1 = c - a;
-	Point3 v2 = p_proj - a;
+	Vector3 v0 = b - a;
+	Vector3 v1 = c - a;
+	Vector3 v2 = p_proj - a;
 
 	float dot00 = v0.Dot(v0);
 	float dot01 = v0.Dot(v1);

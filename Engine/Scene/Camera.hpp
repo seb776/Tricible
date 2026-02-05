@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Tools/Point3.hpp"
+#include "../Tools/Vector3.hpp"
 #include "../Tools/3x3Matrix.hpp"
 
 #define MOVEMENTS_SPEED 1.f
@@ -43,8 +43,9 @@ namespace Tricible
 			FarClip = 10000.f;
 		}
 
-		void GetRay(int x_, int y_, Point3& vec)
+		void GetRay(int x_, int y_, Vector3& vec)
 		{
+			// TODO Replace 80 by FOV Calculation
 			vec._x = focale;
 			vec._y = -(y_ / 80.f);
 			vec._z = x_ / 80.f;
@@ -56,7 +57,7 @@ namespace Tricible
 
 		void MoveForward()
 		{
-			Point3 vecForward = yawMat * (pitchMat *  Point3::forward);
+			Vector3 vecForward = yawMat * (pitchMat *  Vector3::forward);
 			//Point3 vecForward(lookAt - position);
 
 			vecForward.Normalize();
@@ -66,7 +67,7 @@ namespace Tricible
 
 		void MoveBackward()
 		{
-			Point3 vecBackward = yawMat * (pitchMat *  Point3::backward);
+			Vector3 vecBackward = yawMat * (pitchMat *  Vector3::backward);
 
 			vecBackward.Normalize();
 
@@ -74,7 +75,7 @@ namespace Tricible
 		}
 		void MoveRight()
 		{
-			Point3 vecRight = yawMat * (pitchMat *  Point3::right);
+			Vector3 vecRight = yawMat * (pitchMat *  Vector3::right);
 
 			vecRight.Normalize();
 
@@ -82,7 +83,7 @@ namespace Tricible
 		}
 		void MoveLeft()
 		{
-			Point3 vecLeft = yawMat * (pitchMat *  Point3::left);
+			Vector3 vecLeft = yawMat * (pitchMat *  Vector3::left);
 
 			vecLeft.Normalize();
 

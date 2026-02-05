@@ -7,14 +7,14 @@ namespace Tricible
 	class Triangle : public Plane
 	{
 	protected:
-		Point3 _a, _b, _c;
+		Vector3 _a, _b, _c;
 
 	public:
-		__declspec(dllexport) Triangle(const Point3& a, const Point3& b, const Point3& c, int iCol);
+		__declspec(dllexport) Triangle(const Vector3& a, const Vector3& b, const Vector3& c, int iCol);
 
-		__declspec(dllexport) static bool IsInside(const Point3& a, const Point3& b, const Point3& c, const Point3& point);
+		__declspec(dllexport) static bool IsInside(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& point);
 
 		// Inherited via AIntersectable
-		__declspec(dllexport) virtual bool IntersectsRay(const Point3 & origin, const Point3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip) override;
+		__declspec(dllexport) virtual bool IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip) override;
 	};
 }
