@@ -3,6 +3,7 @@
 #include <sstream>
 #include "Macros.hpp"
 #include <math.h>
+#include "Tools.hpp"
 
 namespace Tricible
 {
@@ -122,11 +123,26 @@ namespace Tricible
 			return Vector3(-this->_x, -this->_y, -this->_z);
 		}
 
+		TRICIBLE_FORCEINLINE static Vector3 abs(const Vector3 &a)
+		{
+			return Vector3(::abs(a._x), ::abs(a._y), ::abs(a._z));
+		}
+
 		TRICIBLE_FORCEINLINE std::string ToString() const
 		{
 			std::stringstream ss;
 			ss << "(" << _x << ", " << _y << ", " << _z << ")";
 			return ss.str();
+		}
+
+		// TODO move to cpp
+		uint32_t ToInt()
+		{
+			//return (_red << 24) + (_green << 16) + (_blue << 8) + 0xFF;
+			return 0xFF000000 + 
+				Clamp((uint32_t)(_x*255.0f), (uint32_t)0, (uint32_t)0xFF) + 
+				(Clamp((uint32_t)(_y * 255.0f), (uint32_t)0, (uint32_t)0xFF) << 8) +
+				(Clamp((uint32_t)(_z * 255.0f), (uint32_t)0, (uint32_t)0xFF) << 16);
 		}
 
 		static const Vector3 x;

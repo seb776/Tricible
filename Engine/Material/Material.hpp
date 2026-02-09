@@ -11,8 +11,8 @@ namespace Tricible
 		class Material
 		{
 		public:
-			Color::RGB	DiffuseColor;
-			Color::RGB	SpecularColor;
+			Vector3	DiffuseColor;
+			Vector3	SpecularColor;
 			float		Opacity;
 			Texture		*MainTexture;
 
@@ -21,13 +21,12 @@ namespace Tricible
 
 			}
 
-			Material(const Color::RGB& diffuse, const Color::RGB& specular) : 
+			Material(const Vector3& diffuse, const Vector3& specular) :
 				DiffuseColor(diffuse), 
 				SpecularColor(specular), 
 				Opacity(1.0f), 
 				MainTexture(nullptr)
 			{
-
 			}
 		};
 	}

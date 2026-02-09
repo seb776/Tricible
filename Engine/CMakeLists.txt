@@ -63,6 +63,7 @@ source_group(
 set(FOLDER_GROUP Rendering)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
+	"./Rendering/TestRender.cl.c"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
@@ -94,6 +95,7 @@ set(
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
+	"./Scene/AABBB.hpp"
 	"./Scene/AIntersectable.hpp"
 	"./Scene/ALight.hpp"
 	"./Scene/AObject.hpp"

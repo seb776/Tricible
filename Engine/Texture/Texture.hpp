@@ -11,6 +11,9 @@
 namespace Tricible
 {
 	// TODO resize function
+	// TODO Texture2D 1D 3D
+	// TODO Mips maps
+	// TODO Compression ?
 	class Texture
 	{
 	public:
@@ -46,15 +49,15 @@ namespace Tricible
 			return true;
 		}
 
-		Color::RGB GetPixel(uint32_t x, uint32_t y)
+		Vector3 GetPixel(uint32_t x, uint32_t y)
 		{
 			RGBQUAD color;
 			FreeImage_GetPixelColor(_image, x, y, &color);
-			Color::RGB col = Color::RGB(color.rgbRed, color.rgbGreen, color.rgbBlue);
+			Vector3 col = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue)/255.0f;
 			return col;
 		}
 
-		Color::RGB Get360Pixel(float u, float v)
+		Vector3 Get360Pixel(float u, float v)
 		{
 			uint32_t x;
 			uint32_t y;
@@ -64,11 +67,11 @@ namespace Tricible
 			x = (uint32_t)(factX * (_width - 1U));
 			y = (uint32_t)(factY * (_height - 1U));
 			auto ret = FreeImage_GetPixelColor(_image, x, y, &color);
-			Color::RGB col = Color::RGB(color.rgbRed, color.rgbGreen, color.rgbBlue);
+			Vector3 col = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue) / 255.0f;
 			return col;
 		}
 
-		Color::RGB Get360PixelBilinearInterpolation(float u, float v)
+		Vector3 Get360PixelBilinearInterpolation(float u, float v)
 		{
 			u = u * this->_width - 0.5f;
 			v = v * this->_height - 0.5f;
@@ -79,7 +82,7 @@ namespace Tricible
 			float u_opposite = 1.0f - u_ratio;
 			float v_opposite = 1.0f - v_ratio;
 
-			Color::RGB outColor = (GetPixel(x, y) * u_opposite + GetPixel(x + 1, y) * u_ratio) * v_opposite +
+			Vector3 outColor = (GetPixel(x, y) * u_opposite + GetPixel(x + 1, y) * u_ratio) * v_opposite +
 				(GetPixel(x, y + 1) * u_opposite + GetPixel(x + 1, y + 1) * u_ratio) * v_ratio;
 
 			return outColor;

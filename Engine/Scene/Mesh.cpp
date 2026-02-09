@@ -41,3 +41,15 @@ void Tricible::Scene::Mesh::ComputeNormal(const IntersectionInfo & interInfo, Ve
 	//normalDir.Normalize();
 	//normal = normalDir;
 }
+
+Tricible::AABB Tricible::Scene::Mesh::GetAABB() const
+{
+	if (this->BoundingBox.Volume() < std::numeric_limits<float>::epsilon()) 
+	{
+		for (const auto& sub : SubMeshes)
+		{
+
+		}
+	}
+	return AABB();
+}

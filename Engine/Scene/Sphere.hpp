@@ -27,6 +27,7 @@ namespace Tricible
 			virtual void ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal) override;
 
 			static Vector3 ComputeUV(const Vector3& normal);
+			virtual AABB GetAABB() const override;
 
 			virtual ~Sphere();
 		};

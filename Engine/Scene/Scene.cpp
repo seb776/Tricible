@@ -110,5 +110,9 @@ namespace Tricible
 				interInfo.Object->ComputeNormal(interInfo, normal);
 			}
 		}
+		AABB Scene::GetAABB() const
+		{
+			return AABB();
+		}
 	}
 }

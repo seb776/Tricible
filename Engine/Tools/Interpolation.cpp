@@ -1,8 +1,5 @@
-// Standard library header
 #include <type_traits>
 #include <cmath>
-
-// Tricible
 #include "Interpolation.hpp"
 
 // ----------------------------------------------------------------

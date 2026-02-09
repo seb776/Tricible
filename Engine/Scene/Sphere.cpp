@@ -64,6 +64,11 @@ namespace Tricible
 			return uvw;
 		}
 
+		AABB Sphere::GetAABB() const
+		{
+			return AABB();
+		}
+
 		void Sphere::ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal)
 		{
 			normal = _position - interInfo.Intersection;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <CL/cl2.hpp>
 #include "../Scene/IntersectionInfo.hpp"
@@ -75,6 +76,54 @@ namespace Tricible
 				}
 				std::cout << std::endl;
 			}
+			const auto& exePath = GetCurrentExecutableDirectory();
+			const auto& kernalFilePath = PathCombine(exePath, "TestRender.cl.c");
+			const auto& kernelSource = ReadFile(kernalFilePath);
+			cl::Program program = cl::Program("#define OPENCL_KERNEL_CODE\n" + kernelSource);
+			try {
+				program.build("-cl-std=CL2.0");
+			}
+			catch (...) {
+				// Print build info for all devices
+				cl_int buildErr = CL_SUCCESS;
+				auto buildInfo = program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(&buildErr);
+				for (auto& pair : buildInfo) {
+					std::cerr << pair.second << std::endl << std::endl;
+				}
+				return;
+			}
+			// TODO Allocate output buffer
+			// https://github.khronos.org/OpenCL-CLHPP/index.html
+
+			// Then pass correct parameters
+			// Prepare call (pass parameters)
+			//auto renderKernel =
+			//	cl::KernelFunctor<
+			//	decltype(fooPointer)&,
+			//	int*,
+			//	cl::coarse_svm_vector<int>&,
+			//	cl::Buffer,
+			//	int,
+			//	cl::Pipe&,
+			//	cl::DeviceCommandQueue
+			//	>(program, "Render_Kernel");
+
+			// Executes the kernel
+			//cl_int error;
+			//renderKernel(
+			//	cl::EnqueueArgs(
+			//		cl::NDRange(numElements / 2),
+			//		cl::NDRange(numElements / 2)),
+			//	fooPointer,
+			//	inputA.data(),
+			//	inputB,
+			//	outputBuffer,
+			//	3,
+			//	aPipe,
+			//	defaultDeviceQueue,
+			//	error
+			//);
+			
 		}
 
 
@@ -100,40 +149,14 @@ namespace Tricible
 			uint8_t colDist = Clamp((int32_t)(255 * (1.0f - Clamp01(value / distMax))), 0, 255);
 			return Color::RGB(colDist, colDist, colDist);
 		}
-		// TODO Fix this implem and move it
-		void parallel_fora(size_t start, size_t end, std::function<void(size_t)> func, size_t num_threads = std::thread::hardware_concurrency())
-		{
-			if (num_threads == 0) num_threads = std::thread::hardware_concurrency();
-			if (num_threads == 0) num_threads = 1; // fallback
 
-			size_t total = end - start;
-			size_t chunk_size = (total + num_threads - 1) / num_threads; // ceil division
 
-			std::vector<std::thread> threads;
-
-			for (size_t t = 0; t < num_threads; ++t)
-			{
-				size_t chunk_start = start + t * chunk_size;
-				size_t chunk_end = std::min(chunk_start + chunk_size, end);
-
-				if (chunk_start >= chunk_end) break; // no work for this thread
-
-				threads.emplace_back([chunk_start, chunk_end, &func]() {
-					for (size_t i = chunk_start; i < chunk_end; ++i)
-					func(i);
-					});
-			}
-
-			for (auto& th : threads)
-				th.join();
-		}
-
-		Color::RGB RenderPixel(const Vector3& pixelVec, const IntersectionInfo& interInfo)
+		Vector3 RenderPixel(const Vector3& pixelVec, const IntersectionInfo& interInfo)
 		{
 			if (!Scene)
-				return Color::RGB();
-			Color::RGB finalColor = Color::RGB(0, 0, 0);
-			Color::RGB diffuseColor = Color::RGB(0, 0, 0);
+				return Vector3();
+			Vector3 finalColor = Vector3(0, 0, 0);
+			Vector3 diffuseColor = Vector3(0, 0, 0);
 
 			if (interInfo.Object != nullptr)
 			{
@@ -152,12 +175,12 @@ namespace Tricible
 
 				for (ALight* l : Scene->Lights)
 				{
-					Vector3 tmp = (l->getPosition() - interInfo.Intersection);
-					tmp.Normalize();
-					const float mult = Clamp01(tmp.Dot(normal));
-					if (mult > 0.f)
+					Vector3 ldir = (l->getPosition() - interInfo.Intersection);
+					ldir.Normalize();
+					const float LdotN = Clamp01(ldir.Dot(normal));
+					if (LdotN > 0.f)
 					{
-						Color::RGB currentColor = diffuseColor * mult * l->intensity;
+						Vector3 currentColor = diffuseColor * LdotN * l->Color;
 						finalColor += currentColor;
 					}
 				}
@@ -176,7 +199,7 @@ namespace Tricible
 					finalColor = Scene->BackgroundColor;
 				}
 			}
-			return finalColor + Color::RGB(42, 42, 42);
+			return finalColor + Vector3(42, 42, 42) / 255.0f;
 		}
 
 		void Render()
@@ -189,7 +212,6 @@ namespace Tricible
 				{
 					for (int x = 0; x < _resX; ++x)
 					{
-
 						Vector3 rayDir;
 						camera.GetRay(x - (_resX * .5f), y - (_resY * .5f), rayDir);
 						rayDir.Normalize();
@@ -197,11 +219,10 @@ namespace Tricible
 						IntersectionInfo interInfo = IntersectionInfo();
 						Scene->IntersectsRay(camera.getPosition() + rayDir, rayDir, &interInfo, camera.NearClip, camera.FarClip);
 
-						Color::RGB finalColor = RenderPixel(rayDir, interInfo);
+						Vector3 finalColor = RenderPixel(rayDir, interInfo);
 						//finalColor = RenderDepth(interInfo.Distance, 100.0f);
 						image[x + y * _resX] = finalColor.ToInt();
 					}
-
 				});
 		}
 	};

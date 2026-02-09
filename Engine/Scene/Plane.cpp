@@ -28,5 +28,9 @@ namespace Tricible
 		else
 			normal = _normal;
 	}
+	AABB Plane::GetAABB() const
+	{
+		return AABB();
+	}
 }
 

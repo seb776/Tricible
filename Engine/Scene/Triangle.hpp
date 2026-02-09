@@ -16,5 +16,6 @@ namespace Tricible
 
 		// Inherited via AIntersectable
 		__declspec(dllexport) virtual bool IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip) override;
+		virtual AABB GetAABB() const override;
 	};
 }

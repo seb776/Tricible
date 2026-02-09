@@ -13,6 +13,7 @@ namespace Tricible
 		class Mesh : public AObject, public AIntersectable
 		{
 		public:
+			AABB BoundingBox;
 			std::vector<AIntersectable *> SubMeshes;
 			std::string Name;
 			Mesh()
@@ -23,6 +24,7 @@ namespace Tricible
 			// Inherited via AIntersectable
 			virtual bool IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip) override;
 			virtual void ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal) override;
+			virtual AABB GetAABB() const override;
 		};
 	}
 }

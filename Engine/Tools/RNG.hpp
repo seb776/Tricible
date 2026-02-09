@@ -9,5 +9,3 @@ namespace Tricible
 }
 
 #include "RNG.tpp"
-
-// END
