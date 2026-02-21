@@ -46,12 +46,24 @@ def absolute_path_to_relative(path, project_folder):
 def to_unix_path(string):
     return string.replace('\\', '/')
 
-def generate_folder_group(out_file, name, is_root, source_files):
+def generate_folder_group(out_file, name, is_root, source_files, opencl_files_copy_commands):
     if (is_root):
         name = 'Root'
     out_file.write('#### ' + name + ' ####\n')
     out_file.write('##########\n')
     out_file.write('\n')
+    opencl_files = list(filter(lambda src: src.endswith('.cl.c') or src.endswith('.cl.h'), source_files[0]))
+    logger.info(opencl_files)
+    if len(opencl_files) > 0:
+        opencl_files_copy_commands.append('# OpenCL Files\n')
+        for file in opencl_files:
+            opencl_files_copy_commands.append('list(APPEND ENGINE_OPENCL_FILES ' + file + ')\n')
+            opencl_output_file_path = '$<TARGET_FILE_DIR:${PROJECT_NAME}>/' + to_unix_path(os.path.relpath(file, start = args.project_directory)) # TODO Arf we have an issue here, I need to preserve folder structure so #include still work
+            opencl_files_copy_commands.append('add_custom_command(\n')
+            opencl_files_copy_commands.append('    TARGET ${PROJECT_NAME} POST_BUILD\n')
+            opencl_files_copy_commands.append('    COMMAND ${CMAKE_COMMAND} -E copy ' + file + ' ' + opencl_output_file_path + '\n')
+            opencl_files_copy_commands.append(')\n')
+
     
     out_file.write('set(FOLDER_GROUP ' + name + ')\n')
     
@@ -98,6 +110,8 @@ if __name__ == "__main__":
     logger.info('Generating ' + args.project_solution_name + '.' + args.project_name + '\'s CMakeLists.txt at ' + args.project_directory +'...')
     out_cmakefile = open(source_filename, 'w')
     all_group_list = []
+    opencl_files_copy_lines = []
+    opencl_files_copy_lines.append('set(ENGINE_OPENCL_FILES)\n')
     for path, dirs, files in os.walk(args.project_directory):
         is_root = False
         path =  to_unix_path(path)
@@ -108,7 +122,7 @@ if __name__ == "__main__":
                 folder_name = 'Root'
                 is_root = True
             all_group_list = all_group_list + [folder_name]
-            generate_folder_group(out_cmakefile, folder_name, is_root, source_files)
+            generate_folder_group(out_cmakefile, folder_name, is_root, source_files, opencl_files_copy_lines)
 
     out_cmakefile.write('set(\n')
     out_cmakefile.write('\t\"SourceFiles\"\n')
@@ -121,19 +135,52 @@ if __name__ == "__main__":
     out_cmakefile.close()
 
     is_in_generate_section = False
+    is_in_generate_copyfiles_section = False
 
     cmake_lists_file = open(args.project_directory + '/' + cmake_lists, 'r', newline='\n')
     sources_file = open(source_filename, 'r')
     tmp_file = open(args.project_directory + '/' + tmp_filename, 'w', newline='\n')
+
+    copy_opencl_files_macro = [
+'set_property(TARGET ${PROJECT_NAME}\n',
+'    PROPERTY ENGINE_OPENCL_FILES "${ENGINE_OPENCL_FILES}")\n',
+'set_property(TARGET ${PROJECT_NAME}\n',
+'    PROPERTY PROJECT_ENGINE_SOURCEDIR "${PROJECT_SOURCE_DIR}")\n',
+'message("${ENGINE_OPENCL_FILES}")\n',
+'function(engine_attach_runtime target)\n',
+'    get_target_property(OPEN_CL_FILES TricibleEngine ENGINE_OPENCL_FILES)\n',
+'    get_target_property(PROJECT_ENGINE_SOURCEDIR_ TricibleEngine PROJECT_ENGINE_SOURCEDIR)\n',
+'    message("${OPEN_CL_FILES}")\n',
+'    foreach(file IN LISTS OPEN_CL_FILES)\n',
+'        file(RELATIVE_PATH rel_path\n',
+'             ${PROJECT_ENGINE_SOURCEDIR_}\n',
+'             ${file})\n',
+'        add_custom_command(\n',
+'            TARGET ${target}\n',
+'            POST_BUILD\n',
+'            COMMAND ${CMAKE_COMMAND} -E copy_if_different\n',
+'                ${file}\n',
+'                $<TARGET_FILE_DIR:${target}>/${rel_path}\n',
+'        )\n',
+'    endforeach()\n',
+'endfunction()\n',
+    ]
 
     for line in cmake_lists_file.readlines():
         if not is_in_generate_section and re.match('## SOURCE_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT\'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT', line):
             is_in_generate_section = True
             tmp_file.writelines([line])
             tmp_file.writelines(sources_file.readlines())
+        if not is_in_generate_copyfiles_section and re.match('## COPYFILES_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT\'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT', line):
+            is_in_generate_copyfiles_section = True
+            tmp_file.writelines([line])
+            tmp_file.writelines(opencl_files_copy_lines)
+            tmp_file.writelines(copy_opencl_files_macro)
         if re.match('## SOURCE_CODE_INJECTION_END ## DO NOT REMOVE THIS LINE, IT\'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT', line):
             is_in_generate_section = False
-        if not is_in_generate_section:
+        if re.match('## COPYFILES_CODE_INJECTION_END ## DO NOT REMOVE THIS LINE, IT\'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT', line):
+            is_in_generate_copyfiles_section = False
+        if not is_in_generate_section and not is_in_generate_copyfiles_section:
             tmp_file.writelines([line])
 
     cmake_lists_file.close()
@@ -152,3 +199,7 @@ if __name__ == "__main__":
         pass
 
     logger.info('Done Generating ' + args.project_solution_name + '.' + args.project_name + '\'s CMakeLists.txt at ' + args.project_directory)
+
+
+## COPYFILES_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT\'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT
+## 

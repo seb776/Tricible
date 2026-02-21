@@ -77,7 +77,7 @@ namespace Tricible
 				std::cout << std::endl;
 			}
 			const auto& exePath = GetCurrentExecutableDirectory();
-			const auto& kernalFilePath = PathCombine(exePath, "TestRender.cl.c");
+			const auto& kernalFilePath = PathCombine(exePath, "./Rendering/TestRender.cl.c");
 			const auto& kernelSource = ReadFile(kernalFilePath);
 			cl::Program program = cl::Program("#define OPENCL_KERNEL_CODE\n" + kernelSource);
 			try {
@@ -95,8 +95,18 @@ namespace Tricible
 			// TODO Allocate output buffer
 			// https://github.khronos.org/OpenCL-CLHPP/index.html
 
-			// Then pass correct parameters
-			// Prepare call (pass parameters)
+			//std::vector<int> output(numElements, 0xdeadbeef);
+			//cl::Buffer outputBuffer(begin(output), end(output), false);
+			//cl::Pipe aPipe(sizeof(cl_int), numElements / 2);
+
+			//// Default command queue, also passed in as a parameter
+			//cl::DeviceCommandQueue defaultDeviceQueue = cl::DeviceCommandQueue::makeDefault(
+			//	cl::Context::getDefault(), cl::Device::getDefault());
+
+			//typedef struct { int* bar; } SceneExample;
+
+			//// Then pass correct parameters
+			//// Prepare call (pass parameters)
 			//auto renderKernel =
 			//	cl::KernelFunctor<
 			//	decltype(fooPointer)&,
@@ -107,6 +117,8 @@ namespace Tricible
 			//	cl::Pipe&,
 			//	cl::DeviceCommandQueue
 			//	>(program, "Render_Kernel");
+
+			//renderKernel.setSVMPointers(anSVMInt);
 
 			// Executes the kernel
 			//cl_int error;

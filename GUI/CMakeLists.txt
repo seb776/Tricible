@@ -46,6 +46,8 @@ target_link_libraries(
     TricibleEngine
 )
 
+engine_attach_runtime(TricibleGUI)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/")
 
 FIND_LIBRARY(OPENCL_LIBRARIES opencl64 )

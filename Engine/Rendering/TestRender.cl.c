@@ -1,4 +1,6 @@
 #ifdef OPENCL_KERNEL_CODE
+//#else // Uncomment this to quickly visualize without transparency
+typedef struct { global int* bar; } SceneExample;
 
 // https://www.compilersutra.com/docs/gpu/opencl/basic/running_first_opencl_code_part2_a/
 //https://github.com/KhronosGroup/OpenCL-Guide/blob/main/chapters/cpp_for_opencl.md
