@@ -35,6 +35,54 @@ source_group(
 	${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes}
 )
 
+#### GLSLRendererCPP ####
+##########
+
+set(FOLDER_GROUP GLSLRendererCPP)
+set(
+	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
+	"./GLSLRendererCPP/GLSLFunctions.cpp"
+	"./GLSLRendererCPP/SwizzleProxies.cpp"
+	"./GLSLRendererCPP/VariableArray.cpp"
+	"./GLSLRendererCPP/vec2.cpp"
+	"./GLSLRendererCPP/vec3.cpp"
+	"./GLSLRendererCPP/vec4.cpp"
+)
+set(
+	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
+	"./GLSLRendererCPP/bvec2.hpp"
+	"./GLSLRendererCPP/bvec3.hpp"
+	"./GLSLRendererCPP/bvec4.hpp"
+	"./GLSLRendererCPP/GLSLFunctions.hpp"
+	"./GLSLRendererCPP/ivec2.hpp"
+	"./GLSLRendererCPP/ivec3.hpp"
+	"./GLSLRendererCPP/ivec4.hpp"
+	"./GLSLRendererCPP/mat2.hpp"
+	"./GLSLRendererCPP/mat3.hpp"
+	"./GLSLRendererCPP/mat4.hpp"
+	"./GLSLRendererCPP/Samplers.hpp"
+	"./GLSLRendererCPP/Scalars.hpp"
+	"./GLSLRendererCPP/Swizzle.hpp"
+	"./GLSLRendererCPP/SwizzleProxies.hpp"
+	"./GLSLRendererCPP/uvec2.hpp"
+	"./GLSLRendererCPP/uvec3.hpp"
+	"./GLSLRendererCPP/uvec4.hpp"
+	"./GLSLRendererCPP/VariableArray.hpp"
+	"./GLSLRendererCPP/vec2.hpp"
+	"./GLSLRendererCPP/vec3.hpp"
+	"./GLSLRendererCPP/vec4.hpp"
+)
+source_group(
+	"${FOLDER_GROUP}\\"
+	FILES
+	${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources}
+)
+source_group(
+	"${FOLDER_GROUP}\\"
+	FILES
+	${${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes}
+)
+
 #### Material ####
 ##########
 
@@ -63,10 +111,16 @@ source_group(
 set(FOLDER_GROUP Rendering)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
-	"./Rendering/TestRender.cl.c"
+	"./Rendering/CPURenderer.cpp"
+	"./Rendering/GLSLRenderer.cpp"
+	"./Rendering/Renderer.cpp"
+	"./Rendering/TestRender.glsl.cpp"
 )
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Includes"
+	"./Rendering/CPURenderer.hpp"
+	"./Rendering/GLSLRenderer.hpp"
+	"./Rendering/OpenCLRenderer.hpp"
 	"./Rendering/Renderer.hpp"
 )
 source_group(
@@ -178,6 +232,8 @@ set(
 	"SourceFiles"
 	${${CMAKE_PROJECT_NAME}ColorSources}
 	${${CMAKE_PROJECT_NAME}ColorIncludes}
+	${${CMAKE_PROJECT_NAME}GLSLRendererCPPSources}
+	${${CMAKE_PROJECT_NAME}GLSLRendererCPPIncludes}
 	${${CMAKE_PROJECT_NAME}MaterialSources}
 	${${CMAKE_PROJECT_NAME}MaterialIncludes}
 	${${CMAKE_PROJECT_NAME}RenderingSources}
@@ -209,6 +265,18 @@ ENDIF(OPENCL_LIBRARIES)
 
 
 TARGET_LINK_LIBRARIES(TricibleEngine ${OpenCL_LIBRARIES})
+
+find_package(OpenGL REQUIRED)
+
+# GLFW
+set(glfw3_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw3_x64-windows/share/glfw3")
+find_package(glfw3 CONFIG REQUIRED)
+
+target_link_libraries(TricibleEngine
+    OpenGL::GL
+    glfw
+)
+
 target_link_libraries(
 	TricibleEngine
 	optimized
@@ -232,10 +300,10 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 ## COPYFILES_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT
 set(ENGINE_OPENCL_FILES)
 # OpenCL Files
-list(APPEND ENGINE_OPENCL_FILES E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.cl.c)
+list(APPEND ENGINE_OPENCL_FILES E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp)
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.cl.c $<TARGET_FILE_DIR:${PROJECT_NAME}>/Rendering/TestRender.cl.c
+    COMMAND ${CMAKE_COMMAND} -E copy E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/Rendering/TestRender.glsl.cpp
 )
 set_property(TARGET ${PROJECT_NAME}
     PROPERTY ENGINE_OPENCL_FILES "${ENGINE_OPENCL_FILES}")

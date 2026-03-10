@@ -8,7 +8,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #define IN_EXE
-#include "../Engine/Rendering/Renderer.hpp"
+#include "../Engine/Rendering/GLSLRenderer.hpp"
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -39,54 +39,62 @@ void SetupScene(Tricible::Renderer* renderer)
 }
 
 // TODO move this
-void translateCamera(Tricible::Renderer* renderer, const Tricible::Vector3& vecOrigin)
+void translateCamera(Camera& camera)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		renderer->Scene->CurrentCamera->MoveForward();
+		camera.MoveForward();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		renderer->Scene->CurrentCamera->MoveBackward();
+		camera.MoveBackward();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		renderer->Scene->CurrentCamera->MoveLeft();
+		camera.MoveLeft();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		renderer->Scene->CurrentCamera->MoveRight();
+		camera.MoveRight();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add))
 	{
-		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw + 0.01f);  // TODO Make constant
+		camera.SetYaw(camera.yaw + 0.01f);  // TODO Make constant
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract))
 	{
-		renderer->Scene->CurrentCamera->SetYaw(renderer->Scene->CurrentCamera->yaw - 0.01f);  // TODO Make constant
+		camera.SetYaw(camera.yaw - 0.01f);  // TODO Make constant
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		renderer->Scene->CurrentCamera->AddPosition(Tricible::Vector3::up);
+		camera.AddPosition(vec3(0.,1.,0.)); // TODO Speed as constant too
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 	{
-		renderer->Scene->CurrentCamera->AddPosition(Tricible::Vector3::down);
+		camera.AddPosition(vec3(0., -1., 0.)); // TODO Speed as constant too
 	}
 }
-
+struct EngineConfig
+{
+	float MouseSensitivity;
+};
+EngineConfig Config;
+void loadConfig()
+{
+	Config.MouseSensitivity = -0.0005f;
+}
 int main()
 {
+	loadConfig();
 	int width = 480;
 	int height = 360;
-	sf::RenderWindow window(sf::VideoMode(width, height), "My window");
+	sf::RenderWindow window(sf::VideoMode(width, height), "Tricible");
 	sf::Texture	texture;
 	sf::Sprite sprite;
 
-	Tricible::Renderer renderer(width, height, 0);
-	renderer.GetAvailableHardware();
+	Tricible::Renderer *renderer = new Tricible::GLSLRenderer(width, height);
 
-	SetupScene(&renderer);
+	//SetupScene(&renderer);
 
 	sf::String fpsCount;
 	std::clock_t start;
@@ -100,16 +108,16 @@ int main()
 	}
 	window.setKeyRepeatEnabled(true);
 
-	Tricible::Vector3 vecOrigin(1.f, 0.f, .0f);
-	Tricible::Vector3 curDir;
 	int iFrameCount = 0;
 	bool isMouseLocked = false;
 	sf::Vector2i lastMousePos = sf::Vector2i(0, 0);
+	Camera camera = Camera();
+	
 	while (window.isOpen())
 	{
-		start = std::clock();
 		sf::Event event;
-		translateCamera(&renderer, vecOrigin);
+		start = std::clock();
+		translateCamera(camera);
 		if (window.pollEvent(event))
 		{
 			switch (event.type)
@@ -133,10 +141,12 @@ int main()
 					sf::Vector2i currentMousePos = sf::Vector2i(event.mouseMove.x, event.mouseMove.y);
 					sf::Vector2f mouseDelta = (sf::Vector2f)lastMousePos - (sf::Vector2f)currentMousePos;
 
-					const float mouseSensitivity = -0.0005f; // TODO Make constant
-					mouseDelta *= mouseSensitivity;
-					renderer.Scene->CurrentCamera->SetPitch(renderer.Scene->CurrentCamera->pitch - (mouseDelta.x));
-					renderer.Scene->CurrentCamera->SetYaw(renderer.Scene->CurrentCamera->yaw - (mouseDelta.y));
+					mouseDelta *= Config.MouseSensitivity;
+					camera.SetPitch(camera.pitch - mouseDelta.x);
+					camera.SetYaw(camera.yaw - mouseDelta.y);
+					renderer->SetUniformFloat("cameraPitch", camera.pitch);
+					renderer->SetUniformFloat("cameraYaw", camera.yaw);
+					renderer->SetUniformVector("cameraPosition", camera.getPosition());
 
 					uint32_t maxMousePosRadius = min(window.getSize().x, window.getSize().y) / 3;
 					sf::Vector2f windowCenter = (sf::Vector2f)window.getSize() / 2.0f;
@@ -157,8 +167,8 @@ int main()
 				window.close();
 		}
 		++iFrameCount;
-		renderer.Render();
-		texture.update((sf::Uint8*)renderer.image);
+		renderer->Render();
+		texture.update((sf::Uint8*)renderer->image);
 		sprite.setTexture(texture);
 		window.draw(sprite);
 		window.display();

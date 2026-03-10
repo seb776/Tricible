@@ -52,7 +52,7 @@ def generate_folder_group(out_file, name, is_root, source_files, opencl_files_co
     out_file.write('#### ' + name + ' ####\n')
     out_file.write('##########\n')
     out_file.write('\n')
-    opencl_files = list(filter(lambda src: src.endswith('.cl.c') or src.endswith('.cl.h'), source_files[0]))
+    opencl_files = list(filter(lambda src: src.endswith('.glsl.cpp') or src.endswith('.glsl.hpp'), source_files[0]))
     logger.info(opencl_files)
     if len(opencl_files) > 0:
         opencl_files_copy_commands.append('# OpenCL Files\n')

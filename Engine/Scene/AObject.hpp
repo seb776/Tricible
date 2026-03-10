@@ -1,22 +1,22 @@
 #pragma once
 
-#include "../Tools/Vector3.hpp"
+#include "../GLSLRendererCPP/vec3.hpp"
 
 namespace Tricible
 {
 	class AObject
 	{
 	protected:
-		Vector3 _position;
+		vec3 _position;
 	public:
 		AObject()
 		{
 		}
-		virtual void AddPosition(const Vector3& pos)
+		virtual void AddPosition(const vec3& pos)
 		{
 			_position += pos;
 		}
-		TRICIBLE_FORCEINLINE const Vector3& getPosition() const
+		TRICIBLE_FORCEINLINE const vec3& getPosition() const
 		{
 			return this->_position;
 		}

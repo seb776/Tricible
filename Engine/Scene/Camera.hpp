@@ -38,7 +38,7 @@ namespace Tricible
 			SetPitch(0.f);
 			SetYaw(0.f);
 			focale = 10.0f;// 40.f / tanf(45.f / 2.f);
-			_position._x = 0.f;
+			_position[0] = 0.f;
 			NearClip = 0.1f;
 			FarClip = 10000.f;
 		}
@@ -57,19 +57,15 @@ namespace Tricible
 
 		void MoveForward()
 		{
-			Vector3 vecForward = yawMat * (pitchMat *  Vector3::forward);
+			vec3 vecForward = vec3(0., 0., 1.);//yawMat* (pitchMat * vec3(0., 0., 1.));// TODO
 			//Point3 vecForward(lookAt - position);
-
-			vecForward.Normalize();
 
 			_position += vecForward * MOVEMENTS_SPEED;
 		}
 
 		void MoveBackward()
 		{
-			Vector3 vecBackward = yawMat * (pitchMat *  Vector3::backward);
-
-			vecBackward.Normalize();
+			vec3 vecBackward = vec3(0., 0., -1.);//yawMat* (pitchMat * vec3(0., 0., -1.)); // TODO
 
 			_position += vecBackward * MOVEMENTS_SPEED;
 		}

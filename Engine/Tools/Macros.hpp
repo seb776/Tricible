@@ -2,6 +2,8 @@
 
 // z0rg: TODO  MSVC only ?
 #define TRICIBLE_INLINE __inline
+// inline for generic cpp
+// __attribute__((always_inline)) for gcc
 #define TRICIBLE_FORCEINLINE __forceinline 
 
 #ifdef IN_EXE
