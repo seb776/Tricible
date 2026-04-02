@@ -49,15 +49,15 @@ namespace Tricible
 			return true;
 		}
 
-		Vector3 GetPixel(uint32_t x, uint32_t y)
+		vec3 GetPixel(uint32_t x, uint32_t y)
 		{
 			RGBQUAD color;
 			FreeImage_GetPixelColor(_image, x, y, &color);
-			Vector3 col = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue)/255.0f;
+			vec3 col = vec3(color.rgbRed, color.rgbGreen, color.rgbBlue)/255.0f;
 			return col;
 		}
 
-		Vector3 Get360Pixel(float u, float v)
+		vec3 Get360Pixel(float u, float v)
 		{
 			uint32_t x;
 			uint32_t y;
@@ -67,11 +67,11 @@ namespace Tricible
 			x = (uint32_t)(factX * (_width - 1U));
 			y = (uint32_t)(factY * (_height - 1U));
 			auto ret = FreeImage_GetPixelColor(_image, x, y, &color);
-			Vector3 col = Vector3(color.rgbRed, color.rgbGreen, color.rgbBlue) / 255.0f;
+			vec3 col = vec3(color.rgbRed, color.rgbGreen, color.rgbBlue) / 255.0f;
 			return col;
 		}
 
-		Vector3 Get360PixelBilinearInterpolation(float u, float v)
+		vec3 Get360PixelBilinearInterpolation(float u, float v)
 		{
 			u = u * this->_width - 0.5f;
 			v = v * this->_height - 0.5f;
@@ -82,7 +82,7 @@ namespace Tricible
 			float u_opposite = 1.0f - u_ratio;
 			float v_opposite = 1.0f - v_ratio;
 
-			Vector3 outColor = (GetPixel(x, y) * u_opposite + GetPixel(x + 1, y) * u_ratio) * v_opposite +
+			vec3 outColor = (GetPixel(x, y) * u_opposite + GetPixel(x + 1, y) * u_ratio) * v_opposite +
 				(GetPixel(x, y + 1) * u_opposite + GetPixel(x + 1, y + 1) * u_ratio) * v_ratio;
 
 			return outColor;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Tools/Vector3.hpp"
+#include "../GLSLRendererCPP/vec3.hpp"
 
 namespace Tricible
 {
@@ -12,9 +12,9 @@ namespace Tricible
 		AIntersectable *Primitive;
 		AIntersectable *Object;
 		float Distance;
-		Vector3 Origin;
-		Vector3 Direction;
-		Vector3 Intersection;
+		vec3 Origin;
+		vec3 Direction;
+		vec3 Intersection;
 
 		IntersectionInfo() :
 			Object(nullptr),

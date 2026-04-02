@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Texture/Texture.hpp"
-#include "../Color/RGB.hpp"
+#include "../GLSLRendererCPP/vec3.hpp"
 
 namespace Tricible
 {
@@ -11,8 +11,8 @@ namespace Tricible
 		class Material
 		{
 		public:
-			Vector3	DiffuseColor;
-			Vector3	SpecularColor;
+			vec3	DiffuseColor;
+			vec3	SpecularColor;
 			float		Opacity;
 			Texture		*MainTexture;
 
@@ -21,7 +21,7 @@ namespace Tricible
 
 			}
 
-			Material(const Vector3& diffuse, const Vector3& specular) :
+			Material(const vec3& diffuse, const vec3& specular) :
 				DiffuseColor(diffuse), 
 				SpecularColor(specular), 
 				Opacity(1.0f), 

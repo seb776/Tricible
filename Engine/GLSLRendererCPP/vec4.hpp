@@ -2,6 +2,8 @@
 
 #include <string>
 #include "../Tools/Macros.hpp"
+#include "vec2.hpp"
+#include "vec3.hpp"
 
 class vec4
 {

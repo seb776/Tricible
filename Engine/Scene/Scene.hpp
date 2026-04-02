@@ -20,13 +20,13 @@ namespace Tricible
 			Camera *CurrentCamera;
 			Camera DefaultCamera;
 			Material::Material DefaultDiffuseMaterial;
-			Vector3 BackgroundColor;
+			vec3 BackgroundColor;
 
 			Scene() :
 				AIntersectable(),
-				DefaultDiffuseMaterial(Vector3(0U, 255U, 0U)/255.0f, Vector3(30U, 30U, 30U)/255.0f),
+				DefaultDiffuseMaterial(vec3(0U, 255U, 0U)/255.0f, vec3(30U, 30U, 30U)/255.0f),
 				Skymap(nullptr),
-				BackgroundColor(Vector3(1.0f, 0.2f, 0.4f)*0.7f)
+				BackgroundColor(vec3(1.0f, 0.2f, 0.4f)*0.7f)
 			{
 				CurrentCamera = &DefaultCamera;
 			}
@@ -34,8 +34,8 @@ namespace Tricible
 			static Scene *LoadFromObj(const std::string& filePath);
 
 			// Inherited via AIntersectable
-			virtual bool IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip) override;
-			virtual void ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal) override;
+			virtual bool IntersectsRay(const vec3& origin, const vec3& vec, IntersectionInfo *interInfo, float nearClip, float farClip) override;
+			virtual void ComputeNormal(const IntersectionInfo & interInfo, vec3& normal) override;
 			virtual AABB GetAABB() const override;
 		};
 	}

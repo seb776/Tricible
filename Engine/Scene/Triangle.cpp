@@ -5,7 +5,7 @@
 
 using namespace Tricible;
 
-bool Triangle::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
+bool Triangle::IntersectsRay(const vec3& origin, const vec3& vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 {
 	//const float EPSILON = 0.0000001;
 	//Point3 vertex0 = this->_a;
@@ -99,7 +99,7 @@ bool Triangle::IntersectsRay(const Vector3 & origin, const Vector3 & vec, Inters
 	return false;
 }
 
-Triangle::Triangle(const Vector3& a, const Vector3& b, const Vector3& c, int iCol) :
+Triangle::Triangle(const vec3& a, const vec3& b, const vec3& c, int iCol) :
 	Plane()
 {
 	_a = a;
@@ -107,49 +107,50 @@ Triangle::Triangle(const Vector3& a, const Vector3& b, const Vector3& c, int iCo
 	_c = c;
 	_position = a;//Point3(0.f, 0.f, 0.f);
 
-	Vector3 norm = (_b - _a).Cross(_c - _a);
-	norm.Normalize();
-	_normal = norm;
+	//vec3 norm = (_b - _a).Cross(_c - _a);
+	//norm.Normalize();
+	//_normal = norm;
 
-	Vector3 colors[] = {
-		Vector3(0x00, 0x00, 0x00)/255.0f,
-		Vector3(0x00, 0xFF, 0x00)/255.0f,
-		Vector3(0x00, 0x00, 0xFF)/255.0f,
-		Vector3(0xFF, 0x00, 0x00)/255.0f,
-		Vector3(0x01, 0xFF, 0xFE)/255.0f,
-		Vector3(0xFF, 0xA6, 0xFE)/255.0f,
-		Vector3(0xFF, 0xDB, 0x66)/255.0f,
-		Vector3(0x00, 0x64, 0x01)/255.0f,
-		Vector3(0x01, 0x00, 0x67)/255.0f,
-		Vector3(0x95, 0x00, 0x3A)/255.0f,
-		Vector3(0x00, 0x7D, 0xB5)/255.0f,
-		Vector3(0xFF, 0x00, 0xF6)/255.0f,
-		Vector3(0xFF, 0xEE, 0xE8)/255.0f,
-		Vector3(0x77, 0x4D, 0x00)/255.0f,
-		Vector3(0x90, 0xFB, 0x92)/255.0f,
-		Vector3(0x00, 0x76, 0xFF)/255.0f,
-		Vector3(0xD5, 0xFF, 0x00)/255.0f,
-		Vector3(0xFF, 0x93, 0x7E)/255.0f,
-		Vector3(0x6A, 0x82, 0x6C)/255.0f
+	vec3 colors[] = {
+		vec3(0x00, 0x00, 0x00)/255.0f,
+		vec3(0x00, 0xFF, 0x00)/255.0f,
+		vec3(0x00, 0x00, 0xFF)/255.0f,
+		vec3(0xFF, 0x00, 0x00)/255.0f,
+		vec3(0x01, 0xFF, 0xFE)/255.0f,
+		vec3(0xFF, 0xA6, 0xFE)/255.0f,
+		vec3(0xFF, 0xDB, 0x66)/255.0f,
+		vec3(0x00, 0x64, 0x01)/255.0f,
+		vec3(0x01, 0x00, 0x67)/255.0f,
+		vec3(0x95, 0x00, 0x3A)/255.0f,
+		vec3(0x00, 0x7D, 0xB5)/255.0f,
+		vec3(0xFF, 0x00, 0xF6)/255.0f,
+		vec3(0xFF, 0xEE, 0xE8)/255.0f,
+		vec3(0x77, 0x4D, 0x00)/255.0f,
+		vec3(0x90, 0xFB, 0x92)/255.0f,
+		vec3(0x00, 0x76, 0xFF)/255.0f,
+		vec3(0xD5, 0xFF, 0x00)/255.0f,
+		vec3(0xFF, 0x93, 0x7E)/255.0f,
+		vec3(0x6A, 0x82, 0x6C)/255.0f
 	};
 	
-	Material = new Material::Material(colors[iCol], Vector3());
+	Material = new Material::Material(colors[iCol], vec3());
 	//std::cout << (uint32_t)Material->DiffuseColor.Red() << ":" << (uint32_t)Material->DiffuseColor.Green() << ":" << (uint32_t)Material->DiffuseColor.Blue() << std::endl;
 }
 
 
-bool SameSide(Vector3 p1, Vector3 p2, Vector3 A, Vector3 B)
+bool SameSide(vec3 p1, vec3 p2, vec3 A, vec3 B)
 {
-	Vector3 cp1 = (B - A).Cross(p1 - A);
-	Vector3 cp2 = (B - A).Cross(p2 - A);
-	if (cp1.Dot(cp2) >= 0) return true;
+	//vec3 cp1 = (B - A).Cross(p1 - A);
+	//vec3 cp2 = (B - A).Cross(p2 - A);
+	//if (cp1.Dot(cp2) >= 0) return true;
 	return false;
 
 }
 
 // http://blackpawn.com/texts/pointinpoly/
-bool Triangle::IsInside(const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& point)
+bool Triangle::IsInside(const vec3& a, const vec3& b, const vec3& c, const vec3& point)
 {
+	return true;
 	//if (SameSide(point, a, b, c) && SameSide(point, b, a, c) && SameSide(point, c, a, b))
 	//{
 	//	Point3 vc1 = (a - b).Cross((a - c));
@@ -158,27 +159,28 @@ bool Triangle::IsInside(const Vector3& a, const Vector3& b, const Vector3& c, co
 	//}
 	//return false;
 
-	Vector3 n = (b - a).Cross(c - a);
-	n.Normalize();
-	Vector3 p_proj = point - n * n.Dot(point - a); // project point onto plane
+	// Current method
+	//Vector3 n = (b - a).Cross(c - a);
+	//n.Normalize();
+	//Vector3 p_proj = point - n * n.Dot(point - a); // project point onto plane
 
-	Vector3 v0 = b - a;
-	Vector3 v1 = c - a;
-	Vector3 v2 = p_proj - a;
+	//Vector3 v0 = b - a;
+	//Vector3 v1 = c - a;
+	//Vector3 v2 = p_proj - a;
 
-	float dot00 = v0.Dot(v0);
-	float dot01 = v0.Dot(v1);
-	float dot02 = v0.Dot(v2);
-	float dot11 = v1.Dot(v1);
-	float dot12 = v1.Dot(v2);
+	//float dot00 = v0.Dot(v0);
+	//float dot01 = v0.Dot(v1);
+	//float dot02 = v0.Dot(v2);
+	//float dot11 = v1.Dot(v1);
+	//float dot12 = v1.Dot(v2);
 
-	float invDenom = 1.0f / (dot00 * dot11 - dot01 * dot01);
-	float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-	float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-	float w = 1.0f - u - v;
+	//float invDenom = 1.0f / (dot00 * dot11 - dot01 * dot01);
+	//float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+	//float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+	//float w = 1.0f - u - v;
 
-	const float EPS = 1e-5f;  // world-scale tolerance
-	return (u >= -EPS) && (v >= -EPS) && (w >= -EPS);
+	//const float EPS = 1e-5f;  // world-scale tolerance
+	//return (u >= -EPS) && (v >= -EPS) && (w >= -EPS);
 
 	// Compute vectors        
 	//auto v0 = c - a;

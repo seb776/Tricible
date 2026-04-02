@@ -71,17 +71,13 @@ namespace Tricible
 		}
 		void MoveRight()
 		{
-			Vector3 vecRight = yawMat * (pitchMat *  Vector3::right);
-
-			vecRight.Normalize();
+			vec3 vecRight = vec3(1., 0., 0.);//yawMat* (pitchMat * vec3(1., 0., 0.));
 
 			_position += vecRight * MOVEMENTS_SPEED;
 		}
 		void MoveLeft()
 		{
-			Vector3 vecLeft = yawMat * (pitchMat *  Vector3::left);
-
-			vecLeft.Normalize();
+			vec3 vecLeft = vec3(1., 0., 0.);//yawMat* (pitchMat * vec3(-1., 0., 0.));
 
 			_position += vecLeft * MOVEMENTS_SPEED;
 		}

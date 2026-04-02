@@ -24,44 +24,46 @@ namespace Tricible
 
 			radius = static_cast<float>(a);
 			radiusSqr = static_cast<float>(a * a);
-			_position = Tricible::Vector3(55.f, 0.f, 0.f);
+			_position = vec3(55.f, 0.f, 0.f);
 			this->Material = nullptr;
 		}
 
-		bool Sphere::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip)
+		bool Sphere::IntersectsRay(const vec3& origin, const vec3& vec, IntersectionInfo *interInfo, float nearClip, float farClip)
 		{
-			Vector3 oc = origin - _position;
-			float ocl = oc.Length();
-			//oc.Normalize();
-			float frontDot = vec.Dot(oc);
-			float front = -frontDot;
-			float underSqrt = POW2(frontDot) - POW2(ocl) + radiusSqr;
-			if (underSqrt < 0.0f)
-				return false;
-
-			float intersectionDist = sqrtf(underSqrt);
-			float dA = front - intersectionDist;
-			float dB = front + intersectionDist;
-			bool t1Out = (dA > farClip || dA < nearClip);
-			bool t2Out = (dB > farClip || dB < nearClip);
-			if (t1Out && t2Out)
-				return false;
-			if (t1Out)
-				interInfo->Distance = dB;
-			else
-				interInfo->Distance = dA;
-			//interInfo->Distance = min(dA, dB);
-			interInfo->Direction = vec;
-			interInfo->Origin = origin;
-			interInfo->Primitive = this;
 			return true;
+			//vec3 oc = origin - _position;
+			//float ocl = oc.Length();
+			////oc.Normalize();
+			//float frontDot = vec.Dot(oc);
+			//float front = -frontDot;
+			//float underSqrt = POW2(frontDot) - POW2(ocl) + radiusSqr;
+			//if (underSqrt < 0.0f)
+			//	return false;
+
+			//float intersectionDist = sqrtf(underSqrt);
+			//float dA = front - intersectionDist;
+			//float dB = front + intersectionDist;
+			//bool t1Out = (dA > farClip || dA < nearClip);
+			//bool t2Out = (dB > farClip || dB < nearClip);
+			//if (t1Out && t2Out)
+			//	return false;
+			//if (t1Out)
+			//	interInfo->Distance = dB;
+			//else
+			//	interInfo->Distance = dA;
+			////interInfo->Distance = min(dA, dB);
+			//interInfo->Direction = vec;
+			//interInfo->Origin = origin;
+			//interInfo->Primitive = this;
+			//return true;
 		}
 
-		Vector3 Sphere::ComputeUV(const Vector3& normal)
+		vec3 Sphere::ComputeUV(const vec3& normal)
 		{
-			Vector3 uvw((atan2f(normal._x, normal._z) + M_PI) / M_PI2, (asinf(normal._y) / M_PI_2) * 0.5f + 0.5f, 0.0f);
-			
-			return uvw;
+			//vec3 uvw((atan2f(normal._x, normal._z) + M_PI) / M_PI2, (asinf(normal._y) / M_PI_2) * 0.5f + 0.5f, 0.0f);
+			//
+			//return uvw;
+			return normal;
 		}
 
 		AABB Sphere::GetAABB() const
@@ -69,12 +71,12 @@ namespace Tricible
 			return AABB();
 		}
 
-		void Sphere::ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal)
+		void Sphere::ComputeNormal(const IntersectionInfo & interInfo, vec3& normal)
 		{
-			normal = _position - interInfo.Intersection;
-			normal.Normalize();
-			if (interInfo.Direction.Dot(normal) > 0.0f)
-				normal = -normal;
+			//normal = _position - interInfo.Intersection;
+			//normal.Normalize();
+			//if (interInfo.Direction.Dot(normal) > 0.0f)
+			//	normal = -normal;
 		}
 
 		Sphere::~Sphere()

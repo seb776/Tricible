@@ -40,7 +40,7 @@ struct Object
 };
 
 VariableArray<Object> Objects;
-
+void main(vec4& FragColor, const vec4& gl_FragCoord);
 int mainShaderCall(const vec4& gl_FragCoord)
 {
 	vec4 fragColor = vec4(0.);

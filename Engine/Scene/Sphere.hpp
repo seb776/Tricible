@@ -23,10 +23,10 @@ namespace Tricible
 			float radius;
 
 			// Inherited via AIntersectable
-			virtual bool IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip) override;
-			virtual void ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal) override;
+			virtual bool IntersectsRay(const vec3& origin, const vec3& vec, IntersectionInfo *interInfo, float nearClip, float farClip) override;
+			virtual void ComputeNormal(const IntersectionInfo & interInfo, vec3& normal) override;
 
-			static Vector3 ComputeUV(const Vector3& normal);
+			static vec3 ComputeUV(const vec3& normal);
 			virtual AABB GetAABB() const override;
 
 			virtual ~Sphere();

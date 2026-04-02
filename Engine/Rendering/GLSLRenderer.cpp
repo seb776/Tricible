@@ -1,6 +1,7 @@
 #include <iostream>
 #include "GLSLRenderer.hpp"
 #include "../GLSLRendererCPP/Swizzle.hpp"
+#include "../GLSLRendererCPP/vec4.hpp"
 
 using namespace Tricible;
 

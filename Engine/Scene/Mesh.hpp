@@ -22,8 +22,8 @@ namespace Tricible
 			}
 
 			// Inherited via AIntersectable
-			virtual bool IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip) override;
-			virtual void ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal) override;
+			virtual bool IntersectsRay(const vec3& origin, const vec3& vec, IntersectionInfo * interInfo, float nearClip, float farClip) override;
+			virtual void ComputeNormal(const IntersectionInfo & interInfo, vec3& normal) override;
 			virtual AABB GetAABB() const override;
 		};
 	}

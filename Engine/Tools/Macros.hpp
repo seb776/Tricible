@@ -4,7 +4,8 @@
 #define TRICIBLE_INLINE __inline
 // inline for generic cpp
 // __attribute__((always_inline)) for gcc
-#define TRICIBLE_FORCEINLINE __forceinline 
+//#define TRICIBLE_FORCEINLINE __forceinline 
+#define TRICIBLE_FORCEINLINE
 
 #ifdef IN_EXE
 #define TRICIBLE_DLL_EXPORT __declspec(dllimport)

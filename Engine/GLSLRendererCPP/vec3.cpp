@@ -117,7 +117,7 @@ TRICIBLE_FORCEINLINE std::string vec3::ToString() const
 	return ss.str();
 }
 
-uint vec3::ToInt()
+unsigned int vec3::ToInt()
 {
 	//return (_red << 24) + (_green << 16) + (_blue << 8) + 0xFF;
 	return 0xFF000000 +

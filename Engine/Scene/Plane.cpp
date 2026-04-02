@@ -4,29 +4,29 @@
 namespace Tricible
 {
 	// https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection
-	bool Plane::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo * interInfo, float nearClip, float farClip)
+	bool Plane::IntersectsRay(const vec3& origin, const vec3& vec, IntersectionInfo * interInfo, float nearClip, float farClip)
 	{
-		float distL = (_position - origin).Dot(_normal) / vec.Dot(_normal);
+		//float distL = (_position - origin).Dot(_normal) / vec.Dot(_normal);
 
-		if (distL > 0.f)
-		{
-			interInfo->Primitive = this;
-			interInfo->Distance = distL;
-			interInfo->Intersection = origin + vec * distL;
-			interInfo->Direction = vec;
-			interInfo->Origin = origin;
-			return true;
-		}
+		//if (distL > 0.f)
+		//{
+		//	interInfo->Primitive = this;
+		//	interInfo->Distance = distL;
+		//	interInfo->Intersection = origin + vec * distL;
+		//	interInfo->Direction = vec;
+		//	interInfo->Origin = origin;
+		//	return true;
+		//}
 		return false;
 	}
 
-	void Plane::ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal)
+	void Plane::ComputeNormal(const IntersectionInfo & interInfo, vec3& normal)
 	{
-		const float res = interInfo.Direction.Dot(_normal);
-		if (res > 0.f)
-			normal = _normal.Reverse();
-		else
-			normal = _normal;
+		//const float res = interInfo.Direction.Dot(_normal);
+		//if (res > 0.f)
+		//	normal = _normal.Reverse();
+		//else
+		//	normal = _normal;
 	}
 	AABB Plane::GetAABB() const
 	{

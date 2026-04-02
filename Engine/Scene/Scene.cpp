@@ -53,9 +53,9 @@ namespace Tricible
 						tinyobj::index_t &idx0 = shape.mesh.indices[face_index + 0]; // v0
 						tinyobj::index_t &idx1 = shape.mesh.indices[face_index + 1]; // v1
 						tinyobj::index_t &idx2 = shape.mesh.indices[face_index + 2]; // v2
-						Vector3 v0 = Vector3(attrib.vertices[3 * idx0.vertex_index + 0], attrib.vertices[3 * idx0.vertex_index + 1], attrib.vertices[3 * idx0.vertex_index + 2]);
-						Vector3 v1 = Vector3(attrib.vertices[3 * idx1.vertex_index + 0], attrib.vertices[3 * idx1.vertex_index + 1], attrib.vertices[3 * idx1.vertex_index + 2]);
-						Vector3 v2 = Vector3(attrib.vertices[3 * idx2.vertex_index + 0], attrib.vertices[3 * idx2.vertex_index + 1], attrib.vertices[3 * idx2.vertex_index + 2]);
+						vec3 v0 = vec3(attrib.vertices[3 * idx0.vertex_index + 0], attrib.vertices[3 * idx0.vertex_index + 1], attrib.vertices[3 * idx0.vertex_index + 2]);
+						vec3 v1 = vec3(attrib.vertices[3 * idx1.vertex_index + 0], attrib.vertices[3 * idx1.vertex_index + 1], attrib.vertices[3 * idx1.vertex_index + 2]);
+						vec3 v2 = vec3(attrib.vertices[3 * idx2.vertex_index + 0], attrib.vertices[3 * idx2.vertex_index + 1], attrib.vertices[3 * idx2.vertex_index + 2]);
 						//std::cout << "v0=> " << v0._x << ":" << v0._y << ":" << v0._z << std::endl;
 						//std::cout << "v1=> " << v1._x << ":" << v1._y << ":" << v1._z << std::endl;
 						//std::cout << "v2=> " << v2._x << ":" << v2._y << ":" << v2._z << std::endl;
@@ -73,7 +73,7 @@ namespace Tricible
 		}
 
 
-		bool Scene::IntersectsRay(const Vector3 & origin, const Vector3 & vec, IntersectionInfo *interInfo, float nearClip, float farClip)
+		bool Scene::IntersectsRay(const vec3& origin, const vec3& vec, IntersectionInfo *interInfo, float nearClip, float farClip)
 		{
 			float nearestDist = -1.0f;
 			interInfo->Origin = origin;
@@ -103,7 +103,7 @@ namespace Tricible
 			return !!interInfo->Object;
 		}
 
-		void Scene::ComputeNormal(const IntersectionInfo & interInfo, Vector3 & normal)
+		void Scene::ComputeNormal(const IntersectionInfo & interInfo, vec3& normal)
 		{
 			if (interInfo.Object != nullptr)
 			{
