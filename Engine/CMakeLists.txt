@@ -42,6 +42,8 @@ set(FOLDER_GROUP GLSLRendererCPP)
 set(
 	"${CMAKE_PROJECT_NAME}${FOLDER_GROUP}Sources"
 	"./GLSLRendererCPP/GLSLFunctions.cpp"
+	"./GLSLRendererCPP/mat2.cpp"
+	"./GLSLRendererCPP/mat3.cpp"
 	"./GLSLRendererCPP/SwizzleProxies.cpp"
 	"./GLSLRendererCPP/VariableArray.cpp"
 	"./GLSLRendererCPP/vec2.cpp"
@@ -62,7 +64,7 @@ set(
 	"./GLSLRendererCPP/mat4.hpp"
 	"./GLSLRendererCPP/Samplers.hpp"
 	"./GLSLRendererCPP/Scalars.hpp"
-	"./GLSLRendererCPP/Swizzle.hpp"
+	"./GLSLRendererCPP/Swizzle.glsl.hpp"
 	"./GLSLRendererCPP/SwizzleProxies.hpp"
 	"./GLSLRendererCPP/uvec2.hpp"
 	"./GLSLRendererCPP/uvec3.hpp"
@@ -272,6 +274,7 @@ find_package(OpenGL REQUIRED)
 set(glfw3_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw3_x64-windows/share/glfw3")
 find_package(glfw3 CONFIG REQUIRED)
 
+
 target_link_libraries(TricibleEngine
     OpenGL::GL
     glfw
@@ -300,10 +303,16 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 ## COPYFILES_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT
 set(ENGINE_OPENCL_FILES)
 # OpenCL Files
-list(APPEND ENGINE_OPENCL_FILES E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp)
+list(APPEND ENGINE_OPENCL_FILES C:/Users/z0rg/Projects/Perso/Tricible/Engine/GLSLRendererCPP/Swizzle.glsl.hpp)
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/Rendering/TestRender.glsl.cpp
+    COMMAND ${CMAKE_COMMAND} -E copy C:/Users/z0rg/Projects/Perso/Tricible/Engine/GLSLRendererCPP/Swizzle.glsl.hpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/GLSLRendererCPP/Swizzle.glsl.hpp
+)
+# OpenCL Files
+list(APPEND ENGINE_OPENCL_FILES C:/Users/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp)
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy C:/Users/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/Rendering/TestRender.glsl.cpp
 )
 set_property(TARGET ${PROJECT_NAME}
     PROPERTY ENGINE_OPENCL_FILES "${ENGINE_OPENCL_FILES}")
@@ -326,5 +335,11 @@ function(engine_attach_runtime target)
                 $<TARGET_FILE_DIR:${target}>/${rel_path}
         )
     endforeach()
+add_custom_command(
+    TARGET ${target} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<IF:$<CONFIG:Debug>,${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw3_x64-windows/debug/bin/glfw3.dll,${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw3_x64-windows/bin/glfw3.dll>"
+        $<TARGET_FILE_DIR:${target}>
+)
 endfunction()
 ## COPYFILES_CODE_INJECTION_END ## DO NOT REMOVE THIS LINE, IT'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT

@@ -6,7 +6,7 @@ namespace Tricible
 {
 	class Triangle : public Plane
 	{
-	protected:
+	public:
 		vec3 _a, _b, _c;
 
 	public:

@@ -52,7 +52,7 @@ def generate_folder_group(out_file, name, is_root, source_files, opencl_files_co
     out_file.write('#### ' + name + ' ####\n')
     out_file.write('##########\n')
     out_file.write('\n')
-    opencl_files = list(filter(lambda src: src.endswith('.glsl.cpp') or src.endswith('.glsl.hpp'), source_files[0]))
+    opencl_files = list(filter(lambda src: src.endswith('.glsl.cpp') or src.endswith('.glsl.hpp'), source_files[0] + source_files[1]))
     logger.info(opencl_files)
     if len(opencl_files) > 0:
         opencl_files_copy_commands.append('# OpenCL Files\n')
@@ -163,6 +163,12 @@ if __name__ == "__main__":
 '                $<TARGET_FILE_DIR:${target}>/${rel_path}\n',
 '        )\n',
 '    endforeach()\n',
+'add_custom_command(\n',
+'    TARGET ${target} POST_BUILD\n',
+'    COMMAND ${CMAKE_COMMAND} -E copy_if_different\n',
+'        "$<IF:$<CONFIG:Debug>,${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw3_x64-windows/debug/bin/glfw3.dll,${CMAKE_CURRENT_SOURCE_DIR}/../ext/glfw3_x64-windows/bin/glfw3.dll>"\n',
+'        $<TARGET_FILE_DIR:${target}>\n',
+')\n',
 'endfunction()\n',
     ]
 

@@ -1,14 +1,15 @@
 #include <sstream>
 #include "GLSLFunctions.hpp"
+#include "SwizzleProxies.hpp"
 #include "vec3.hpp"
 
 vec3::vec3() :
 	vec3(0.0f)
 {
 }
-vec3::vec3(const vec3& rhs)
+vec3::vec3(const vec3& rhs) :
+	vec3(rhs._x, rhs._y, rhs._z)
 {
-	*this = rhs;
 }
 vec3::vec3(float x_, float y_, float z_)
 {

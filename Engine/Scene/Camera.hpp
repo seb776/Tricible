@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../Tools/Vector3.hpp"
-#include "../Tools/3x3Matrix.hpp"
+#include "../GLSLRendererCPP/vec3.hpp"
+#include "../GLSLRendererCPP/mat3.hpp"
+#include "../GLSLRendererCPP/SwizzleProxies.hpp"
 
-#define MOVEMENTS_SPEED 1.f
+#define MOVEMENTS_SPEED 0.001f
 
 namespace Tricible
 {
@@ -13,8 +14,8 @@ namespace Tricible
 		float pitch;
 		float yaw;
 		float roll;
-		Matrix3x3 pitchMat;
-		Matrix3x3 yawMat;
+		mat3 pitchMat;
+		mat3 yawMat;
 
 		float NearClip;
 		float FarClip;
@@ -23,13 +24,13 @@ namespace Tricible
 		void SetPitch(float pitch_)
 		{
 			pitch = pitch_;
-			pitchMat.SetRotationY(pitch);
+			pitchMat.SetRotationZ(pitch);
 		}
 
 		void SetYaw(float yaw_)
 		{
 			yaw = yaw_;
-			yawMat.SetRotationZ(yaw);
+			yawMat.SetRotationY(yaw);
 		}
 
 		Camera()
@@ -43,12 +44,12 @@ namespace Tricible
 			FarClip = 10000.f;
 		}
 
-		void GetRay(int x_, int y_, Vector3& vec)
+		void GetRay(int x_, int y_, vec3& vec)
 		{
 			// TODO Replace 80 by FOV Calculation
-			vec._x = focale;
-			vec._y = -(y_ / 80.f);
-			vec._z = x_ / 80.f;
+			vec.x() = focale;
+			vec.y() = -(y_ / 80.f);
+			vec.z() = x_ / 80.f;
 
 			// rotate
 			vec = pitchMat * (yawMat * vec);
@@ -57,28 +58,30 @@ namespace Tricible
 
 		void MoveForward()
 		{
-			vec3 vecForward = vec3(0., 0., 1.);//yawMat* (pitchMat * vec3(0., 0., 1.));// TODO
-			//Point3 vecForward(lookAt - position);
-
+			vec3 vecForward = vec3(
+				cos(pitch) * sin(yaw),   // X
+				-sin(pitch),               // Y (up)
+				cos(pitch) * cos(yaw)    // Z
+			);
 			_position += vecForward * MOVEMENTS_SPEED;
 		}
-
 		void MoveBackward()
 		{
-			vec3 vecBackward = vec3(0., 0., -1.);//yawMat* (pitchMat * vec3(0., 0., -1.)); // TODO
-
-			_position += vecBackward * MOVEMENTS_SPEED;
+			vec3 vecForward = vec3(
+				cos(pitch) * sin(yaw),
+				-sin(pitch),
+				cos(pitch) * cos(yaw)
+			);
+			_position -= vecForward * MOVEMENTS_SPEED;
 		}
 		void MoveRight()
 		{
-			vec3 vecRight = vec3(1., 0., 0.);//yawMat* (pitchMat * vec3(1., 0., 0.));
-
+			vec3 vecRight = yawMat * vec3(1., 0., 0.);  // only yaw affects horizontal strafe
 			_position += vecRight * MOVEMENTS_SPEED;
 		}
 		void MoveLeft()
 		{
-			vec3 vecLeft = vec3(1., 0., 0.);//yawMat* (pitchMat * vec3(-1., 0., 0.));
-
+			vec3 vecLeft = yawMat * vec3(-1., 0., 0.);
 			_position += vecLeft * MOVEMENTS_SPEED;
 		}
 	};

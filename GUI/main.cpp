@@ -30,12 +30,13 @@ void SetupScene(Tricible::Renderer* renderer)
 	auto& curDir = GetCurrentExecutableDirectory();
 
 	renderer->Scene = Scene::Scene::LoadFromObj(PathCombine(curDir, "./Resources/test.obj"));
-	renderer->Scene->Objects.push_back(new Scene::Sphere());
-	renderer->Scene->Objects.push_back(new Plane());
+	//renderer->Scene->Objects.push_back(new Scene::Sphere());
+	//renderer->Scene->Objects.push_back(new Plane());
 	//renderer->Scene->Objects.push_back(new Triangle(Point3(25.f, 0.f, 0.f), Point3(25.f, 0.f, 5.f), Point3(25.f, 2.5f, 2.5f)));
 	renderer->Scene->Lights.push_back(new ALight((vec3(0x42, 0x42, 0x42)/255.0f)*2.0f, vec3(20.f, 20.f, 20.f), 1.f));
 	//renderer->Scene->Lights.push_back(new ALight(0xFFFF00FF, Point3(50.f, -10.f, 75.f), 1.f));
 	renderer->Scene->Skymap = new Texture("Resources/Outside.jpg");
+	renderer->UpdateInternalScene();
 }
 
 // TODO move this
@@ -67,11 +68,11 @@ void translateCamera(Camera& camera)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		camera.AddPosition(vec3(0.,1.,0.)); // TODO Speed as constant too
+		camera.AddPosition(vec3(0.,1.,0.) * 0.01f); // TODO Speed as constant too
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 	{
-		camera.AddPosition(vec3(0., -1., 0.)); // TODO Speed as constant too
+		camera.AddPosition(vec3(0., -1., 0.) * 0.01f); // TODO Speed as constant too
 	}
 }
 struct EngineConfig
@@ -86,15 +87,15 @@ void loadConfig()
 int main()
 {
 	loadConfig();
-	int width = 480;
-	int height = 360;
+	int width = 1280;
+	int height = 720;
 	sf::RenderWindow window(sf::VideoMode(width, height), "Tricible");
 	sf::Texture	texture;
 	sf::Sprite sprite;
-
 	Tricible::Renderer *renderer = new Tricible::GLSLRenderer(width, height);
+	glEnable(GL_TEXTURE_2D);
 
-	//SetupScene(&renderer);
+	SetupScene(renderer);
 
 	sf::String fpsCount;
 	std::clock_t start;
@@ -142,11 +143,8 @@ int main()
 					sf::Vector2f mouseDelta = (sf::Vector2f)lastMousePos - (sf::Vector2f)currentMousePos;
 
 					mouseDelta *= Config.MouseSensitivity;
-					camera.SetPitch(camera.pitch - mouseDelta.x);
-					camera.SetYaw(camera.yaw - mouseDelta.y);
-					renderer->SetUniformFloat("cameraPitch", camera.pitch);
-					renderer->SetUniformFloat("cameraYaw", camera.yaw);
-					renderer->SetUniformVector("cameraPosition", camera.getPosition());
+					camera.SetPitch(camera.pitch + mouseDelta.y);
+					camera.SetYaw(camera.yaw + mouseDelta.x);
 
 					uint32_t maxMousePosRadius = min(window.getSize().x, window.getSize().y) / 3;
 					sf::Vector2f windowCenter = (sf::Vector2f)window.getSize() / 2.0f;
@@ -166,14 +164,20 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+		renderer->SetUniformFloat("cameraPitch", camera.pitch);
+		renderer->SetUniformFloat("cameraYaw", camera.yaw);
+		renderer->SetUniformVector("cameraPosition", camera.getPosition());
 		++iFrameCount;
+		window.setActive(false);
 		renderer->Render();
+		window.setActive(true);
 		texture.update((sf::Uint8*)renderer->image);
 		sprite.setTexture(texture);
 		window.draw(sprite);
 		window.display();
 		end = std::clock();
 		duration += (end - start) / (double)CLOCKS_PER_SEC;
+		//std::cout << camera.getPosition().ToString() << std::endl;
 		if (duration > 0.5)
 		{
 			window.setTitle(std::to_string(((double)iFrameCount / duration)));

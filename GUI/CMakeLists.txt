@@ -104,3 +104,10 @@ add_custom_command(TARGET  ${PROJECT_NAME}
 	
 ## ATTENTION VS SPECIFIC
 set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/$(Configuration)")
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/GLSLIncludes_V1.1
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/../Tools/GLSLIncludes_V1.1"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/GLSLIncludes_V1.1"
+)

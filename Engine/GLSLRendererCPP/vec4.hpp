@@ -2,8 +2,17 @@
 
 #include <string>
 #include "../Tools/Macros.hpp"
-#include "vec2.hpp"
-#include "vec3.hpp"
+class vec2;
+class vec3;
+
+template<typename VecType, typename ScalarType, int A>
+struct swizzle1;
+template<typename VecType, typename ScalarType, int A, int B>
+struct swizzle2;
+template<typename VecType, typename ScalarType, int A, int B, int C>
+struct swizzle3;
+template<typename VecType, typename ScalarType, int A, int B, int C, int D>
+struct swizzle4;
 
 class vec4
 {

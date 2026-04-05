@@ -2,7 +2,8 @@
 
 #include <string>
 #include "../Tools/Macros.hpp"
-#include "vec2.hpp"
+class vec2;
+class vec4;
 
 template<typename VecType, typename ScalarType, int A>
 struct swizzle1;
@@ -16,6 +17,7 @@ struct swizzle4;
 class vec3
 {
 	friend class vec4;
+	friend class mat3;
 private:
 	float _x;
 	float _y;

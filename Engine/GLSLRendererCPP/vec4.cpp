@@ -1,5 +1,6 @@
 #include <sstream>
 #include "GLSLFunctions.hpp"
+#include "SwizzleProxies.hpp"
 #include "vec4.hpp"
 #include "vec3.hpp"
 #include "vec2.hpp"

@@ -2,11 +2,22 @@
 
 #include <string>
 #include "../Tools/Macros.hpp"
-#include "SwizzleProxies.hpp"
+class vec3;
+class vec4;
+
+template<typename VecType, typename ScalarType, int A>
+struct swizzle1;
+template<typename VecType, typename ScalarType, int A, int B>
+struct swizzle2;
+template<typename VecType, typename ScalarType, int A, int B, int C>
+struct swizzle3;
+template<typename VecType, typename ScalarType, int A, int B, int C, int D>
+struct swizzle4;
 
 class vec2
 {
 	friend class vec4;
+	friend class mat2;
 private:
 	float _x;
 	float _y;

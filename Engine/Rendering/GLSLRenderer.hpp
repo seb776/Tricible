@@ -9,6 +9,11 @@ namespace Tricible
 	class GLSLRenderer : public Renderer
 	{
 	private:
+		GLFWwindow* _window;
+		GLuint _objectsSSBO;
+		GLuint _trianglesSSBO;
+		GLuint _vao;
+
 		struct GLSLRenderTarget
 		{
 			GLuint fbo;
@@ -17,8 +22,7 @@ namespace Tricible
 			int height;
 		};
 
-		const std::string FULLSCREEN_VERTEX_SHADER = R"(
-        #version 330 core
+		const std::string FULLSCREEN_VERTEX_SHADER = R"(#version 430 core
         const vec2 verts[3] = vec2[](
             vec2(-1,-1),
             vec2( 3,-1),
@@ -26,9 +30,8 @@ namespace Tricible
         );
         void main() { gl_Position = vec4(verts[gl_VertexID], 0.0, 1.0); }
     )";
-		const std::string FRAGMENT_HEADER = R"(
-				// Uniforms
-				#version 330 core
+		const std::string FRAGMENT_HEADER = R"(#version 430 core
+#define OPENGL_SHADER_CODE
 			)";
 
 		GLuint _shaderProgram;
@@ -49,6 +52,7 @@ namespace Tricible
 		void SetUniformVector(std::string uniformName, const vec3& value) override;
 		void SetUniformVector(std::string uniformName, const vec4& value) override;
 
+		void UpdateInternalScene() override;
 		void Resize(int resX, int resY) override;
 		void Render() override;
 		~GLSLRenderer();
