@@ -100,6 +100,7 @@ std::map<std::string, void*> UniformsMap;
 UNIFORM(vec3, cameraPosition);
 UNIFORM(float, cameraPitch);
 UNIFORM(float, cameraYaw);
+UNIFORM(float, time);
 UNIFORM(vec2, resolution);
 
 #define rot(a) mat2(cos(a), -sin(a), sin(a), cos(a))
@@ -118,27 +119,21 @@ vec3 indexToColor(unsigned int i) {
 	colors[9] = vec3(1.0, 1.0, 1.0);  // white
 	return colors[i % 10];
 }
-
-
 #ifdef OPENGL_SHADER_CODE
 #define sat(a) clamp(a, 0., 1.)
-void main()
 #else
 #define sat(a) a
 #define sign(a) a
-void main(vec4& FragColor, const vec4& gl_FragCoord)
+#define fract(a) a
+#endif
+
+
+#ifdef OPENGL_SHADER_CODE
+float trace(vec3 ro, vec3 rd, out TriangleData data, out int objectMaterialId)
+#else
+float trace(vec3 ro, vec3 rd, TriangleData &data, int &objectMaterialId)
 #endif
 {
-	vec2 uv = (gl_FragCoord.XY_ - resolution * 0.5) / resolution.XX_; // TODO center and normalize coordinates
-	uv.Y_ = -uv.Y_;
-	// TODO get coordinates
-	// TODO move and rotate camera
-	vec3 ro = cameraPosition;
-	vec3 rd = normalize(vec3(uv.X_, uv.Y_, 1.));
-
-	rd.ZY_ = rot(cameraPitch) * rd.ZY_;
-	rd.XZ_ = rot(cameraYaw) * rd.XZ_;
-
 	const float FLOAT_MAX = 1000000.0f;
 	float nearestDist = FLOAT_MAX;
 	int nearestObjectIdx = -1;
@@ -156,26 +151,105 @@ void main(vec4& FragColor, const vec4& gl_FragCoord)
 				{
 					nearestDist = curDistance;
 					nearestObjectIdx = i;
+					objectMaterialId = i;
 					nearestTriangle = tri;
 				}
 			}
 		}
 	}
+	if (nearestDist < FLOAT_MAX)
+	{
+		data = nearestTriangle;
+		return nearestDist;
+	}
+	return -1.0f;
+}
+
+vec3 computeNormal(TriangleData triangle)
+{
+	vec3 A = vec3(triangle.A[0], triangle.A[1], triangle.A[2]);
+	vec3 B = vec3(triangle.B[0], triangle.B[1], triangle.B[2]);
+	vec3 C = vec3(triangle.C[0], triangle.C[1], triangle.C[2]);
+	vec3 n = normalize(cross(B - A, C - A));
+	return n;
+}
+
+vec3 computeOrientedNormal(TriangleData triangle, vec3 rd)
+{
+	vec3 n = computeNormal(triangle);
+	n = n * -sign(dot(rd, n));
+	return n;
+}
+// TODO for reflect test
+vec3 getMat(vec3 p, vec3 n, int materialId)
+{
+	vec3 ldir = normalize(vec3(1., -1., 1.));
+	// TODO basic lighting + normal
+	vec3 rgb = indexToColor(objects[materialId].MaterialId);
+	vec3 color = rgb * 0.5 + rgb * sat(dot(ldir, n));
+	return color;
+}
+
+float hash21(vec2 p)
+{
+	return fract(sin(dot(p, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+float hash(float seed)
+{
+	return fract(sin(seed * 123.456) * 123.456);
+}
+
+float _seed;
+
+float rand_()
+{
+	return hash(_seed++);
+}
+
+#ifdef OPENGL_SHADER_CODE
+void main()
+#else
+void main(vec4& FragColor, const vec4& gl_FragCoord)
+#endif
+{
+	vec2 uv = (gl_FragCoord.XY_ - resolution * 0.5) / resolution.XX_; // TODO center and normalize coordinates
+	uv.Y_ = -uv.Y_;
+	_seed = hash21(uv) + time;
+	// TODO get coordinates
+	// TODO move and rotate camera
+	vec3 ro = cameraPosition;
+	vec3 rd = normalize(vec3(uv.X_, uv.Y_, 1.));
+
+	rd.ZY_ = rot(cameraPitch) * rd.ZY_;
+	rd.XZ_ = rot(cameraYaw) * rd.XZ_;
+
+	TriangleData nearestTriangle;
+	int nearestObjectIdx = -1;
+	float nearestDist = trace(ro, rd, nearestTriangle, nearestObjectIdx);
 
 	vec3 color = vec3(0.); // TODO Sky
+	
 	// We hit something
-	if (nearestDist < FLOAT_MAX && nearestObjectIdx != -1 && nearestObjectIdx < objects.length())
+	if (nearestDist > 0.0 && nearestObjectIdx != -1 && nearestObjectIdx < objects.length())
 	{
 		vec3 p = ro + rd * nearestDist;
-		vec3 A = vec3(nearestTriangle.A[0], nearestTriangle.A[1], nearestTriangle.A[2]);
-		vec3 B = vec3(nearestTriangle.B[0], nearestTriangle.B[1], nearestTriangle.B[2]);
-		vec3 C = vec3(nearestTriangle.C[0], nearestTriangle.C[1], nearestTriangle.C[2]);
-		vec3 n = normalize(cross(B - A, C - A));
-		n = n * sign(dot(rd, n));
+		vec3 n = computeOrientedNormal(nearestTriangle, rd);
 		vec3 ldir = normalize(vec3(1., -1., 1.));
 		// TODO basic lighting + normal
 		vec3 rgb = indexToColor(objects[nearestObjectIdx].MaterialId);
-		color = rgb * 0.5 + rgb * sat(dot(ldir, n));
+		//color = getMat(p, n, nearestObjectIdx) * 0.0f;
+		vec3 refl = normalize(vec3(rand_(), rand_(), rand_()) - vec3(0.5f));
+		refl = refl * -sign(dot(rd, n));
+		TriangleData nearestTriangleRefl;
+		int nearestObjectIdxRefl = -1;
+		float distRefl = trace(p + n * 0.01, refl, nearestTriangleRefl, nearestObjectIdxRefl);
+		if (distRefl > 0.0f)
+		{
+			vec3 prefl = p + n * 0.01 + refl * distRefl;
+			vec3 nrefl = computeOrientedNormal(nearestTriangleRefl, refl);
+			color = color + getMat(prefl, nrefl, nearestObjectIdxRefl);
+		}
 		
 	}
 		//color = vec3(triangles.length() > 0 && triangles[1].A[0] != 101011. ? 1 : 0, 0., objects.length());

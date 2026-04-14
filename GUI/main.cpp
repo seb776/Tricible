@@ -101,6 +101,7 @@ int main()
 	std::clock_t start;
 	std::clock_t end;
 	double duration = 0.0;
+	double totalDuration = 0.0;
 
 	if (!texture.create(width, height))
 	{
@@ -166,6 +167,7 @@ int main()
 		}
 		renderer->SetUniformFloat("cameraPitch", camera.pitch);
 		renderer->SetUniformFloat("cameraYaw", camera.yaw);
+		renderer->SetUniformFloat("time", totalDuration);
 		renderer->SetUniformVector("cameraPosition", camera.getPosition());
 		++iFrameCount;
 		window.setActive(false);
@@ -177,6 +179,7 @@ int main()
 		window.display();
 		end = std::clock();
 		duration += (end - start) / (double)CLOCKS_PER_SEC;
+		totalDuration += (end - start) / (double)CLOCKS_PER_SEC;
 		//std::cout << camera.getPosition().ToString() << std::endl;
 		if (duration > 0.5)
 		{

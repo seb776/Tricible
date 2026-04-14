@@ -303,16 +303,16 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 ## COPYFILES_CODE_INJECTION_START ## DO NOT REMOVE THIS LINE, IT'S USED BY A PYTHON SCRIPT TO INJECT SOURCE FILES THE WAY WE WANT
 set(ENGINE_OPENCL_FILES)
 # OpenCL Files
-list(APPEND ENGINE_OPENCL_FILES C:/Users/z0rg/Projects/Perso/Tricible/Engine/GLSLRendererCPP/Swizzle.glsl.hpp)
+list(APPEND ENGINE_OPENCL_FILES E:/z0rg/Projects/Perso/Tricible/Engine/GLSLRendererCPP/Swizzle.glsl.hpp)
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy C:/Users/z0rg/Projects/Perso/Tricible/Engine/GLSLRendererCPP/Swizzle.glsl.hpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/GLSLRendererCPP/Swizzle.glsl.hpp
+    COMMAND ${CMAKE_COMMAND} -E copy E:/z0rg/Projects/Perso/Tricible/Engine/GLSLRendererCPP/Swizzle.glsl.hpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/GLSLRendererCPP/Swizzle.glsl.hpp
 )
 # OpenCL Files
-list(APPEND ENGINE_OPENCL_FILES C:/Users/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp)
+list(APPEND ENGINE_OPENCL_FILES E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp)
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy C:/Users/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/Rendering/TestRender.glsl.cpp
+    COMMAND ${CMAKE_COMMAND} -E copy E:/z0rg/Projects/Perso/Tricible/Engine/Rendering/TestRender.glsl.cpp $<TARGET_FILE_DIR:${PROJECT_NAME}>/Rendering/TestRender.glsl.cpp
 )
 set_property(TARGET ${PROJECT_NAME}
     PROPERTY ENGINE_OPENCL_FILES "${ENGINE_OPENCL_FILES}")

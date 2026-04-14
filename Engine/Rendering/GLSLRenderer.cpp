@@ -105,14 +105,19 @@ GLuint GLSLRenderer::_createShaderProgram(const std::string& vertexSrc, const st
 	GLuint vertexShader = _compileShader(vertexSrc, GL_VERTEX_SHADER);
 
 	auto fragmentFixes = FRAGMENT_HEADER + fragmentSrc;
+	const auto& currentExePath = GetCurrentExecutableDirectory();
 	std::ofstream myfile;
 	std::string fragmentFileName = "./Rendering/fragment.includes.glsl";
-	myfile.open(fragmentFileName, std::ios::out | std::ios::trunc);
+	std::string fragmentFilePath = PathCombine(currentExePath,  fragmentFileName);
+	myfile.open(fragmentFilePath, std::ios::out | std::ios::trunc);
 	myfile << fragmentFixes;
 	myfile.close();
 	// Write to file
-	system((std::string("cd GLSLIncludes_V1.1 & GLSLIncludes.exe ") + "../" + fragmentFileName).c_str());
-	std::ifstream fragmentWithIncludesFlat("./Rendering/fragment.includes.glsl.generated");
+	// TODO check if fails
+	std::cout << "Running GLSL Includes: " << fragmentFileName << std::endl;
+
+	system((std::string("cd " + currentExePath + " & cd GLSLIncludes_V1.1 & cd & GLSLIncludes.exe ") + PathCombine("../", fragmentFileName)).c_str());
+	std::ifstream fragmentWithIncludesFlat(currentExePath + "./Rendering/fragment.includes.glsl.generated");
 	std::stringstream strStream;
 	strStream << fragmentWithIncludesFlat.rdbuf();
 	GLuint fragmentShader = _compileShader(strStream.str(), GL_FRAGMENT_SHADER);
